@@ -1,0 +1,284 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* #root {
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+} */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* background: #f15946; */
+  background: #11151c;
+  transition: 0.4s ease-in-out;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.scrollArea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.loading {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: #171717;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loading-bar-container {
+  width: 100px;
+  height: 32px;
+  background: #272727;
+}
+
+.loading-bar {
+  height: 32px;
+  background: #f15946;
+}
+
+.container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100vw;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  /* background: red; */
+  /* pointer-events: none; */
+  /* border: 1px solid red; */
+}
+
+.title {
+  /* font-size: 10rem; */
+  /* text-align: center; */
+  font-size: 7rem;
+  text-align: left;
+  width: 100%;
+  margin: 0 auto;
+  color: #fff;
+  /* span {
+    display: block;
+  } */
+  /* @media (max-width: 1440px) {
+    font-size: 6rem;
+  } */
+}
+span {
+  display: block;
+  /* height: 185px; */
+}
+
+h1 {
+  font-weight: bold;
+  /* color: blue; */
+  font-size: 10rem;
+}
+@media (max-width: 1440px) {
+  h1 {
+    /* color: red; */
+    font-size: 6rem;
+  }
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+:root {
+  --headline-color: white;
+  --background-color: #11151c;
+  --text-color: rgba(255, 255, 255, 0.5);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: var(--background-color);
+  font-family: "Open Sans", sans-serif;
+  color: var(--text-color);
+  text-align: center;
+}
+
+.canvas-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.headline-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+#text-behind,
+#text-front,
+#text-behind-blur {
+  font-family: "Roboto", sans-serif;
+  position: absolute;
+  text-align: center;
+  font-size: clamp(24px, 20vw, 200px);
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 10px;
+  line-height: 0.8;
+}
+
+/* Mobile */
+@media screen and (max-width: 480px) {
+  /* Your CSS for mobile devices here */
+  #text-behind,
+  #text-front,
+  #text-behind-blur {
+    font-size: clamp(17px, 14vw, 200px);
+  }
+}
+
+/* Mobile Landscape */
+@media screen and (min-width: 481px) and (max-width: 767px) {
+  /* Your CSS for mobile landscape devices here */
+}
+
+/* Tablet */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /* Your CSS for tablet devices here */
+}
+
+/* Small Desktop */
+@media screen and (min-width: 1024px) and (max-width: 1199px) {
+  /* Your CSS for small desktop screens here */
+}
+
+/* Desktop */
+@media screen and (min-width: 1200px) and (max-width: 1439px) {
+  /* Your CSS for desktop screens here */
+}
+
+/* Large Desktop */
+@media screen and (min-width: 1440px) {
+  /* Your CSS for large desktop screens here */
+}
+
+#text-behind {
+  color: var(--headline-color);
+  z-index: 1;
+}
+
+#text-behind-blur {
+  color: var(--headline-color);
+  filter: blur(7.5px);
+  -webkit-filter: blur(7.5px);
+  z-index: 0;
+}
+
+#text-front {
+  /*  Set text-color to transparent to only show the outline  */
+  color: transparent;
+  text-stroke: 2px var(--headline-color);
+  -webkit-text-stroke: 2px var(--headline-color);
+  z-index: 3;
+}
+
+/* Less relevant code */
+
+.more-content {
+  height: 500vh;
+  width: 100vw;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  top: 5%;
+  height: 90%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  z-index: 3;
+}
+
+.title {
+  font-size: 0.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.3rem;
+  font-weight: 500;
+}
+
+.socials {
+}
+
+.socials svg {
+  margin: 0 5px;
+  transition: all 0.5s ease-in-out;
+  transform: scale(1);
+}
+
+.socials svg:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(0px 0px 5px rgba(255, 255, 255, 1));
+}
+
+p {
+  width: 300px;
+  font-size: 0.75rem;
+}
+
+a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: all 0.5s ease-in-out;
+}
+
+a:hover {
+  filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.9));
+}
