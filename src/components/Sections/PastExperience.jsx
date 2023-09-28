@@ -7,6 +7,7 @@ import { useThree } from "@react-three/fiber";
 import { Box, Card } from "@mui/material";
 import { a, useTransition } from "@react-spring/web";
 import { useAnimationControls, motion } from "framer-motion";
+import useMobile from "../../contexts/useMobile";
 
 const cardStyles = {
   height: "50%",
@@ -88,38 +89,20 @@ function Cards({ active, children }) {
     },
     visible: {
       opacity: 1,
-      transition: { type: "ease", delay: 0.1, duration: 2 },
+      transition: { type: "easeIn", delay: 0.1, duration: 1 },
     },
     exit: {
       opacity: 0,
-      transition: { ease: "easeInOut" },
+      transition: { ease: "easeOut" },
     },
   };
 
-  const controls = useAnimationControls();
-
-  useEffect(() => {
-    if (active) {
-      controls.start("visible");
-    }
-  }, [active, controls]);
-
   return (
     <>
-      {/* <button
-        className="z-20"
-        onClick={() => {
-          console.clear();
-          console.log("yoooooooooooooooooo");
-          controls.start("visible");
-        }}
-      >
-        CLOCK
-      </button> */}
       <motion.div
         variants={wrapperVariants}
         initial="hidden"
-        animate={controls}
+        animate={active ? "visible" : "hidden"}
         exit="exit"
         style={{
           height: "100%",
@@ -137,6 +120,7 @@ const Content = ({ inView }) => {
   const [displayCards, setDisplayCards] = useState(false);
   const timer = useRef();
   const timer2 = useRef();
+  const { mobile } = useMobile();
 
   useEffect(() => {
     if (inView) {
@@ -173,24 +157,62 @@ const Content = ({ inView }) => {
           sx={{
             height: "100%",
             width: "100%",
-            // background: "red",
+            // display: "flex",
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
+            gridTemplateColumns: mobile ? "unset" : "repeat(3, 1fr)",
             gridGap: "24px",
             alignItems: "center",
           }}
         >
-          {cards?.map((card) => (
-            <Card
-              sx={{
-                ...cardStyles,
-                background: card?.front,
-                // background: "linear-gradient(-45deg, #64b5f6, #f403d1)",
-              }}
-            >
-              {card?.company}
-            </Card>
-          ))}
+          {cards?.map((card, i) => {
+            const wrapperVariants = {
+              hidden: {
+                x: 600 * (i + 1),
+              },
+              visible: {
+                x: 0,
+                transition: {
+                  type: "easeIn",
+                  delay: 0.1 * (i + 1),
+                  duration: 0.5,
+                },
+              },
+              exit: {
+                x: 100 * (i + 1),
+                transition: {
+                  type: "easeOut",
+                  delay: 0.1 * (i + 1),
+                  duration: 0.5,
+                },
+              },
+            };
+            return (
+              <motion.div
+                key={card?.company}
+                variants={wrapperVariants}
+                initial="hidden"
+                animate={displayCards ? "visible" : "hidden"}
+                exit="exit"
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Card
+                  sx={{
+                    ...cardStyles,
+                    height: mobile ? "100%" : "50%",
+                    background: card?.front,
+                    // background: "linear-gradient(-45deg, #64b5f6, #f403d1)",
+                  }}
+                >
+                  {card?.company}
+                </Card>
+              </motion.div>
+            );
+          })}
         </Box>
       </Cards>
       {/* )} */}

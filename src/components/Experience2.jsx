@@ -8,25 +8,20 @@ import PastExperience from "./Sections/PastExperience";
 import Contact from "./Sections/Contact";
 import _state from "./state";
 import useScrolling from "../contexts/useScrolling";
-
-const useMobile = () => {
-  const { size } = useThree();
-
-  const mobile = useMemo(() => {
-    return size?.width <= 400;
-  }, [size?.width]);
-
-  return mobile;
-};
+import useMobile from "../contexts/useMobile";
 
 export const Experience2 = (props) => {
   const { menuOpened, domContent, scrollToPos } = props;
-  const mobile = useMobile();
+  const { size } = useThree();
   const cameraPositionX = useMotionValue(0);
   const cameraLookAtX = useMotionValue();
   const lastScroll = useRef(0);
-  // const [scrolling, setScrolling] = useState(false);
   const { scrolling, setScrolling } = useScrolling();
+  const { mobile, setMobile } = useMobile();
+
+  useEffect(() => {
+    setMobile(size?.width <= 400);
+  }, [size?.width, setMobile]);
 
   useEffect(() => {
     const distance = 50;
@@ -41,14 +36,16 @@ export const Experience2 = (props) => {
   }, [menuOpened]);
 
   useFrame((state) => {
-    const nextScrolling = _state?.top?.current !== lastScroll.current;
+    const currScrol =
+      _state?.top?.current === undefined || _state?.top?.current === null
+        ? 0
+        : _state?.top?.current;
+    const nextScrolling = currScrol !== lastScroll.current;
     if (nextScrolling !== scrolling) {
-      setScrolling(_state?.top?.current !== lastScroll.current);
+      setScrolling(currScrol !== lastScroll.current);
     }
-    lastScroll.current = _state?.top?.current;
+    lastScroll.current = currScrol;
   });
-
-  console.log("scrolling:", scrolling);
 
   const bgColors = useMemo(() => {
     return {
