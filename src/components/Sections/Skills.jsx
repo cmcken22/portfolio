@@ -53,7 +53,7 @@ const Content = () => {
         {skills.map((skill, index) => (
           <div className="w-64" key={index}>
             <motion.h3
-              className="text-xl font-bold text-white"
+              className="text-xl font-bold text-white text-left"
               initial={{
                 opacity: 0,
               }}

@@ -10,19 +10,36 @@ import _state from "./state";
 import useScrolling from "../contexts/useScrolling";
 import useMobile from "../contexts/useMobile";
 
-export const Experience2 = (props) => {
-  const { menuOpened, domContent, scrollToPos } = props;
+const useStateManager = () => {
   const { size } = useThree();
-  const cameraPositionX = useMotionValue(0);
-  const cameraLookAtX = useMotionValue();
-  const lastScroll = useRef(0);
+  const { setMobile, setSize } = useMobile();
   const { scrolling, setScrolling } = useScrolling();
-  const { mobile, setMobile, setSize } = useMobile();
+  const lastScroll = useRef(0);
 
   useEffect(() => {
-    setMobile(size?.width <= 400);
+    setMobile(size?.width <= 480);
     setSize(size);
   }, [size?.width, setMobile, setSize]);
+
+  useFrame(() => {
+    const {
+      top: { current },
+    } = _state;
+    const currScrol = current === undefined || current === null ? 0 : current;
+    const nextScrolling = currScrol !== lastScroll.current;
+    if (nextScrolling !== scrolling) {
+      setScrolling(currScrol !== lastScroll.current);
+    }
+    lastScroll.current = currScrol;
+  });
+};
+
+export const Experience2 = (props) => {
+  const { menuOpened, domContent, scrollToPos } = props;
+  const cameraPositionX = useMotionValue(0);
+  const cameraLookAtX = useMotionValue();
+  const { mobile } = useMobile();
+  useStateManager();
 
   useEffect(() => {
     const distance = 50;
@@ -35,18 +52,6 @@ export const Experience2 = (props) => {
       type: "easeInOut",
     });
   }, [menuOpened]);
-
-  useFrame((state) => {
-    const currScrol =
-      _state?.top?.current === undefined || _state?.top?.current === null
-        ? 0
-        : _state?.top?.current;
-    const nextScrolling = currScrol !== lastScroll.current;
-    if (nextScrolling !== scrolling) {
-      setScrolling(currScrol !== lastScroll.current);
-    }
-    lastScroll.current = currScrol;
-  });
 
   const bgColors = useMemo(() => {
     return {
