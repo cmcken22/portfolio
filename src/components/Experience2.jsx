@@ -1,17 +1,30 @@
 import { animate, useMotionValue } from "framer-motion";
 import { framerMotionConfig } from "../config";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, Suspense, useMemo } from "react";
 import About from "./Sections/About";
 import Skills from "./Sections/Skills";
 import PastExperience from "./Sections/PastExperience";
 import Contact from "./Sections/Contact";
 
+const useMobile = () => {
+  const { size } = useThree();
+
+  const mobile = useMemo(() => {
+    console.log("size:", size?.width);
+    return size?.width <= 400;
+  }, [size?.width]);
+
+  return mobile;
+};
+
 export const Experience2 = (props) => {
   const { menuOpened, domContent, scrollToPos } = props;
-
+  const mobile = useMobile();
   const cameraPositionX = useMotionValue(0);
   const cameraLookAtX = useMotionValue();
+
+  console.log("mobile:", mobile);
 
   useEffect(() => {
     const distance = 50;
@@ -75,6 +88,7 @@ export const Experience2 = (props) => {
           domContent={domContent}
           scrollToPos={scrollToPos}
           menuOpened={menuOpened}
+          mobile={mobile}
         />
         <Skills
           bgColor={bgColors.Skills}

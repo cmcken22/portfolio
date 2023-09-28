@@ -149,12 +149,27 @@ const Skills = ({ domContent, position, bgColor, scrollToPos }) => {
   const { viewport } = useThree();
 
   const [refItem1, inView] = useInView({
+    // delay: 100,
+    // trackVisibility: true,
+    // rootMargin: "-100px 0px",
+    // root: document.querySelector("#skills"),
+    initialInView: false,
     threshold: 0,
   });
   const [refItem2, inView2] = useInView({
-    // threshold: 0,
-    threshold: 0.9,
+    // delay: 100,
+    // trackVisibility: true,
+    // root: document.querySelector("#skills"),
+    rootMargin: "1000px 0px 0px 0px",
+    initialInView: false,
+    threshold: 0,
   });
+
+  console.log(
+    "inView:",
+    [JSON.stringify(inView), JSON.stringify(inView2)],
+    JSON.stringify(inView) === JSON.stringify(inView2)
+  );
 
   useEffect(() => {
     inView && (document.body.style.background = bgColor);
@@ -163,6 +178,7 @@ const Skills = ({ domContent, position, bgColor, scrollToPos }) => {
   useEffect(() => {
     const pos = viewport?.factor * viewport?.height * 1;
     if (inView) {
+      console.log("POS:", pos);
       scrollToPos(pos);
     }
   }, [inView, scrollToPos, viewport?.factor, viewport?.height]);
@@ -179,11 +195,11 @@ const Skills = ({ domContent, position, bgColor, scrollToPos }) => {
         </mesh>
         <Html fullscreen portal={domContent}>
           <div
+            className="container"
             ref={(r) => {
               refItem1(r);
               refItem2(r);
             }}
-            className="container"
             style={{
               margin: 0,
               justifyContent: "unset",

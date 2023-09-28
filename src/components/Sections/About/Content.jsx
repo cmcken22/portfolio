@@ -34,8 +34,8 @@ function ScrollIndicator({ active }) {
   });
 }
 
-const Content = ({ inView, scrollingAway }) => {
-  useAnimation(inView);
+const Content = ({ mobile, inView, scrollingAway }) => {
+  useAnimation(inView, mobile);
   const text1 = "Conner";
   const text2 = "McKenna";
 

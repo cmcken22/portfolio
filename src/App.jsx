@@ -197,7 +197,6 @@ function App() {
   });
 
   const scrollToPos = useCallback((pos) => {
-    console.log("pos:", pos);
     gsap.to(scrollArea?.current, {
       delay: 0,
       duration: 1,

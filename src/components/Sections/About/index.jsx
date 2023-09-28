@@ -6,7 +6,7 @@ import { useThree } from "@react-three/fiber";
 import { useControls } from "leva";
 import Content from "./Content";
 
-const About = ({ domContent, position, bgColor, scrollToPos }) => {
+const About = ({ domContent, position, bgColor, scrollToPos, mobile }) => {
   const { viewport } = useThree();
 
   const [refItem, inView] = useInView({
@@ -32,13 +32,13 @@ const About = ({ domContent, position, bgColor, scrollToPos }) => {
       <group position={[0, position, 0]}>
         <Html fullscreen portal={domContent}>
           <div
+            className="container"
             ref={(r) => {
               refItem(r);
               refItem2(r);
             }}
-            className="container"
           >
-            <Content inView={inView} scrollingAway={!inView2} />
+            <Content mobile={mobile} inView={inView} scrollingAway={!inView2} />
           </div>
         </Html>
       </group>

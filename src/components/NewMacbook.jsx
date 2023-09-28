@@ -109,6 +109,10 @@ export function NewMacbook(props) {
     envMapIntensity: 10,
   });
 
+  if (!inView) {
+    return null;
+  }
+
   return (
     <group
       ref={group}

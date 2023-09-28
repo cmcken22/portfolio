@@ -11,12 +11,9 @@ const offsetContext = createContext(0);
 
 function Section({ children, offset, factor, ...props }) {
   const { offset: parentOffset, sectionHeight, aspect } = useSection();
-  const { menuOpened } = useContext(MenuContext);
 
   const ref = useRef();
   offset = offset !== undefined ? offset : parentOffset;
-
-  const groupPosX = useMotionValue(0);
 
   const { position } = useControls("SECTION", {
     position: {
@@ -26,18 +23,12 @@ function Section({ children, offset, factor, ...props }) {
     },
   });
 
-  useEffect(() => {
-    const distance = 50;
-    animate(groupPosX, menuOpened ? distance : 0, {
-      type: "easeInOut",
-    });
-  }, [menuOpened]);
-
   useFrame(() => {
     const curY = ref.current.position.y;
     const curTop = state.top.current / aspect;
     ref.current.position.y = lerp(curY, (curTop / state.zoom) * factor, 0.1);
-    // ref.current.position.x = groupPosX.get();
+    if (props.debug)
+      console.log("ref.current.position.y:", ref.current.position.y);
   });
 
   return (

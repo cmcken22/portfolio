@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import * as THREE from "https://cdn.skypack.dev/three@0.124.0";
 import { RGBELoader } from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/loaders/RGBELoader.js";
 import { OBJLoader } from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/loaders/OBJLoader.js";
+import { useThree } from "@react-three/fiber";
 
 // create a new RGBELoader to import the HDR
 const hdrEquirect = new RGBELoader()
@@ -32,12 +33,13 @@ const pointlight2 = new THREE.PointLight(0x9f85cc, 7.5, 20);
 pointlight2.position.set(0, 3, 2);
 group.add(pointlight2);
 
-const useAnimation = (visible) => {
+const useAnimation = (visible, mobile) => {
   const renderer = useRef(null);
   const camera = useRef(null);
   const theta1 = useRef(0);
   const initialized = useRef(false);
   const allowAnimate = useRef(visible);
+  const object = useRef(null);
 
   useEffect(() => {
     allowAnimate.current = visible;
@@ -107,11 +109,12 @@ const useAnimation = (visible) => {
     objloader.load(
       // "https://raw.githubusercontent.com/miroleon/peace-of-mind/main/assets/buddha.obj",
       "/portfolio/models/craneo.OBJ",
-      (object) => {
-        object.children[0].material = material1;
-        object.scale.setScalar(2);
-        object.position.set(0, 0.25, 0);
-        group.add(object);
+      (obj) => {
+        object.current = obj;
+        object.current.children[0].material = material1;
+        object.current.scale.setScalar(2);
+        object.current.position.set(0, 0.25, 0);
+        group.add(object.current);
       }
     );
     animate();
@@ -128,6 +131,13 @@ const useAnimation = (visible) => {
       animate();
     }
   }, [visible]);
+
+  useEffect(() => {
+    if (!initialized.current) return;
+    if (visible) {
+      object.current.scale.setScalar(mobile ? 1.25 : 2);
+    }
+  }, [mobile, visible]);
 };
 
 export default useAnimation;
