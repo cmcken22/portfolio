@@ -54,7 +54,6 @@ function Text({ active }) {
     return (
       <a.div
         style={{
-          // background: "red",
           height: "100%",
           width: "100%",
           display: "flex",
@@ -64,6 +63,7 @@ function Text({ active }) {
         }}
       >
         <TypeAnimation
+          className="typing-text"
           sequence={[
             "",
             (ANIMATION_DELAY + ANIMATION_DURATION) * 1000,
@@ -74,8 +74,8 @@ function Text({ active }) {
           ]}
           wrapper="span"
           speed={50}
-          style={{ fontSize: "2em", display: "inline-block" }}
           repeat={0}
+          // repeat={Infinity}
         />
       </a.div>
     );

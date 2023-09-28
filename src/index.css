@@ -158,6 +158,15 @@ body {
   pointer-events: none;
 }
 
+.typing-text {
+  font-family: "Roboto", sans-serif;
+  font-size: clamp(24px, 20vw, 200px);
+  /* color: red !important; */
+  font-weight: 800;
+  /* letter-spacing: 10px; */
+  /* line-height: 0.8; */
+}
+
 #text-behind,
 #text-front,
 #text-behind-blur {
@@ -177,6 +186,9 @@ body {
   #text-behind,
   #text-front,
   #text-behind-blur {
+    font-size: clamp(17px, 14vw, 200px);
+  }
+  .typing-text {
     font-size: clamp(17px, 14vw, 200px);
   }
 }
