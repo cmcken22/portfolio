@@ -1,8 +1,9 @@
 Pushing to github pages:
 
 - delete gh-pages branch
-- rm -rf dist
+- rm -rf build
 - yarn build
-- git add dist -f
-- git commit -m "updating dist"
-- git subtree push --prefix dist origin gh-pages
+- git add build -f
+- git commit -m "updating build"
+- git subtree push --prefix build origin gh-pages
+- git reset build
