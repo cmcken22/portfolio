@@ -120,7 +120,7 @@ const Content = ({ inView }) => {
   const [displayCards, setDisplayCards] = useState(false);
   const timer = useRef();
   const timer2 = useRef();
-  const { mobile } = useMobile();
+  const { mobile, size } = useMobile();
 
   useEffect(() => {
     if (inView) {
@@ -208,7 +208,7 @@ const Content = ({ inView }) => {
                     // background: "linear-gradient(-45deg, #64b5f6, #f403d1)",
                   }}
                 >
-                  {card?.company}
+                  {card?.company}:&nbsp;{size?.width}
                 </Card>
               </motion.div>
             );

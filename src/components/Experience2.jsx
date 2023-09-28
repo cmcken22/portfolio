@@ -17,11 +17,12 @@ export const Experience2 = (props) => {
   const cameraLookAtX = useMotionValue();
   const lastScroll = useRef(0);
   const { scrolling, setScrolling } = useScrolling();
-  const { mobile, setMobile } = useMobile();
+  const { mobile, setMobile, setSize } = useMobile();
 
   useEffect(() => {
     setMobile(size?.width <= 400);
-  }, [size?.width, setMobile]);
+    setSize(size);
+  }, [size?.width, setMobile, setSize]);
 
   useEffect(() => {
     const distance = 50;
