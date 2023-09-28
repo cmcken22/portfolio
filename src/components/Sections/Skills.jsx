@@ -1,13 +1,9 @@
 import { Html } from "@react-three/drei";
-import { useEffect, useMemo, useState, useRef, Suspense } from "react";
+import { useEffect, useRef, Suspense } from "react";
 import { useInView } from "react-intersection-observer";
 import { Section } from "../section";
-import { Skull } from "../Skull";
-import { TypeAnimation } from "react-type-animation";
-import { MacBook } from "../MacBook";
 import { motion } from "framer-motion";
 import { useThree } from "@react-three/fiber";
-import { Desk } from "../Desk";
 import { NewMacbook } from "../NewMacbook";
 
 const skills = [
@@ -165,11 +161,11 @@ const Skills = ({ domContent, position, bgColor, scrollToPos }) => {
     threshold: 0,
   });
 
-  console.log(
-    "inView:",
-    [JSON.stringify(inView), JSON.stringify(inView2)],
-    JSON.stringify(inView) === JSON.stringify(inView2)
-  );
+  // console.log(
+  //   "inView:",
+  //   [JSON.stringify(inView), JSON.stringify(inView2)],
+  //   JSON.stringify(inView) === JSON.stringify(inView2)
+  // );
 
   useEffect(() => {
     inView && (document.body.style.background = bgColor);
@@ -191,7 +187,13 @@ const Skills = ({ domContent, position, bgColor, scrollToPos }) => {
         <mesh ref={ref} position={[0, 0, 0]}>
           {/* <MacBook inView={inView} /> */}
           {/* <Desk inView={inView} /> */}
-          <NewMacbook inView={inView} inView2={inView2} />
+          <Suspense
+            fallback={() => {
+              console.log("UOOOOO");
+            }}
+          >
+            {/* <NewMacbook inView={inView} inView2={inView2} /> */}
+          </Suspense>
         </mesh>
         <Html fullscreen portal={domContent}>
           <div

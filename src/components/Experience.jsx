@@ -20,6 +20,7 @@ import { Buddha2 } from "./Buddha2";
 import { Monkey2 } from "./Monkey2";
 import { Faces } from "./Faces";
 import { Skull } from "./Skull";
+import _state from "./state";
 
 export const Experience = (props) => {
   const { section, menuOpened, onLoadComplete } = props;
@@ -48,6 +49,8 @@ export const Experience = (props) => {
     // console.log("test:", test?.get());
     state.camera.position.x = cameraPositionX.get();
     state.camera.lookAt(cameraLookAtX.get(), 0, 0);
+    // console.log("state:", state);
+    // console.log("_state:", _state);
   });
 
   return (

@@ -323,7 +323,6 @@ const About = ({ domContent, position, bgColor, scrollToPos }) => {
   const [refItem2, inView2] = useInView({
     threshold: 0.9,
   });
-  console.log("inView2:", inView2);
 
   const groupPosX = useMotionValue(0);
   const groupPosY = useMotionValue(0);

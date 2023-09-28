@@ -1,17 +1,18 @@
 import { animate, useMotionValue } from "framer-motion";
 import { framerMotionConfig } from "../config";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, Suspense, useMemo } from "react";
+import { useEffect, Suspense, useMemo, useRef, useState } from "react";
 import About from "./Sections/About";
 import Skills from "./Sections/Skills";
 import PastExperience from "./Sections/PastExperience";
 import Contact from "./Sections/Contact";
+import _state from "./state";
+import useScrolling from "../contexts/useScrolling";
 
 const useMobile = () => {
   const { size } = useThree();
 
   const mobile = useMemo(() => {
-    console.log("size:", size?.width);
     return size?.width <= 400;
   }, [size?.width]);
 
@@ -23,8 +24,9 @@ export const Experience2 = (props) => {
   const mobile = useMobile();
   const cameraPositionX = useMotionValue(0);
   const cameraLookAtX = useMotionValue();
-
-  console.log("mobile:", mobile);
+  const lastScroll = useRef(0);
+  // const [scrolling, setScrolling] = useState(false);
+  const { scrolling, setScrolling } = useScrolling();
 
   useEffect(() => {
     const distance = 50;
@@ -39,11 +41,14 @@ export const Experience2 = (props) => {
   }, [menuOpened]);
 
   useFrame((state) => {
-    // console.log("test:", test?.get());
-    // state.camera.position.x = cameraPositionX.get();
-    // console.log("state.camera.position.x:", state.camera.position.x);
-    // state.camera.lookAt(cameraLookAtX.get(), 0, 0);
+    const nextScrolling = _state?.top?.current !== lastScroll.current;
+    if (nextScrolling !== scrolling) {
+      setScrolling(_state?.top?.current !== lastScroll.current);
+    }
+    lastScroll.current = _state?.top?.current;
   });
+
+  console.log("scrolling:", scrolling);
 
   const bgColors = useMemo(() => {
     return {
@@ -51,6 +56,7 @@ export const Experience2 = (props) => {
       About: "#11151c",
       Skills: "#571ec1",
       PastExperience: "#636567",
+      // PastExperience: "#FFFFFF",
       Contact: "#571EC1",
     };
     // return {

@@ -32,6 +32,7 @@ export const Menu = (props) => {
       <Html
         fullscreen
         portal={domContent}
+        // wrapperClass=""
         // zIndexRange={[200]}
       >
         <button

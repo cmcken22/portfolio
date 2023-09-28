@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import * as THREE from "https://cdn.skypack.dev/three@0.124.0";
 import { RGBELoader } from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/loaders/RGBELoader.js";
 import { OBJLoader } from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/loaders/OBJLoader.js";
 import { useThree } from "@react-three/fiber";
+import { LoadingContext } from "../../../contexts/LoadingContext";
+import useLoading from "../../../contexts/useLoading";
+import useScrolling from "../../../contexts/useScrolling";
 
 // create a new RGBELoader to import the HDR
 const hdrEquirect = new RGBELoader()
@@ -40,10 +43,45 @@ const useAnimation = (visible, mobile) => {
   const initialized = useRef(false);
   const allowAnimate = useRef(visible);
   const object = useRef(null);
+  const animationFrame = useRef(null);
+  const timer = useRef(null);
+  const count = useRef(0);
+  const { loadingRefs, setLoading } = useLoading();
+  const { scrolling } = useScrolling();
+  // console.clear();
+  // console.log("LoadingContext:", LoadingContext);
+  // const { loadingRefs, setLoading } = useContext(LoadingContext);
 
   useEffect(() => {
-    allowAnimate.current = visible;
-  }, [visible]);
+    console.log("\n-------------");
+    console.log("visible:", visible);
+    console.log("scrolling:", scrolling);
+    if (!visible || scrolling) {
+      if (timer.current) {
+        clearTimeout(timer.current);
+        timer.current = null;
+      }
+      allowAnimate.current = false;
+      console.log("------------");
+      console.log("SETTING TO FALSE:", allowAnimate?.current);
+      console.log("animationFrame.current:", animationFrame.current);
+      console.log("------------");
+      cancelAnimationFrame(animationFrame.current);
+    }
+    if (visible && !scrolling) {
+      if (timer.current) {
+        clearTimeout(timer.current);
+        timer.current = null;
+      }
+      timer.current = setTimeout(() => {
+        console.log("\n\n------------");
+        console.log("SETTING TO TRUE:", allowAnimate?.current);
+        console.log("------------");
+        allowAnimate.current = true;
+        animate();
+      }, 1000);
+    }
+  }, [visible, scrolling]);
 
   const update = useCallback(() => {
     // Continuously animate theta1 irrespective of scrolling to ensure there's an inherent animation in the 3D visualization.
@@ -71,10 +109,15 @@ const useAnimation = (visible, mobile) => {
 
   const animate = useCallback(() => {
     if (!allowAnimate?.current) return;
+    // console.log("ANIMATE___", allowAnimate?.current);
     update();
     renderer.current.render(scene, camera.current);
-    requestAnimationFrame(animate);
-  }, []);
+    animationFrame.current = requestAnimationFrame(animate);
+    if (loadingRefs?.About === true && setLoading && count.current >= 5) {
+      setLoading("About", false);
+    }
+    count.current++;
+  }, [update]);
 
   const initScene = useCallback(() => {
     renderer.current = new THREE.WebGLRenderer({
@@ -112,29 +155,32 @@ const useAnimation = (visible, mobile) => {
       (obj) => {
         object.current = obj;
         object.current.children[0].material = material1;
-        object.current.scale.setScalar(2);
+        object.current.scale.setScalar(mobile ? 1.25 : 2);
         object.current.position.set(0, 0.25, 0);
         group.add(object.current);
       }
     );
-    animate();
-  }, []);
+    if (visible) {
+      animate();
+    }
+  }, [visible, mobile, animate]);
 
   useEffect(() => {
+    if (initialized.current) return;
     initScene();
     initialized.current = true;
-  }, []);
+  }, [initScene]);
 
   useEffect(() => {
     if (!initialized.current) return;
     if (visible) {
       animate();
     }
-  }, [visible]);
+  }, [visible, animate]);
 
   useEffect(() => {
     if (!initialized.current) return;
-    if (visible) {
+    if (visible && object.current) {
       object.current.scale.setScalar(mobile ? 1.25 : 2);
     }
   }, [mobile, visible]);

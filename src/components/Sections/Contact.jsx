@@ -1,17 +1,13 @@
 import { Html } from "@react-three/drei";
-import { useEffect, useMemo, useState, useRef, Suspense } from "react";
+import { useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { Section } from "../section";
-import { Skull } from "../Skull";
-import { TypeAnimation } from "react-type-animation";
-import { MacBook } from "../MacBook";
-import { motion } from "framer-motion";
 import { useThree } from "@react-three/fiber";
 
 const Content = () => {
   return (
     <h1 className="title">
-      <span>Past Experience</span>
+      <span>Contact Me</span>
     </h1>
   );
 };

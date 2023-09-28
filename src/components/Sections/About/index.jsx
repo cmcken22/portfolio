@@ -1,13 +1,15 @@
 import { Html } from "@react-three/drei";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Section } from "../../section";
 import { useThree } from "@react-three/fiber";
 import { useControls } from "leva";
 import Content from "./Content";
+import { Button } from "@mui/material";
 
 const About = ({ domContent, position, bgColor, scrollToPos, mobile }) => {
   const { viewport } = useThree();
+  const [start, setStart] = useState(false);
 
   const [refItem, inView] = useInView({
     threshold: 0,
@@ -26,6 +28,20 @@ const About = ({ domContent, position, bgColor, scrollToPos, mobile }) => {
       scrollToPos(pos);
     }
   }, [inView, scrollToPos, viewport?.factor, viewport?.height]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "s") {
+        console.clear();
+        console.log(true);
+        setStart(true);
+      } else if (e.key === "e") {
+        console.clear();
+        console.log(false);
+        setStart(false);
+      }
+    });
+  }, []);
 
   return (
     <Section factor={1.5} offset={1}>

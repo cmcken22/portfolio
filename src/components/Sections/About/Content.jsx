@@ -1,6 +1,10 @@
 import useAnimation from "./useAnimation";
 import { a, useTransition } from "@react-spring/web";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useContext } from "react";
+import { LoadingContext } from "../../../contexts/LoadingContext";
+import { Menu } from "@mui/material";
+import { MenuContext } from "../../../contexts/MenuContext";
 
 function ScrollIndicator({ active }) {
   const transition = useTransition(active, {
