@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Card, Grid, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useAnimate, stagger, motion, useAnimation } from "framer-motion";
 import { red, green, blue } from "@mui/material/colors";
@@ -62,31 +62,50 @@ export const Items = [
 const ListItem = ({ item, index }) => {
   const { startDate, endDate, position, company, description } = item;
   const controls = useAnimation();
-
   const activeSection = useSectionContext((state) => state.activeSection);
+  const [key, setKey] = useState(0);
 
   useEffect(() => {
     if (activeSection !== "About") {
+      console.log(item?.company, "exit");
       controls.start({ opacity: 0, x: -500 });
+    } else {
+      // console.log(item?.company, "enter");
+      // controls.start({ opacity: 1, x: 0 });
+      setKey((prev) => prev + 1);
     }
   }, [activeSection]);
 
   return (
     <motion.div
       className="LIST_ITEM"
+      key={`${item?.company}-${key}`}
       initial={{ opacity: 0, x: -500 }}
       animate={controls}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       threshold={1}
       onViewportEnter={() => {
-        console.log(item?.company, "enter");
-        controls.start({ opacity: 1, x: 0 });
+        setTimeout(() => {
+          console.log(item?.company, "enter");
+          controls.start({ opacity: 1, x: 0 });
+        }, (500 / index) * 0.1);
       }}
       // onViewportLeave={() => {
       //   console.log(item?.company, "leave");
       //   controls.start({ opacity: 0, x: -500 });
       // }}
     >
+      {/* <Card
+        sx={{
+          marginBottom: "8px",
+          background: "transparent",
+          boxShadow: "none",
+
+          "&:hover": {
+            background: "white",
+          },
+        }}
+      > */}
       <li
         style={{
           // background: "red",
@@ -113,6 +132,7 @@ const ListItem = ({ item, index }) => {
           </Grid>
         </Grid>
       </li>
+      {/* </Card> */}
     </motion.div>
   );
 };

@@ -37,6 +37,8 @@ import Mysection from "./components/Mysection";
 import Hero from "./components/Sections/Hero";
 import { create } from "zustand";
 import Details from "./components/Sections/Details";
+import detectScroll from "@egstad/detect-scroll";
+import useScrolling from "./contexts/useScrolling";
 
 export const useSectionContext = create((set) => ({
   activeSection: "Hero",
@@ -96,25 +98,8 @@ function App() {
   const section1 = useRef();
   const section2 = useRef();
   const activeSection = useSectionContext((state) => state.activeSection);
-
-  function scrollTo(section) {
-    section.current.scrollIntoView({ behavior: "smooth" });
-  }
-
-  const { position } = useControls("Camera", {
-    position: {
-      x: 0,
-      y: 0,
-      z: 120,
-    },
-    Add: button((get) => {
-      console.clear();
-      const position = get("Camera.position");
-      console.log({
-        position,
-      });
-    }),
-  });
+  const scrollDetector = useRef();
+  const setScrolling = useScrolling((state) => state.setScrolling);
 
   useEffect(() => {
     if (activeSection === "About") {
@@ -123,6 +108,26 @@ function App() {
       document.body.style.background = "#11151c";
     }
   }, [activeSection]);
+
+  useEffect(() => {
+    const elm2 = document.querySelector(".__container");
+    if (elm2) {
+      scrollDetector.current = new detectScroll(elm2, {
+        events: {
+          // scrollUp: () => console.log("scrolling up"),
+          // scrollDown: () => console.log("scrolling down"),
+          scrollStart: () => setScrolling(true),
+          scrollStop: () => setScrolling(false),
+        },
+      });
+    }
+
+    return () => {
+      if (scrollDetector?.current) {
+        scrollDetector.current.destroy();
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -156,137 +161,6 @@ function App() {
           </Mysection>
         </div>
       </Box>
-    </>
-  );
-
-  return (
-    <>
-      <Leva hidden />
-
-      <Box
-        sx={{
-          height: "200vh",
-          width: "100vw",
-          // background: "red",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Box
-          sx={{
-            height: "100vh",
-            width: "100vw",
-            // background: "green",
-          }}
-        >
-          <Canvas
-            // ref={canvasRef}
-            concurrent
-            colorManagement
-            camera={{
-              position: [position?.x, position?.y, position?.z],
-              fov: 70,
-            }}
-            eventPrefix="client"
-          >
-            <Background />
-            <Lights />
-            <Experience2 />
-          </Canvas>
-          {/* <Loader
-          active={fullProgress !== 100}
-          total={total}
-          _a={active}
-          progress={fullProgress}
-        /> */}
-        </Box>
-        <Box
-          sx={{
-            height: "100vh",
-            width: "100vw",
-            // background: "blue",
-          }}
-        >
-          <Grid container>
-            <Grid item xs={6}>
-              <Box
-                pt={2}
-                sx={{
-                  height: "200px",
-                  width: "100%",
-                  // background: "red",
-                  position: "sticky",
-                  top: 0,
-                }}
-              >
-                hello
-              </Box>
-            </Grid>
-            <Grid item xs={6}>
-              <Box
-                sx={{
-                  height: "300vh",
-                  width: "100%",
-                  // background: "grey",
-                }}
-              >
-                world
-                {[1, 2, 3, 4]?.map((item) => (
-                  <Box>
-                    <Box
-                      sx={{
-                        height: "200px",
-                        width: "100%",
-                        // background: "pink",
-                      }}
-                    >
-                      {item}
-                    </Box>
-                  </Box>
-                ))}
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
-    </>
-  );
-
-  return (
-    <>
-      <Leva hidden={disableLeva} />
-      {/* <Header /> */}
-      <Canvas
-        ref={canvasRef}
-        concurrent
-        colorManagement
-        camera={{ position: [position?.x, position?.y, position?.z], fov: 70 }}
-        eventPrefix="client"
-        eventSource={domContent}
-      >
-        <Background />
-        <Lights />
-        <Experience2
-          domContent={domContent}
-          menuOpened={menuOpened}
-          scrollToPos={scrollToPos}
-        />
-      </Canvas>
-      <Loader
-        active={fullProgress !== 100}
-        total={total}
-        _a={active}
-        progress={fullProgress}
-      />
-      <div
-        className="scrollArea"
-        ref={scrollArea}
-        onScroll={onScroll}
-        {...events}
-      >
-        <div style={{ position: "sticky", top: 0 }} ref={domContent} />
-        <div style={{ height: `${state.pages * 100}vh` }} />
-      </div>
     </>
   );
 }

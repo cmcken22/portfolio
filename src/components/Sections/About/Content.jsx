@@ -54,7 +54,7 @@ const Content = ({ mobile, scrollingAway }) => {
         position: "relative",
       }}
     >
-      <div class="headline-container">
+      <div className="headline-container">
         <div id="text-behind">
           {text1}
           <br />
@@ -73,7 +73,7 @@ const Content = ({ mobile, scrollingAway }) => {
         <ScrollIndicator active={!scrollingAway} />
       </div>
 
-      <div class="canvas-container">
+      <div className="canvas-container">
         <canvas id="canvas"></canvas>
       </div>
     </div>

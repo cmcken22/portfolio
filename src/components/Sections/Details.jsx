@@ -1,6 +1,6 @@
 import { Box, Grid, Typography, styled } from "@mui/material";
 import { useSectionContext } from "../../App";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useAnimate, stagger, motion, useAnimation } from "framer-motion";
 import ListItem, { Items } from "../ListItem";
 import { red, green, blue } from "@mui/material/colors";
@@ -50,10 +50,29 @@ function useMenuAnimation(isOpen) {
 const Details = () => {
   const inView = useSectionContext((state) => state.activeSection) === "About";
   const scope = useMenuAnimation(inView);
+  const [displayList, setDisplayList] = useState(false);
   const typingDelay = 2000;
 
+  // useEffect(() => {
+  //   if (inView) {
+  //     // setTimeout(() => {
+  //     setDisplayList(true);
+  //     // }, 0);
+  //   } else {
+  //     setDisplayList(false);
+  //   }
+  // }, [inView]);
+
   return (
-    <StyledGrid container className="GRID_CONTAINER">
+    <StyledGrid
+      container
+      className="GRID_CONTAINER"
+      sx={{
+        // height: "100vh",
+        minHeight: "100vh",
+        // background: "red",
+      }}
+    >
       <Grid
         item
         xs={6}
@@ -78,7 +97,6 @@ const Details = () => {
             pt={2}
             sx={{
               width: "100%",
-              // background: "red",
               position: "sticky",
               top: "0",
             }}
@@ -103,7 +121,11 @@ const Details = () => {
               ]}
               wrapper="span"
               speed={25}
-              style={{ fontSize: "2em", display: "inline-block" }}
+              style={{
+                fontSize: "2em",
+                display: "inline-block",
+                color: "black",
+              }}
               repeat={Infinity}
             />
           </Box>
@@ -116,8 +138,10 @@ const Details = () => {
         sx={{
           height: "100%",
           width: "100%",
+          position: "relative",
         }}
       >
+        {/* {displayList && ( */}
         <motion.div
           ref={scope}
           className="GRID_ITEM_BOX"
@@ -128,6 +152,10 @@ const Details = () => {
             visible: { opacity: 1 },
             hidden: { opacity: 0 },
           }}
+          // style={{
+          //   position: "absolute",
+          //   top: 0,
+          // }}
         >
           <ul
             style={{
@@ -140,6 +168,7 @@ const Details = () => {
             ))}
           </ul>
         </motion.div>
+        {/* )} */}
       </Grid>
     </StyledGrid>
   );

@@ -52,10 +52,19 @@ const useAnimation = (visible, mobile) => {
   // console.log("LoadingContext:", LoadingContext);
   // const { loadingRefs, setLoading } = useContext(LoadingContext);
 
+  console.log("scrolling:", scrolling);
+
   useEffect(() => {
+    return () => {
+      cancelAnimationFrame(animationFrame.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!initialized.current) return;
     // console.log("\n-------------");
     // console.log("visible:", visible);
-    // console.log("scrolling:", scrolling);
+
     if (!visible || scrolling) {
       if (timer.current) {
         clearTimeout(timer.current);
@@ -78,12 +87,14 @@ const useAnimation = (visible, mobile) => {
         // console.log("SETTING TO TRUE:", allowAnimate?.current);
         // console.log("------------");
         allowAnimate.current = true;
-        animate();
+        animate("useEffect - test");
       }, 1000);
     }
   }, [visible, scrolling]);
 
-  const update = useCallback(() => {
+  const update = useCallback((x) => {
+    if (!allowAnimate.current) return;
+    // console.log("updating", x);
     // Continuously animate theta1 irrespective of scrolling to ensure there's an inherent animation in the 3D visualization.
     theta1.current += 0.0025;
 
@@ -101,23 +112,31 @@ const useAnimation = (visible, mobile) => {
     pointlight2.position.y = 2 * -Math.cos(theta1.current - 3) - 6;
 
     // rotate the group to simulate the rotation of the HDR
-    group.rotation.y += 0.01;
+    group.rotation.y += 0.05;
 
     // keep the camera look at 0,0,0
     camera.current.lookAt(0, 0, 0);
   }, []);
 
-  const animate = useCallback(() => {
-    if (!allowAnimate?.current) return;
-    // console.log("ANIMATE___", allowAnimate?.current);
-    update();
-    renderer.current.render(scene, camera.current);
-    animationFrame.current = requestAnimationFrame(animate);
-    if (loadingRefs?.About === true && setLoading && count.current >= 5) {
-      setLoading("About", false);
-    }
-    count.current++;
-  }, [update]);
+  const animate = useCallback(
+    (x) => {
+      console.log("ANIMATE___", x);
+      if (!allowAnimate?.current) return;
+      update(x);
+      renderer.current.render(scene, camera.current);
+      // animationFrame.current = requestAnimationFrame(() => animate(x));
+
+      setTimeout(() => {
+        animationFrame.current = requestAnimationFrame(() => animate(x));
+        // requestAnimationFrame(animate);
+      }, 1000 / 25);
+      if (loadingRefs?.About === true && setLoading && count.current >= 5) {
+        setLoading("About", false);
+      }
+      count.current++;
+    },
+    [update]
+  );
 
   const initScene = useCallback(() => {
     renderer.current = new THREE.WebGLRenderer({
@@ -161,7 +180,7 @@ const useAnimation = (visible, mobile) => {
       }
     );
     if (visible) {
-      animate();
+      animate("initScene");
     }
   }, [visible, mobile, animate]);
 
@@ -174,7 +193,7 @@ const useAnimation = (visible, mobile) => {
   useEffect(() => {
     if (!initialized.current) return;
     if (visible) {
-      animate();
+      // animate("useEffect - visible");
     }
   }, [visible, animate]);
 

@@ -285,7 +285,7 @@ const Content2 = ({ inView, scrollingAway }) => {
         position: "relative",
       }}
     >
-      <div class="headline-container">
+      <div className="headline-container">
         <div id="text-behind">
           {text1}
           <br />
@@ -304,7 +304,7 @@ const Content2 = ({ inView, scrollingAway }) => {
         <ScrollIndicator active={!scrollingAway} />
       </div>
 
-      <div class="canvas-container">
+      <div className="canvas-container">
         <canvas id="canvas"></canvas>
       </div>
     </div>

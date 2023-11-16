@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@egstad/detect-scroll": "^1.0.11",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.11",
@@ -35,6 +36,7 @@
     "react-xarrows": "^2.0.2",
     "styled-components": "^6.0.8",
     "three": "^0.146.0",
+    "vite-plugin-remove-console": "^2.1.1",
     "zustand": "^4.4.6"
   },
   "devDependencies": {
