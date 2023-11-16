@@ -30,6 +30,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-intersection-observer": "^9.5.2",
+    "react-nice-scroll": "^1.0.0",
     "react-type-animation": "^3.1.0",
     "react-xarrows": "^2.0.2",
     "styled-components": "^6.0.8",

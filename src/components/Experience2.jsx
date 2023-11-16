@@ -36,22 +36,7 @@ const useStateManager = () => {
 
 export const Experience2 = (props) => {
   const { menuOpened, domContent, scrollToPos } = props;
-  const cameraPositionX = useMotionValue(0);
-  const cameraLookAtX = useMotionValue();
   const { mobile } = useMobile();
-  useStateManager();
-
-  useEffect(() => {
-    const distance = 50;
-    animate(cameraPositionX, menuOpened ? distance : 0, {
-      // ...framerMotionConfig,
-      type: "easeInOut",
-    });
-    animate(cameraLookAtX, menuOpened ? distance : 0, {
-      // ...framerMotionConfig,
-      type: "easeInOut",
-    });
-  }, [menuOpened]);
 
   const bgColors = useMemo(() => {
     return {
@@ -98,24 +83,6 @@ export const Experience2 = (props) => {
           scrollToPos={scrollToPos}
           menuOpened={menuOpened}
           mobile={mobile}
-        />
-        <Skills
-          bgColor={bgColors.Skills}
-          position={0}
-          domContent={domContent}
-          scrollToPos={scrollToPos}
-        />
-        <PastExperience
-          bgColor={bgColors.PastExperience}
-          position={-250}
-          domContent={domContent}
-          scrollToPos={scrollToPos}
-        />
-        <Contact
-          bgColor={bgColors.Contact}
-          position={-500}
-          domContent={domContent}
-          scrollToPos={scrollToPos}
         />
       </Suspense>
     </>

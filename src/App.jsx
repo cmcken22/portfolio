@@ -30,6 +30,11 @@ import LoadingContextProvider, {
   LoadingContext,
 } from "./contexts/LoadingContext";
 import useLoading from "./contexts/useLoading";
+import { Box, Grid } from "@mui/material";
+import { ScrollContainer, SequenceSection } from "react-nice-scroll";
+import "react-nice-scroll/dist/styles.css";
+import Mysection from "./components/Mysection";
+import Hero from "./components/Sections/Hero";
 
 const Lights = () => {
   return (
@@ -80,51 +85,12 @@ function Loader({ active, total, progress, _a }) {
 }
 
 function App() {
-  const { active, progress, total, item } = useProgress();
-  const rest = useProgress();
-  console.log("rest:", rest);
-  console.log("__item:", item);
-  const [events, setEvents] = useState();
-  const canvasRef = useRef();
-  const domContent = useRef();
-  const scrollArea = useRef();
-  const scrolling = useRef(false);
-  // const [menuOpened, setMenuOpened] = useState(false);
-  const { menuOpened, setMenuOpened } = useContext(MenuContext);
-  const { loadingRefs, setLoading } = useLoading();
+  const section1 = useRef();
+  const section2 = useRef();
 
-  const fullProgress = useMemo(() => {
-    // if (loadingRefs?.About && progress > 10) {
-    //   return progress - 10;
-    // }
-    if (progress === 0) return 0;
-
-    return ((progress + (loadingRefs?.About ? 0 : 20)) / 120) * 100;
-  }, [progress, loadingRefs?.About]);
-  console.log("fullProgress:", fullProgress);
-
-  console.log("loadingRefs:", loadingRefs);
-
-  const [started, setStarted] = useState(false);
-  const begin = useRef(false);
-  const currSection = useRef(0);
-  const lastScroll = useRef(0);
-  const lastDirection = useRef(null);
-  const p = useRef([0, 940, 1880, 2820]);
-
-  const onScroll = (e) => {
-    if (!started) return;
-    // setScrolling(e.target.scrollTop !== lastScroll.current);
-    // lastScroll.current = e.target.scrollTop;
-    return (state.top.current = e.target.scrollTop);
-  };
-  useEffect(() => void onScroll({ target: scrollArea.current }), []);
-
-  useEffect(() => {
-    if (fullProgress === 100) {
-      setStarted(true);
-    }
-  }, [fullProgress]);
+  function scrollTo(section) {
+    section.current.scrollIntoView({ behavior: "smooth" });
+  }
 
   const { position } = useControls("Camera", {
     position: {
@@ -141,32 +107,125 @@ function App() {
     }),
   });
 
-  const scrollToPos = useCallback(
-    (pos) => {
-      if (!started) return;
-      gsap.to(scrollArea?.current, {
-        delay: 0,
-        duration: 1,
-        ease: "power3.inOut",
-        scrollTop: pos,
-        immediateRender: true,
-        onStart: () => {
-          scrolling.current = true;
-        },
-        onComplete: () => {
-          state.top.current = pos;
-          scrolling.current = false;
-        },
-      });
-    },
-    [started]
+  return (
+    <>
+      <Leva hidden />
+      <Box
+        className="__container"
+        style={{
+          osition: "relative",
+          overflowY: "auto",
+          overscrollBehaviorY: "contain",
+          scrollSnapType: "y mandatory",
+          height: "100vh",
+          width: "100%",
+          scrollbarWidth: "none",
+        }}
+      >
+        <div ref={section1}>
+          <Mysection>
+            <Hero />
+          </Mysection>
+        </div>
+        <div ref={section2}>
+          <Mysection>world</Mysection>
+        </div>
+      </Box>
+    </>
   );
 
-  const disableLeva = useMemo(() => {
-    if (location?.hostname?.indexOf("localhost") === -1) return true;
-    // return false;
-    return !false;
-  }, []);
+  return (
+    <>
+      <Leva hidden />
+
+      <Box
+        sx={{
+          height: "200vh",
+          width: "100vw",
+          // background: "red",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Box
+          sx={{
+            height: "100vh",
+            width: "100vw",
+            // background: "green",
+          }}
+        >
+          <Canvas
+            // ref={canvasRef}
+            concurrent
+            colorManagement
+            camera={{
+              position: [position?.x, position?.y, position?.z],
+              fov: 70,
+            }}
+            eventPrefix="client"
+          >
+            <Background />
+            <Lights />
+            <Experience2 />
+          </Canvas>
+          {/* <Loader
+          active={fullProgress !== 100}
+          total={total}
+          _a={active}
+          progress={fullProgress}
+        /> */}
+        </Box>
+        <Box
+          sx={{
+            height: "100vh",
+            width: "100vw",
+            // background: "blue",
+          }}
+        >
+          <Grid container>
+            <Grid item xs={6}>
+              <Box
+                pt={2}
+                sx={{
+                  height: "200px",
+                  width: "100%",
+                  // background: "red",
+                  position: "sticky",
+                  top: 0,
+                }}
+              >
+                hello
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box
+                sx={{
+                  height: "300vh",
+                  width: "100%",
+                  // background: "grey",
+                }}
+              >
+                world
+                {[1, 2, 3, 4]?.map((item) => (
+                  <Box>
+                    <Box
+                      sx={{
+                        height: "200px",
+                        width: "100%",
+                        // background: "pink",
+                      }}
+                    >
+                      {item}
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </>
+  );
 
   return (
     <>
@@ -180,11 +239,6 @@ function App() {
         eventPrefix="client"
         eventSource={domContent}
       >
-        {/* <Menu
-          domContent={domContent}
-          setMenuOpened={setMenuOpened}
-          menuOpened={menuOpened}
-        /> */}
         <Background />
         <Lights />
         <Experience2
@@ -211,6 +265,159 @@ function App() {
     </>
   );
 }
+
+// function App() {
+//   const { active, progress, total, item } = useProgress();
+//   const rest = useProgress();
+//   console.log("rest:", rest);
+//   console.log("__item:", item);
+//   const [events, setEvents] = useState();
+//   const canvasRef = useRef();
+//   const domContent = useRef();
+//   const scrollArea = useRef();
+//   const scrolling = useRef(false);
+//   // const [menuOpened, setMenuOpened] = useState(false);
+//   const { menuOpened, setMenuOpened } = useContext(MenuContext);
+//   const { loadingRefs, setLoading } = useLoading();
+
+//   const fullProgress = useMemo(() => {
+//     // if (loadingRefs?.About && progress > 10) {
+//     //   return progress - 10;
+//     // }
+//     if (progress === 0) return 0;
+
+//     return ((progress + (loadingRefs?.About ? 0 : 20)) / 120) * 100;
+//   }, [progress, loadingRefs?.About]);
+//   console.log("fullProgress:", fullProgress);
+
+//   console.log("loadingRefs:", loadingRefs);
+
+//   const [started, setStarted] = useState(false);
+//   const begin = useRef(false);
+//   const currSection = useRef(0);
+//   const lastScroll = useRef(0);
+//   const lastDirection = useRef(null);
+//   const p = useRef([0, 940, 1880, 2820]);
+
+//   const onScroll = (e) => {
+//     if (!started) return;
+//     // setScrolling(e.target.scrollTop !== lastScroll.current);
+//     // lastScroll.current = e.target.scrollTop;
+//     return (state.top.current = e.target.scrollTop);
+//   };
+//   useEffect(() => void onScroll({ target: scrollArea.current }), []);
+
+//   useEffect(() => {
+//     if (fullProgress === 100) {
+//       setStarted(true);
+//     }
+//   }, [fullProgress]);
+
+//   const { position } = useControls("Camera", {
+//     position: {
+//       x: 0,
+//       y: 0,
+//       z: 120,
+//     },
+//     Add: button((get) => {
+//       console.clear();
+//       const position = get("Camera.position");
+//       console.log({
+//         position,
+//       });
+//     }),
+//   });
+
+//   const scrollToPos = useCallback(
+//     (pos) => {
+//       if (!started) return;
+//       gsap.to(scrollArea?.current, {
+//         delay: 0,
+//         duration: 1,
+//         ease: "power3.inOut",
+//         scrollTop: pos,
+//         immediateRender: true,
+//         onStart: () => {
+//           scrolling.current = true;
+//         },
+//         onComplete: () => {
+//           state.top.current = pos;
+//           scrolling.current = false;
+//         },
+//       });
+//     },
+//     [started]
+//   );
+
+//   const disableLeva = useMemo(() => {
+//     if (location?.hostname?.indexOf("localhost") === -1) return true;
+//     // return false;
+//     return !false;
+//   }, []);
+
+//   return (
+//     <Box
+//       sx={{
+//         height: "200vh",
+//         width: "100vw",
+//         background: "red",
+//       }}
+//     >
+//       <Box
+//         sx={{
+//           height: "50vh",
+//           width: "100vw",
+//           background: "green",
+//         }}
+//       ></Box>
+//       <Box
+//         sx={{
+//           height: "100vh",
+//           width: "100vw",
+//           background: "blue",
+//         }}
+//       ></Box>
+//     </Box>
+//   );
+
+//   return (
+//     <>
+//       <Leva hidden={disableLeva} />
+//       {/* <Header /> */}
+//       <Canvas
+//         ref={canvasRef}
+//         concurrent
+//         colorManagement
+//         camera={{ position: [position?.x, position?.y, position?.z], fov: 70 }}
+//         eventPrefix="client"
+//         eventSource={domContent}
+//       >
+//         <Background />
+//         <Lights />
+//         <Experience2
+//           domContent={domContent}
+//           menuOpened={menuOpened}
+//           scrollToPos={scrollToPos}
+//         />
+//       </Canvas>
+//       <Loader
+//         active={fullProgress !== 100}
+//         total={total}
+//         _a={active}
+//         progress={fullProgress}
+//       />
+//       <div
+//         className="scrollArea"
+//         ref={scrollArea}
+//         onScroll={onScroll}
+//         {...events}
+//       >
+//         <div style={{ position: "sticky", top: 0 }} ref={domContent} />
+//         <div style={{ height: `${state.pages * 100}vh` }} />
+//       </div>
+//     </>
+//   );
+// }
 
 // function App() {
 //   const [section, setSection] = useState(0);

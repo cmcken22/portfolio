@@ -18,30 +18,30 @@ const About = ({ domContent, position, bgColor, scrollToPos, mobile }) => {
     threshold: 0.9,
   });
 
-  useEffect(() => {
-    inView && (document.body.style.background = bgColor);
-  }, [inView, scrollToPos, position]);
+  // useEffect(() => {
+  //   inView && (document.body.style.background = bgColor);
+  // }, [inView, scrollToPos, position]);
 
-  useEffect(() => {
-    const pos = viewport?.factor * viewport?.height * 0;
-    if (inView) {
-      scrollToPos(pos);
-    }
-  }, [inView, scrollToPos, viewport?.factor, viewport?.height]);
+  // useEffect(() => {
+  //   const pos = viewport?.factor * viewport?.height * 0;
+  //   if (inView) {
+  //     scrollToPos(pos);
+  //   }
+  // }, [inView, scrollToPos, viewport?.factor, viewport?.height]);
 
-  useEffect(() => {
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "s") {
-        console.clear();
-        console.log(true);
-        setStart(true);
-      } else if (e.key === "e") {
-        console.clear();
-        console.log(false);
-        setStart(false);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener("keydown", (e) => {
+  //     if (e.key === "s") {
+  //       console.clear();
+  //       console.log(true);
+  //       setStart(true);
+  //     } else if (e.key === "e") {
+  //       console.clear();
+  //       console.log(false);
+  //       setStart(false);
+  //     }
+  //   });
+  // }, []);
 
   return (
     <Section factor={1.5} offset={1}>

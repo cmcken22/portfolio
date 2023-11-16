@@ -161,7 +161,7 @@ const useAnimation = (visible, mobile) => {
       }
     );
     if (visible) {
-      animate();
+      // animate();
     }
   }, [visible, mobile, animate]);
 
@@ -174,7 +174,7 @@ const useAnimation = (visible, mobile) => {
   useEffect(() => {
     if (!initialized.current) return;
     if (visible) {
-      animate();
+      // animate();
     }
   }, [visible, animate]);
 
