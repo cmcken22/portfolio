@@ -53,19 +53,19 @@ const useAnimation = (visible, mobile) => {
   // const { loadingRefs, setLoading } = useContext(LoadingContext);
 
   useEffect(() => {
-    console.log("\n-------------");
-    console.log("visible:", visible);
-    console.log("scrolling:", scrolling);
+    // console.log("\n-------------");
+    // console.log("visible:", visible);
+    // console.log("scrolling:", scrolling);
     if (!visible || scrolling) {
       if (timer.current) {
         clearTimeout(timer.current);
         timer.current = null;
       }
       allowAnimate.current = false;
-      console.log("------------");
-      console.log("SETTING TO FALSE:", allowAnimate?.current);
-      console.log("animationFrame.current:", animationFrame.current);
-      console.log("------------");
+      // console.log("------------");
+      // console.log("SETTING TO FALSE:", allowAnimate?.current);
+      // console.log("animationFrame.current:", animationFrame.current);
+      // console.log("------------");
       cancelAnimationFrame(animationFrame.current);
     }
     if (visible && !scrolling) {
@@ -74,9 +74,9 @@ const useAnimation = (visible, mobile) => {
         timer.current = null;
       }
       timer.current = setTimeout(() => {
-        console.log("\n\n------------");
-        console.log("SETTING TO TRUE:", allowAnimate?.current);
-        console.log("------------");
+        // console.log("\n\n------------");
+        // console.log("SETTING TO TRUE:", allowAnimate?.current);
+        // console.log("------------");
         allowAnimate.current = true;
         animate();
       }, 1000);

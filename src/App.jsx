@@ -164,7 +164,8 @@ function App() {
 
   const disableLeva = useMemo(() => {
     if (location?.hostname?.indexOf("localhost") === -1) return true;
-    return false;
+    // return false;
+    return !false;
   }, []);
 
   return (
