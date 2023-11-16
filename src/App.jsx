@@ -117,7 +117,6 @@ function App() {
   });
 
   useEffect(() => {
-    console.log("activeSection:", activeSection);
     if (activeSection === "About") {
       document.body.style.background = "#F2F3F4";
     } else {

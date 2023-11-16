@@ -41,9 +41,6 @@ function ScrollIndicator({ active }) {
 
 const Content = ({ mobile, scrollingAway }) => {
   const inView = useSectionContext((state) => state.activeSection) === "Hero";
-
-  console.log("inView:", inView);
-
   useAnimation(inView, mobile);
 
   const text1 = "Conner";

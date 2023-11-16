@@ -1,10 +1,11 @@
 import { Box, Grid, Typography, styled } from "@mui/material";
 import { useSectionContext } from "../../App";
 import { useState, useEffect } from "react";
-import { useAnimate, stagger, motion } from "framer-motion";
+import { useAnimate, stagger, motion, useAnimation } from "framer-motion";
 import ListItem, { Items } from "../ListItem";
 import { red, green, blue } from "@mui/material/colors";
 import { TypeAnimation } from "react-type-animation";
+import { InView } from "react-intersection-observer";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   maxWidth: "1280px",
@@ -30,6 +31,7 @@ function useMenuAnimation(isOpen) {
   const [scope, animate] = useAnimate();
 
   useEffect(() => {
+    return;
     animate(
       "li",
       isOpen
@@ -48,7 +50,6 @@ function useMenuAnimation(isOpen) {
 const Details = () => {
   const inView = useSectionContext((state) => state.activeSection) === "About";
   const scope = useMenuAnimation(inView);
-
   const typingDelay = 2000;
 
   return (
@@ -77,12 +78,12 @@ const Details = () => {
             pt={2}
             sx={{
               width: "100%",
-              background: "red",
+              // background: "red",
               position: "sticky",
               top: "0",
             }}
           >
-            <Typography variant="h1" color="black">
+            <Typography variant="h1" color="black" fontSize="3rem">
               Conner McKenna
             </Typography>
             <TypeAnimation
@@ -135,7 +136,7 @@ const Details = () => {
             }}
           >
             {Items?.map((item, index) => (
-              <ListItem key={`list-item--${index}`} item={item} />
+              <ListItem key={`list-item--${index}`} item={item} index={index} />
             ))}
           </ul>
         </motion.div>
