@@ -30,11 +30,19 @@ import LoadingContextProvider, {
   LoadingContext,
 } from "./contexts/LoadingContext";
 import useLoading from "./contexts/useLoading";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { ScrollContainer, SequenceSection } from "react-nice-scroll";
 import "react-nice-scroll/dist/styles.css";
 import Mysection from "./components/Mysection";
 import Hero from "./components/Sections/Hero";
+import { create } from "zustand";
+import Details from "./components/Sections/Details";
+
+export const useSectionContext = create((set) => ({
+  activeSection: "Hero",
+  setActiveSection: (sectionName) =>
+    set((state) => ({ activeSection: sectionName })),
+}));
 
 const Lights = () => {
   return (
@@ -87,6 +95,7 @@ function Loader({ active, total, progress, _a }) {
 function App() {
   const section1 = useRef();
   const section2 = useRef();
+  const activeSection = useSectionContext((state) => state.activeSection);
 
   function scrollTo(section) {
     section.current.scrollIntoView({ behavior: "smooth" });
@@ -107,6 +116,15 @@ function App() {
     }),
   });
 
+  useEffect(() => {
+    console.log("activeSection:", activeSection);
+    if (activeSection === "About") {
+      document.body.style.background = "#F2F3F4";
+    } else {
+      document.body.style.background = "#11151c";
+    }
+  }, [activeSection]);
+
   return (
     <>
       <Leva hidden />
@@ -123,12 +141,20 @@ function App() {
         }}
       >
         <div ref={section1}>
-          <Mysection>
+          <Mysection
+            sectionName="Hero"
+            threshold={0.8}
+            sx={{
+              height: "100vh",
+            }}
+          >
             <Hero />
           </Mysection>
         </div>
         <div ref={section2}>
-          <Mysection>world</Mysection>
+          <Mysection sectionName="About" threshold={0.1}>
+            <Details />
+          </Mysection>
         </div>
       </Box>
     </>

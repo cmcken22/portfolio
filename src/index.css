@@ -33,7 +33,6 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
-  /* overflow: hidden; */
 }
 
 .scrollArea {
@@ -42,8 +41,6 @@ body,
   left: 0;
   width: 100vw;
   height: 100vh;
-  overflow: auto;
-  overflow-x: hidden;
 }
 
 .loading {
@@ -74,45 +71,30 @@ body,
   margin: 0 auto;
   width: 100%;
   max-width: 100vw;
-  overflow: hidden;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
-  /* background: red; */
-  /* pointer-events: none; */
-  /* border: 1px solid red; */
 }
 
 .title {
-  /* font-size: 10rem; */
-  /* text-align: center; */
   font-size: 7rem;
   text-align: left;
   width: 100%;
   margin: 0 auto;
   color: #fff;
-  /* span {
-    display: block;
-  } */
-  /* @media (max-width: 1440px) {
-    font-size: 6rem;
-  } */
 }
 span {
   display: block;
-  /* height: 185px; */
 }
 
 h1 {
   font-weight: bold;
-  /* color: blue; */
   font-size: 10rem;
 }
 @media (max-width: 1440px) {
   h1 {
-    /* color: red; */
     font-size: 6rem;
   }
 }
@@ -131,11 +113,10 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
   background-color: var(--background-color);
   font-family: "Open Sans", sans-serif;
   color: var(--text-color);
-  text-align: center;
+  /* text-align: center; */
 }
 
 .canvas-container {
@@ -161,10 +142,7 @@ body {
 .typing-text {
   font-family: "Roboto", sans-serif;
   font-size: clamp(24px, 20vw, 200px);
-  /* color: red !important; */
   font-weight: 800;
-  /* letter-spacing: 10px; */
-  /* line-height: 0.8; */
 }
 
 #text-behind,

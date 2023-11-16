@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { LoadingContext } from "../../../contexts/LoadingContext";
 import { Menu } from "@mui/material";
 import { MenuContext } from "../../../contexts/MenuContext";
+import { useSectionContext } from "../../../App";
 
 function ScrollIndicator({ active }) {
   const transition = useTransition(active, {
@@ -38,8 +39,13 @@ function ScrollIndicator({ active }) {
   });
 }
 
-const Content = ({ mobile, inView, scrollingAway }) => {
+const Content = ({ mobile, scrollingAway }) => {
+  const inView = useSectionContext((state) => state.activeSection) === "Hero";
+
+  console.log("inView:", inView);
+
   useAnimation(inView, mobile);
+
   const text1 = "Conner";
   const text2 = "McKenna";
 
