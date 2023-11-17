@@ -123,6 +123,11 @@ const useAnimation = (visible, mobile) => {
     // this creates a cool effect on the material of the object
     theta1.current += 0.0025;
 
+    // create a panning animation for the camera
+    camera.current.position.x = Math.sin(theta1.current) * 10;
+    camera.current.position.z = Math.cos(theta1.current) * 10;
+    camera.current.position.y = Math.cos(theta1.current);
+
     pointlight.current.position.x = Math.sin(theta1.current + 1) * 11;
     pointlight.current.position.z = Math.cos(theta1.current + 1) * 11;
     pointlight.current.position.y = 2 * Math.cos(theta1.current - 3) + 3;
@@ -152,6 +157,7 @@ const useAnimation = (visible, mobile) => {
         if (count.current < 5) {
           incrementProgress(20);
         }
+        // incrementProgress(0.01);
       }
       count.current++;
     },

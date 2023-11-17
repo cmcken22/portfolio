@@ -3,6 +3,7 @@ import useSectionContext from "@contexts/SectionContext";
 import { Box, Chip, Grid, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { memo, useEffect, useMemo, useRef } from "react";
+import HoverCard from "./HoverCard";
 
 export const Items = [
   {
@@ -87,10 +88,8 @@ const ListItem = memo(({ item, index }) => {
       transition={{
         ease: "linear",
         duration: Animation.duration,
-        // delay: Animation.delay,
         delay: Animation.delay + index * 0.1,
       }}
-      // threshold={1}
       onViewportEnter={() => {
         clearTimeout(timer.current);
         timer.current = setTimeout(() => {
@@ -101,47 +100,8 @@ const ListItem = memo(({ item, index }) => {
         willChange: "opacity, transform",
       }}
     >
-      <Box
-        sx={{
-          position: "relative",
-          color: "black",
-          transformOrigin: "-20px 50%",
-          marginBottom: "48px",
-          "&:hover": {
-            "& > .box-shadow": {
-              opacity: 1,
-            },
-          },
-        }}
-      >
-        <Box
-          className="box-shadow"
-          sx={{
-            opacity: 0,
-            borderRadius: "0.375rem",
-            transitionProperty:
-              "background-color, border-color, color, fill, stroke, opacity, box-shadow, transform",
-            transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
-            transitionDuration: "300ms",
-            zIndex: 0,
-            height: "calc(100% + 32px)",
-            width: "calc(100% + 32px)",
-            position: "absolute",
-            top: "-16px",
-            left: "-16px",
-            backdropFilter: "blur(10px)",
-            backgroundColor: "rgba(30, 41, 59, 0.5)",
-            boxShadow:
-              "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(148, 163, 184, 0.1) 0px 1px 0px 0px inset",
-          }}
-        />
-        <li
-          className="LIST_ITEM"
-          style={{
-            position: "relative",
-            zIndex: 1,
-          }}
-        >
+      <HoverCard sx={{ marginBottom: 6 }}>
+        <li className="LIST_ITEM">
           <Grid container>
             <Grid item xs={4}>
               <Typography color={fontColor} textAlign="left">
@@ -176,7 +136,7 @@ const ListItem = memo(({ item, index }) => {
             </Grid>
           </Grid>
         </li>
-      </Box>
+      </HoverCard>
     </motion.div>
   );
 });

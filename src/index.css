@@ -64,7 +64,8 @@ body,
 
 .loading-bar {
   height: 32px;
-  background: #f15946;
+  /* background: #f15946; */
+  background: rgb(94, 234, 212);
 }
 
 .container {

@@ -1,9 +1,10 @@
 import ListItem, { Items } from "@components/ListItem";
+import Toolkit from "@components/Toolkit";
 import { Animation, Sections } from "@constants";
 import useSectionContext from "@contexts/SectionContext";
 import { Box, Grid, Typography, styled } from "@mui/material";
 import { motion, stagger, useAnimate, useAnimation } from "framer-motion";
-import { memo, useEffect, useMemo } from "react";
+import { memo, useEffect } from "react";
 import { TypeAnimation } from "react-type-animation";
 
 const typingDelay = 2000;
@@ -160,7 +161,9 @@ const About = () => {
 
   useEffect(() => {
     if (!inView) {
-      controls.start({ opacity: 0 });
+      controls.start({ opacity: 0 }, { duration: 0 });
+    } else {
+      controls.start({ opacity: 1 });
     }
   }, [inView]);
 
@@ -168,18 +171,15 @@ const About = () => {
     <motion.div
       id="about"
       className="GRID_ITEM_BOX"
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 1 }}
       animate={controls}
       transition={{ duration: Animation.duration, delay: Animation.delay }}
-      // threshold={1}
-      onViewportEnter={() => {
-        controls.start({ opacity: 1 });
-      }}
+      onViewportEnter={() => {}}
       style={{
-        marginTop: "6rem",
+        paddingTop: "6rem",
       }}
     >
-      <Typography id="about" color={fontColor} fontSize="1rem">
+      <Typography id="about" color={fontColor} fontSize="1rem" width="100%">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates,
         quod tempore! Eos sunt a reiciendis veniam ab eum aperiam placeat natus
         dolore soluta autem sequi, doloribus provident. Asperiores, dolore nam?
@@ -223,97 +223,6 @@ const Experience = () => {
   );
 };
 
-const Toolkit = () => {
-  const inView = useSectionContext()?.activeSection === Sections.Details;
-  const controls = useAnimation();
-
-  useEffect(() => {
-    if (!inView) {
-      controls.start({ opacity: 0, x: -500 });
-    }
-  }, [inView]);
-
-  const tools = useMemo(() => {
-    return [
-      {
-        name: "React",
-        icon: "",
-      },
-      {
-        name: "Redux",
-        icon: "",
-      },
-      {
-        name: "NodeJS",
-        icon: "",
-      },
-      {
-        name: "MongoDB",
-        icon: "",
-      },
-      {
-        name: "JavaScript",
-        icon: "",
-      },
-      {
-        name: "TypeScript",
-        icon: "",
-      },
-      {
-        name: "Sass",
-        icon: "",
-      },
-      {
-        name: "Docker",
-        icon: "",
-      },
-      {
-        name: "Figma",
-        icon: "",
-      },
-    ];
-  }, []);
-
-  return (
-    <motion.div
-      id="experience"
-      className="GRID_ITEM_BOX"
-      initial={{ opacity: 0, x: -500 }}
-      animate={controls}
-      transition={{ duration: Animation.duration, delay: Animation.delay }}
-      threshold={1}
-      onViewportEnter={() => {
-        controls.start({ opacity: 1, x: 0 });
-      }}
-    >
-      <Box
-        sx={{
-          // height: "400px",
-          width: "100%",
-          backgroundColor: "red",
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: 2,
-        }}
-      >
-        {tools?.map((tool) => (
-          <Box
-            key={`tool--${tool?.name}`}
-            sx={{
-              height: "60px",
-              width: "106px",
-              backgroundColor: "blue",
-            }}
-          >
-            {tool?.name}
-          </Box>
-        ))}
-      </Box>
-    </motion.div>
-  );
-};
-
 const Details = memo(() => {
   const inView = useSectionContext((state) => state.activeSection) === "About";
   const controls = useAnimation();
@@ -342,6 +251,7 @@ const Details = memo(() => {
           height: "100%",
           width: "100%",
           position: "relative",
+          // paddingTop: "6rem",
         }}
       >
         <About />

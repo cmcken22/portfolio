@@ -1,0 +1,147 @@
+import { Animation, Sections } from "@constants";
+import useSectionContext from "@contexts/SectionContext";
+import { Box, Typography } from "@mui/material";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect } from "react";
+import { BiLogoTypescript } from "react-icons/bi";
+import { DiMongodb } from "react-icons/di";
+import { FaNodeJs, FaReact, FaSass } from "react-icons/fa";
+import { IoLogoJavascript } from "react-icons/io5";
+import { SiRedux } from "react-icons/si";
+import "semantic-ui-css/semantic.min.css";
+import { Icon } from "semantic-ui-react";
+import HoverCard from "./HoverCard";
+
+const Tools = [
+  {
+    name: "React",
+    Icon: () => <FaReact />,
+  },
+  {
+    name: "Redux",
+    Icon: () => <SiRedux />,
+  },
+  {
+    name: "NodeJS",
+    Icon: () => <FaNodeJs />,
+  },
+  {
+    name: "MongoDB",
+    Icon: () => <DiMongodb />,
+  },
+  {
+    name: "JavaScript",
+    Icon: () => <IoLogoJavascript />,
+  },
+  {
+    name: "Sass",
+    Icon: () => <FaSass />,
+  },
+  {
+    name: "TypeScript",
+    Icon: () => <BiLogoTypescript />,
+  },
+  {
+    name: "Docker",
+    Icon: () => <Icon name="docker" size="large" />,
+  },
+];
+
+const Toolkit = () => {
+  const inView = useSectionContext()?.activeSection === Sections.Details;
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (!inView) {
+      controls.start({ opacity: 0, x: -500 }, { duration: 0 });
+    }
+  }, [inView]);
+
+  return (
+    <motion.div
+      id="toolkit"
+      className="GRID_ITEM_BOX"
+      initial={{ opacity: 0, x: -500 }}
+      animate={controls}
+      transition={{ duration: Animation.duration, delay: Animation.delay }}
+      threshold={1}
+      onViewportEnter={() => {
+        controls.start({ opacity: 1, x: 0 });
+      }}
+    >
+      <HoverCard>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: 2,
+            justifyContent: "center",
+            "& svg, i, .MuiTypography-root": {
+              transition: "all ease-in-out 0.3s !important",
+            },
+            "&:hover": {
+              "& svg, i, .MuiTypography-root": {
+                color: "rgb(94, 234, 212)",
+                cursor: "default",
+              },
+            },
+          }}
+        >
+          {Tools?.map((tool) => (
+            <Box
+              key={`tool--${tool?.name}`}
+              sx={{
+                height: "60px",
+                flex: "1",
+                display: "flex",
+                alignItems: "center",
+                px: 1,
+                // "&:hover": {
+                //   "& svg, i, .MuiTypography-root": {
+                //     color: "rgb(94, 234, 212)",
+                //     cursor: "default",
+                //   },
+                // },
+              }}
+            >
+              <Box
+                sx={{
+                  height: "30px",
+                  width: "30px",
+                  marginRight: 1,
+                  // backgroundColor: "red",
+                  "& > svg, i": {
+                    height: "100%",
+                    width: "100%",
+                  },
+                  "& > .docker": {
+                    position: "relative",
+                    top: "3px",
+                  },
+                  // "&:hover": {
+                  //   "& > svg, i": {
+                  //     color: "rgb(94, 234, 212)",
+                  //   },
+                  // },
+                }}
+              >
+                {tool?.Icon && tool?.Icon()}
+              </Box>
+              <Typography
+                sx={{
+                  width: "fit-content",
+                }}
+              >
+                {tool?.name}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      </HoverCard>
+    </motion.div>
+  );
+};
+
+export default Toolkit;
