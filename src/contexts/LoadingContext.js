@@ -7,11 +7,10 @@ export const loadingContext = create((set) => ({
   incrementProgress: (incrementor = 1) =>
     set((state) => {
       const nextProgress = state.progress + incrementor;
-      console.log("__nextProgress:", nextProgress);
       return {
         ...state,
         loading: nextProgress >= 100 ? false : state.loading,
-        progress: nextProgress,
+        progress: nextProgress >= 100 ? 100 : nextProgress,
       };
     }),
 }));

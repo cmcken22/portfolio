@@ -1,10 +1,8 @@
-import { Box, Card, Grid, Typography, Chip } from "@mui/material";
-import { useState, useEffect, useRef, memo } from "react";
-import { useAnimate, stagger, motion, useAnimation } from "framer-motion";
-import { red, green, blue } from "@mui/material/colors";
-import { TypeAnimation } from "react-type-animation";
-import { InView } from "react-intersection-observer";
-import { useSectionContext } from "../App";
+import { Box, Chip, Grid, Typography } from "@mui/material";
+import { Sections } from "constants";
+import useSectionContext from "contexts/SectionContext";
+import { motion, useAnimation } from "framer-motion";
+import { memo, useEffect, useRef, useState } from "react";
 
 export const Items = [
   {
@@ -62,12 +60,12 @@ export const Items = [
 const ListItem = memo(({ item, index, animationDuration, animationDelay }) => {
   const { startDate, endDate, position, company, description, tags } = item;
   const controls = useAnimation();
-  const activeSection = useSectionContext((state) => state.activeSection);
+  const { activeSection } = useSectionContext();
   const [key, setKey] = useState(0);
   const timer = useRef(null);
 
   useEffect(() => {
-    if (activeSection !== "About") {
+    if (activeSection !== Sections.Details) {
       controls.start({ opacity: 0, x: -500 });
       // controls.start({ opacity: 0 });
     } else {

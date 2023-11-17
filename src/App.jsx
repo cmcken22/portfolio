@@ -1,19 +1,12 @@
 import { Box } from "@mui/material";
 import { a, useTransition } from "@react-spring/web";
+import { Sections } from "constants";
 import { Leva } from "leva";
 import { useCallback, useRef, useState } from "react";
-import { create } from "zustand";
-import { Sections } from "./Constants";
 import Mysection from "./components/Mysection";
 import Details from "./components/Sections/Details";
 import Hero from "./components/Sections/Hero";
 import useLoadingContext from "./contexts/LoadingContext";
-
-export const useSectionContext = create((set) => ({
-  activeSection: Sections.Hero,
-  setActiveSection: (sectionName) =>
-    set(() => ({ activeSection: sectionName })),
-}));
 
 function Loader({ active, total, progress, _a }) {
   const transition = useTransition(active, {
@@ -50,20 +43,11 @@ function App() {
     ref.current.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-  console.log("__domContent:", domContent);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     console.log("__domContent:", domContent);
-  //   }, 2000);
-  // }, []);
-
   return (
     <>
       <Leva hidden />
-      {/* <Loader active={progress < 100} progress={progress} /> */}
+      <Loader active={progress < 100} progress={progress} />
       <Box
-        // ref={(ref) => setDomContent(ref)}
         ref={(r) => {
           domContent.current = r;
           setDomContent(r);
@@ -87,10 +71,7 @@ function App() {
             threshold={0.8}
             sx={{ height: "100vh" }}
           >
-            <Hero
-              domContent={domContent}
-              scrollTo={() => handleScrollTo(section2)}
-            />
+            <Hero />
           </Mysection>
         </div>
         <div ref={section2}>

@@ -1,15 +1,12 @@
-import React, { createContext, useRef, useContext, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import lerp from "lerp";
-import state from "./state";
-import { animate, useMotionValue } from "framer-motion";
-import { framerMotionConfig } from "../config";
-import { MenuContext } from "../contexts/MenuContext";
 import { useControls } from "leva";
+import React, { createContext, useContext, useRef } from "react";
+import state from "./state";
 
 const offsetContext = createContext(0);
 
-function Section({ children, offset, factor, ...props }) {
+function CanvasSection({ children, offset, factor, ...props }) {
   const { offset: parentOffset, sectionHeight, aspect } = useSection();
 
   const ref = useRef();
@@ -27,8 +24,6 @@ function Section({ children, offset, factor, ...props }) {
     const curY = ref.current.position.y;
     const curTop = state.top.current / aspect;
     ref.current.position.y = lerp(curY, (curTop / state.zoom) * factor, 0.1);
-    if (props.debug)
-      console.log("ref.current.position.y:", ref.current.position.y);
   });
 
   return (
@@ -70,4 +65,4 @@ function useSection() {
   };
 }
 
-export { Section, useSection };
+export { CanvasSection, useSection };

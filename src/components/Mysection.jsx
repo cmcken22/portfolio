@@ -1,13 +1,13 @@
-import { memo, useEffect, useRef } from "react";
+import { Box } from "@mui/material";
+import useSectionContext from "contexts/SectionContext";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { Box } from "@mui/material";
+import { memo, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import { useSectionContext } from "../App";
 gsap.registerPlugin(ScrollTrigger);
 
 const Mysection = memo(({ sectionName, children, threshold, sx }) => {
-  const setActiveSection = useSectionContext((state) => state.setActiveSection);
+  const { setActiveSection } = useSectionContext();
 
   const [sectionRef, inView] = useInView({
     threshold,

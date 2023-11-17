@@ -1,7 +1,9 @@
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { a, useTransition } from "@react-spring/web";
-import { useSectionContext } from "../../../App";
-import { Sections } from "../../../Constants";
+import { Sections } from "constants";
+import useSectionContext from "contexts/SectionContext";
+import useMobile from "contexts/useMobile";
+import useAnimation from "./useAnimation";
 
 function ScrollIndicator({ active }) {
   const transition = useTransition(active, {
@@ -19,7 +21,6 @@ function ScrollIndicator({ active }) {
           bottom: "0%",
           height: "40px",
           width: "40px",
-          background: "blue",
           zIndex: 3,
           cursor: "pointer",
           ...style,
@@ -36,9 +37,9 @@ function ScrollIndicator({ active }) {
   });
 }
 
-const Content = ({ mobile, scrollingAway, scrollTo }) => {
-  const inView =
-    useSectionContext((state) => state.activeSection) === Sections.Hero;
+const Content = ({ scrollingAway }) => {
+  const { mobile } = useMobile();
+  const inView = useSectionContext()?.activeSection === Sections.Hero;
   useAnimation(inView, mobile);
 
   const text1 = "Conner";

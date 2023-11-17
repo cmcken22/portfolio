@@ -1,12 +1,10 @@
 import { Box, Grid, Typography, styled } from "@mui/material";
-import { useSectionContext } from "../../App";
-import { useState, useEffect, useMemo, memo } from "react";
-import { useAnimate, stagger, motion, useAnimation } from "framer-motion";
-import ListItem, { Items } from "../ListItem";
-import { red, green, blue } from "@mui/material/colors";
+import { Sections } from "constants";
+import useSectionContext from "contexts/SectionContext";
+import { motion, stagger, useAnimate, useAnimation } from "framer-motion";
+import { memo, useEffect, useMemo } from "react";
 import { TypeAnimation } from "react-type-animation";
-import { InView } from "react-intersection-observer";
-import { Sections } from "../../Constants";
+import ListItem, { Items } from "../ListItem";
 
 const typingDelay = 2000;
 const animationDuration = 0.5;
@@ -54,8 +52,7 @@ function useMenuAnimation(isOpen) {
 }
 
 const StickyHeader = () => {
-  const inView =
-    useSectionContext((state) => state.activeSection) === Sections.Details;
+  const inView = useSectionContext()?.activeSection === Sections.Details;
   const controls = useAnimation();
 
   useEffect(() => {
@@ -160,8 +157,7 @@ const StickyHeader = () => {
 };
 
 const About = () => {
-  const inView =
-    useSectionContext((state) => state.activeSection) === Sections.Details;
+  const inView = useSectionContext()?.activeSection === Sections.Details;
   const controls = useAnimation();
 
   useEffect(() => {
@@ -195,8 +191,7 @@ const About = () => {
 };
 
 const Experience = () => {
-  const inView =
-    useSectionContext((state) => state.activeSection) === Sections.Details;
+  const inView = useSectionContext()?.activeSection === Sections.Details;
   const controls = useAnimation();
 
   useEffect(() => {
@@ -238,8 +233,7 @@ const Experience = () => {
 };
 
 const Toolkit = () => {
-  const inView =
-    useSectionContext((state) => state.activeSection) === Sections.Details;
+  const inView = useSectionContext()?.activeSection === Sections.Details;
   const controls = useAnimation();
 
   useEffect(() => {
