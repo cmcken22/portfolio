@@ -59,7 +59,7 @@ export const Items = [
   },
 ];
 
-const ListItem = ({ item, index }) => {
+const ListItem = ({ item, index, animationDuration, animationDelay }) => {
   const { startDate, endDate, position, company, description } = item;
   const controls = useAnimation();
   const activeSection = useSectionContext((state) => state.activeSection);
@@ -67,11 +67,8 @@ const ListItem = ({ item, index }) => {
 
   useEffect(() => {
     if (activeSection !== "About") {
-      console.log(item?.company, "exit");
       controls.start({ opacity: 0, x: -500 });
     } else {
-      // console.log(item?.company, "enter");
-      // controls.start({ opacity: 1, x: 0 });
       setKey((prev) => prev + 1);
     }
   }, [activeSection]);
@@ -81,8 +78,14 @@ const ListItem = ({ item, index }) => {
       className="LIST_ITEM"
       key={`${item?.company}-${key}`}
       initial={{ opacity: 0, x: -500 }}
+      // initial={{ opacity: 0 }}
       animate={controls}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{
+        ease: "linear",
+        duration: animationDuration,
+        delay: animationDelay,
+        delay: animationDelay + index * 0.1,
+      }}
       threshold={1}
       onViewportEnter={() => {
         setTimeout(() => {

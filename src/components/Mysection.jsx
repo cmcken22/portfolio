@@ -29,7 +29,8 @@ export default function Mysection({ sectionName, children, threshold, sx }) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        scrollSnapAlign: "center",
+        scrollSnapStop: "always",
+        scrollSnapAlign: "start",
         // position: "relative",
         ...sx,
       }}

@@ -49,28 +49,27 @@ function useMenuAnimation(isOpen) {
 
 const Details = () => {
   const inView = useSectionContext((state) => state.activeSection) === "About";
-  const scope = useMenuAnimation(inView);
-  const [displayList, setDisplayList] = useState(false);
   const typingDelay = 2000;
+  const animationDuration = 0.5;
+  const animationDelay = 0.5;
+  const controls1 = useAnimation();
+  const controls2 = useAnimation();
 
-  // useEffect(() => {
-  //   if (inView) {
-  //     // setTimeout(() => {
-  //     setDisplayList(true);
-  //     // }, 0);
-  //   } else {
-  //     setDisplayList(false);
-  //   }
-  // }, [inView]);
+  useEffect(() => {
+    if (!inView) {
+      controls1.start({ opacity: 0 });
+      controls2.start({ opacity: 0 });
+    } else {
+      // setKey((prev) => prev + 1);
+    }
+  }, [inView]);
 
   return (
     <StyledGrid
       container
       className="GRID_CONTAINER"
       sx={{
-        // height: "100vh",
         minHeight: "100vh",
-        // background: "red",
       }}
     >
       <Grid
@@ -85,13 +84,16 @@ const Details = () => {
         }}
       >
         <motion.div
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          transition={{ duration: 0.3 }}
-          variants={{
-            visible: { opacity: 1 },
-            hidden: { opacity: 0 },
+          initial={{ opacity: 0 }}
+          animate={controls1}
+          transition={{ duration: animationDuration, delay: animationDelay }}
+          threshold={1}
+          onViewportEnter={() => {
+            controls1.start({ opacity: 1 });
           }}
+          // onViewportLeave={() => {
+          //   controls1.start({ opacity: 0 });
+          // }}
         >
           <Box
             pt={2}
@@ -128,9 +130,43 @@ const Details = () => {
               }}
               repeat={Infinity}
             /> */}
+            <br />
+            <ul>
+              <li>
+                <a
+                  href="#about"
+                  style={{
+                    color: "black",
+                  }}
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#experience"
+                  style={{
+                    color: "black",
+                  }}
+                >
+                  Experience
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#toolkit"
+                  style={{
+                    color: "black",
+                  }}
+                >
+                  Toolkit
+                </a>
+              </li>
+            </ul>
           </Box>
         </motion.div>
       </Grid>
+      {/* {displayList && ( */}
       <Grid
         item
         xs={6}
@@ -141,21 +177,51 @@ const Details = () => {
           position: "relative",
         }}
       >
-        {/* {displayList && ( */}
         <motion.div
-          ref={scope}
+          // id="about"
+          className="GRID_ITEM_BOX"
+          initial={{ opacity: 0 }}
+          animate={controls2}
+          transition={{ duration: animationDuration, delay: animationDelay }}
+          threshold={1}
+          onViewportEnter={() => {
+            controls2.start({ opacity: 1 });
+          }}
+          // onViewportLeave={() => {
+          //   controls2.start({ opacity: 0 });
+          // }}
+          style={{
+            marginTop: "6rem",
+            // background: "red",
+          }}
+        >
+          <Typography
+            id="about"
+            variant="p"
+            color="black"
+            fontSize="1rem"
+            // sx={{
+            //   background: "red",
+            //   paddingTop: "6rem",
+            // }}
+          >
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates,
+            quod tempore! Eos sunt a reiciendis veniam ab eum aperiam placeat
+            natus dolore soluta autem sequi, doloribus provident. Asperiores,
+            dolore nam?
+          </Typography>
+        </motion.div>
+
+        <motion.div
+          id="experience"
           className="GRID_ITEM_BOX"
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: animationDuration, delay: animationDelay }}
           variants={{
             visible: { opacity: 1 },
             hidden: { opacity: 0 },
           }}
-          // style={{
-          //   position: "absolute",
-          //   top: 0,
-          // }}
         >
           <ul
             style={{
@@ -164,12 +230,46 @@ const Details = () => {
             }}
           >
             {Items?.map((item, index) => (
-              <ListItem key={`list-item--${index}`} item={item} index={index} />
+              <ListItem
+                key={`list-item--${index}`}
+                item={item}
+                index={index}
+                animationDuration={animationDuration}
+                animationDelay={animationDelay}
+              />
             ))}
           </ul>
         </motion.div>
-        {/* )} */}
+        <motion.div
+          id="test"
+          className="GRID_ITEM_BOX"
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          transition={{ duration: animationDuration, delay: animationDelay }}
+          variants={{
+            visible: { opacity: 1 },
+            hidden: { opacity: 0 },
+          }}
+        >
+          <ul
+            style={{
+              pointerEvents: inView ? "auto" : "none",
+              paddingTop: "6rem",
+            }}
+          >
+            {Items?.map((item, index) => (
+              <ListItem
+                key={`list-item--${index}`}
+                item={item}
+                index={index + Items?.length}
+                animationDuration={animationDuration}
+                animationDelay={animationDelay}
+              />
+            ))}
+          </ul>
+        </motion.div>
       </Grid>
+      {/* )} */}
     </StyledGrid>
   );
 };

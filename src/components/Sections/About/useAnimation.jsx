@@ -10,6 +10,7 @@ import useScrolling from "../../../contexts/useScrolling";
 import { OBJExporter } from "three/addons/exporters/OBJExporter.js";
 import { saveAs } from "file-saver";
 import SplineLoader from "@splinetool/loader";
+import useTraceUpdate from "../../useTraceUpdate";
 
 // create a new RGBELoader to import the HDR
 // const hdrEquirect = new RGBELoader()
@@ -125,7 +126,7 @@ const useAnimation = (visible, mobile) => {
         // console.log("------------");
         allowAnimate.current = true;
         animate("useEffect - test");
-      }, 1000);
+      }, 250);
     }
   }, [visible, scrolling]);
 

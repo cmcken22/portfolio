@@ -31,7 +31,11 @@ import LoadingContextProvider, {
 } from "./contexts/LoadingContext";
 import useLoading from "./contexts/useLoading";
 import { Box, Grid, Typography } from "@mui/material";
-import { ScrollContainer, SequenceSection } from "react-nice-scroll";
+import {
+  ScrollContainer,
+  SequenceSection,
+  useGlobalState,
+} from "react-nice-scroll";
 import "react-nice-scroll/dist/styles.css";
 import Mysection from "./components/Mysection";
 import Hero from "./components/Sections/Hero";
@@ -100,6 +104,10 @@ function App() {
   const activeSection = useSectionContext((state) => state.activeSection);
   const scrollDetector = useRef();
   const setScrolling = useScrolling((state) => state.setScrolling);
+  const [smoothScrollBar] = useGlobalState("smoothScrollBar");
+  const [allowScroll, setAllowScroll] = useGlobalState("allowScroll");
+
+  console.log("allowScroll:", allowScroll);
 
   useEffect(() => {
     if (activeSection === "About") {
@@ -130,7 +138,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <ScrollContainer damping={0.25}>
       <Leva hidden />
       <Box
         className="__container"
@@ -142,6 +150,7 @@ function App() {
           height: "100vh",
           width: "100%",
           scrollbarWidth: "none",
+          scrollSnapStop: "always",
         }}
       >
         <div ref={section1}>
@@ -161,7 +170,7 @@ function App() {
           </Mysection>
         </div>
       </Box>
-    </>
+    </ScrollContainer>
   );
 }
 
