@@ -4,6 +4,7 @@ export const loadingContext = create((set) => ({
   loading: true,
   progress: 0,
   setLoading: (value) => set(() => ({ loading: value })),
+  setProgress: (value) => set(() => ({ progress: value })),
   incrementProgress: (incrementor = 1) =>
     set((state) => {
       const nextProgress = state.progress + incrementor;

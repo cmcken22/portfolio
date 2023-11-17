@@ -1,23 +1,32 @@
+import styled from "@emotion/styled";
 import { Box } from "@mui/material";
+import { motion } from "framer-motion";
 import { memo } from "react";
 
-const HoverCard = memo(({ children, sx }) => {
+const CardWrapper = styled(motion.div)`
+  // border-radius: 20px;
+  // backdrop-filter: blur(4px) brightness(120%);
+`;
+
+const HoverCard = memo(({ children, sx, sx2 }) => {
   return (
     <Box
+      className="hover-card"
       sx={{
         position: "relative",
         "&:hover": {
           "& > .box-shadow": {
-            opacity: 1,
+            opacity: "1 !important",
           },
         },
         ...sx,
       }}
     >
-      <Box
+      <CardWrapper
         className="box-shadow"
-        sx={{
+        style={{
           opacity: 0,
+          pointerEvents: "none",
           borderRadius: "0.375rem",
           transitionProperty:
             "background-color, border-color, color, fill, stroke, opacity, box-shadow, transform",
@@ -33,6 +42,7 @@ const HoverCard = memo(({ children, sx }) => {
           backgroundColor: "rgba(30, 41, 59, 0.5)",
           boxShadow:
             "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(148, 163, 184, 0.1) 0px 1px 0px 0px inset",
+          ...sx2,
         }}
       />
       <Box

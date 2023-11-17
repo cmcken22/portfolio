@@ -256,6 +256,9 @@ const Details = memo(() => {
       >
         <About />
         <Experience />
+        <br />
+        <br />
+        <br />
         <Toolkit />
       </Grid>
     </StyledGrid>

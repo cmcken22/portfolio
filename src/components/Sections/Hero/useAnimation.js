@@ -89,6 +89,8 @@ const useAnimation = (visible, mobile) => {
     group.current.add(pointlight2.current);
 
     return () => {
+      // alert("unmounting");
+      initialized.current = false;
       cancelAnimationFrame(animationFrame.current);
     };
   }, []);

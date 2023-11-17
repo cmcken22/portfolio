@@ -3,7 +3,7 @@ import useSectionContext from "@contexts/SectionContext";
 import { Box, Chip, Grid, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { memo, useEffect, useMemo, useRef } from "react";
-import HoverCard from "./HoverCard";
+import ShinyCard from "./ShinyCard";
 
 export const Items = [
   {
@@ -98,9 +98,12 @@ const ListItem = memo(({ item, index }) => {
       }}
       style={{
         willChange: "opacity, transform",
+        // backgroundColor: "red",
+        marginBottom: "6rem",
       }}
     >
-      <HoverCard sx={{ marginBottom: 6 }}>
+      {/* <HoverCard sx={{ marginBottom: 6 }}> */}
+      <ShinyCard>
         <li className="LIST_ITEM">
           <Grid container>
             <Grid item xs={4}>
@@ -136,7 +139,8 @@ const ListItem = memo(({ item, index }) => {
             </Grid>
           </Grid>
         </li>
-      </HoverCard>
+      </ShinyCard>
+      {/* </HoverCard> */}
     </motion.div>
   );
 });

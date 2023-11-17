@@ -3,10 +3,11 @@ import Details from "@components/Sections/Details";
 import Hero from "@components/Sections/Hero";
 import { Sections } from "@constants";
 import useLoadingContext from "@contexts/LoadingContext";
+import useMobile from "@contexts/useMobile";
 import { Box } from "@mui/material";
 import { a, useTransition } from "@react-spring/web";
 import { Leva } from "leva";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 function Loader({ active, total, progress, _a }) {
   const transition = useTransition(active, {
@@ -69,4 +70,16 @@ function App() {
   );
 }
 
-export default App;
+export default () => {
+  const { mobile } = useMobile();
+  const prevMobile = useRef(mobile);
+
+  useEffect(() => {
+    if (prevMobile.current !== mobile && prevMobile.current !== null) {
+      window.location.reload();
+    }
+    prevMobile.current = mobile;
+  }, [mobile]);
+
+  return <App />;
+};
