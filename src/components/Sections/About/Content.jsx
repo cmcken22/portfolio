@@ -6,6 +6,7 @@ import { LoadingContext } from "../../../contexts/LoadingContext";
 import { Menu } from "@mui/material";
 import { MenuContext } from "../../../contexts/MenuContext";
 import { useSectionContext } from "../../../App";
+import Spline from "@splinetool/react-spline";
 
 function ScrollIndicator({ active }) {
   const transition = useTransition(active, {
@@ -42,6 +43,7 @@ function ScrollIndicator({ active }) {
 const Content = ({ mobile, scrollingAway }) => {
   const inView = useSectionContext((state) => state.activeSection) === "Hero";
   useAnimation(inView, mobile);
+  // useAnimation2(inView, mobile);
 
   const text1 = "Conner";
   const text2 = "McKenna";
@@ -76,6 +78,9 @@ const Content = ({ mobile, scrollingAway }) => {
       <div className="canvas-container">
         <canvas id="canvas"></canvas>
       </div>
+      {/* <div className="canvas-container">
+        <Spline scene="https://prod.spline.design/rejY8jiGrk0axCFM/scene.splinecode" />
+      </div> */}
     </div>
   );
 };

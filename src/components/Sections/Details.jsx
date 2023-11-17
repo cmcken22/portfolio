@@ -104,7 +104,7 @@ const Details = () => {
             <Typography variant="h1" color="black" fontSize="3rem">
               Conner McKenna
             </Typography>
-            <TypeAnimation
+            {/* <TypeAnimation
               sequence={[
                 "Software Engineer",
                 typingDelay,
@@ -127,7 +127,7 @@ const Details = () => {
                 color: "black",
               }}
               repeat={Infinity}
-            />
+            /> */}
           </Box>
         </motion.div>
       </Grid>

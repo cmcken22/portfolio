@@ -56,7 +56,7 @@ const Hero = () => {
       }}
       eventPrefix="client"
     >
-      <Background />
+      {/* <Background /> */}
       <Lights />
       <Experience2 />
     </Canvas>
