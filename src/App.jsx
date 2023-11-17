@@ -101,44 +101,45 @@ function Loader({ active, total, progress, _a }) {
 function App() {
   const section1 = useRef();
   const section2 = useRef();
-  const activeSection = useSectionContext((state) => state.activeSection);
+  // const activeSection = useSectionContext((state) => state.activeSection);
   const scrollDetector = useRef();
-  const setScrolling = useScrolling((state) => state.setScrolling);
-  const [smoothScrollBar] = useGlobalState("smoothScrollBar");
-  const [allowScroll, setAllowScroll] = useGlobalState("allowScroll");
+  // const setScrolling = useScrolling((state) => state.setScrolling);
+  // const [smoothScrollBar] = useGlobalState("smoothScrollBar");
+  // const [allowScroll, setAllowScroll] = useGlobalState("allowScroll");
 
-  console.log("allowScroll:", allowScroll);
+  // console.log("allowScroll:", allowScroll);
 
-  useEffect(() => {
-    if (activeSection === "About") {
-      document.body.style.background = "#F2F3F4";
-    } else {
-      document.body.style.background = "#11151c";
-    }
-  }, [activeSection]);
+  // useEffect(() => {
+  //   if (activeSection === "About") {
+  //     // document.body.style.background = "#F2F3F4";
+  //     document.body.style.background = "rgb(16, 23, 41)";
+  //   } else {
+  //     document.body.style.background = "#11151c";
+  //   }
+  // }, [activeSection]);
 
-  useEffect(() => {
-    const elm2 = document.querySelector(".__container");
-    if (elm2) {
-      scrollDetector.current = new detectScroll(elm2, {
-        events: {
-          // scrollUp: () => console.log("scrolling up"),
-          // scrollDown: () => console.log("scrolling down"),
-          scrollStart: () => setScrolling(true),
-          scrollStop: () => setScrolling(false),
-        },
-      });
-    }
+  // useEffect(() => {
+  //   const elm2 = document.querySelector(".__container");
+  //   if (elm2) {
+  //     scrollDetector.current = new detectScroll(elm2, {
+  //       events: {
+  //         // scrollUp: () => console.log("scrolling up"),
+  //         // scrollDown: () => console.log("scrolling down"),
+  //         // scrollStart: () => setScrolling(true),
+  //         // scrollStop: () => setScrolling(false),
+  //       },
+  //     });
+  //   }
 
-    return () => {
-      if (scrollDetector?.current) {
-        scrollDetector.current.destroy();
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (scrollDetector?.current) {
+  //       scrollDetector.current.destroy();
+  //     }
+  //   };
+  // }, []);
 
   return (
-    <ScrollContainer damping={0.25}>
+    <>
       <Leva hidden />
       <Box
         className="__container"
@@ -170,7 +171,7 @@ function App() {
           </Mysection>
         </div>
       </Box>
-    </ScrollContainer>
+    </>
   );
 }
 

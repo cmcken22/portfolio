@@ -1,11 +1,16 @@
 import { Box, Grid, Typography, styled } from "@mui/material";
 import { useSectionContext } from "../../App";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, memo } from "react";
 import { useAnimate, stagger, motion, useAnimation } from "framer-motion";
 import ListItem, { Items } from "../ListItem";
 import { red, green, blue } from "@mui/material/colors";
 import { TypeAnimation } from "react-type-animation";
 import { InView } from "react-intersection-observer";
+
+const typingDelay = 2000;
+const animationDuration = 0.5;
+const animationDelay = 0.5;
+const fontColor = "rgb(148, 163, 184)";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   maxWidth: "1280px",
@@ -47,20 +52,284 @@ function useMenuAnimation(isOpen) {
   return scope;
 }
 
-const Details = () => {
+const StickyHeader = () => {
   const inView = useSectionContext((state) => state.activeSection) === "About";
-  const typingDelay = 2000;
-  const animationDuration = 0.5;
-  const animationDelay = 0.5;
-  const controls1 = useAnimation();
-  const controls2 = useAnimation();
+  const controls = useAnimation();
 
   useEffect(() => {
     if (!inView) {
-      controls1.start({ opacity: 0 });
-      controls2.start({ opacity: 0 });
-    } else {
-      // setKey((prev) => prev + 1);
+      controls.start({ opacity: 0 });
+    }
+  }, [inView]);
+
+  return (
+    <Grid
+      item
+      xs={6}
+      className="GRID_ITEM_1"
+      sx={{
+        height: "fit-content",
+        paddingTop: "6rem",
+        position: "sticky",
+        top: "0",
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={controls}
+        transition={{ duration: animationDuration, delay: animationDelay }}
+        threshold={1}
+        onViewportEnter={() => {
+          controls.start({ opacity: 1 });
+        }}
+      >
+        <Box
+          pt={2}
+          sx={{
+            width: "100%",
+            position: "sticky",
+            top: "0",
+          }}
+        >
+          <Typography variant="h1" color={fontColor} fontSize="3rem">
+            Conner McKenna
+          </Typography>
+          <TypeAnimation
+            sequence={[
+              "Software Engineer",
+              typingDelay,
+              "Full Stack Developer",
+              typingDelay,
+              "Frontend Engineer",
+              typingDelay,
+              "Tech Lead",
+              typingDelay,
+              "Code Enthusiast",
+              typingDelay,
+              "Artist",
+              typingDelay,
+            ]}
+            wrapper="span"
+            speed={25}
+            style={{
+              fontSize: "2em",
+              display: "inline-block",
+              color: fontColor,
+            }}
+            repeat={Infinity}
+          />
+          <br />
+          <ul>
+            <li>
+              <a
+                href="#about"
+                style={{
+                  color: fontColor,
+                }}
+              >
+                About
+              </a>
+            </li>
+            <li>
+              <a
+                href="#experience"
+                style={{
+                  color: fontColor,
+                }}
+              >
+                Experience
+              </a>
+            </li>
+            <li>
+              <a
+                href="#toolkit"
+                style={{
+                  color: fontColor,
+                }}
+              >
+                Toolkit
+              </a>
+            </li>
+          </ul>
+        </Box>
+      </motion.div>
+    </Grid>
+  );
+};
+
+const About = () => {
+  const inView = useSectionContext((state) => state.activeSection) === "About";
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (!inView) {
+      controls.start({ opacity: 0 });
+    }
+  }, [inView]);
+
+  return (
+    <motion.div
+      id="about"
+      className="GRID_ITEM_BOX"
+      initial={{ opacity: 0 }}
+      animate={controls}
+      transition={{ duration: animationDuration, delay: animationDelay }}
+      threshold={1}
+      onViewportEnter={() => {
+        controls.start({ opacity: 1 });
+      }}
+      style={{
+        marginTop: "6rem",
+      }}
+    >
+      <Typography id="about" variant="p" color={fontColor} fontSize="1rem">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates,
+        quod tempore! Eos sunt a reiciendis veniam ab eum aperiam placeat natus
+        dolore soluta autem sequi, doloribus provident. Asperiores, dolore nam?
+      </Typography>
+    </motion.div>
+  );
+};
+
+const Experience = () => {
+  const inView = useSectionContext((state) => state.activeSection) === "About";
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (!inView) {
+      controls.start({ opacity: 0 });
+    }
+  }, [inView]);
+
+  return (
+    <motion.div
+      id="experience"
+      className="GRID_ITEM_BOX"
+      initial={{ opacity: 0 }}
+      animate={controls}
+      transition={{ duration: animationDuration, delay: animationDelay }}
+      threshold={1}
+      onViewportEnter={() => {
+        controls.start({ opacity: 1 });
+      }}
+    >
+      <ul
+        style={{
+          pointerEvents: inView ? "auto" : "none",
+          paddingTop: "6rem",
+        }}
+      >
+        {Items?.map((item, index) => (
+          <ListItem
+            key={`list-item--${index}`}
+            item={item}
+            index={index}
+            animationDuration={animationDuration}
+            animationDelay={animationDelay}
+          />
+        ))}
+      </ul>
+    </motion.div>
+  );
+};
+
+const Toolkit = () => {
+  const inView = useSectionContext((state) => state.activeSection) === "About";
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (!inView) {
+      controls.start({ opacity: 0, x: -500 });
+    }
+  }, [inView]);
+
+  const tools = useMemo(() => {
+    return [
+      {
+        name: "React",
+        icon: "",
+      },
+      {
+        name: "Redux",
+        icon: "",
+      },
+      {
+        name: "NodeJS",
+        icon: "",
+      },
+      {
+        name: "MongoDB",
+        icon: "",
+      },
+      {
+        name: "JavaScript",
+        icon: "",
+      },
+      {
+        name: "TypeScript",
+        icon: "",
+      },
+      {
+        name: "Sass",
+        icon: "",
+      },
+      {
+        name: "Docker",
+        icon: "",
+      },
+      {
+        name: "Figma",
+        icon: "",
+      },
+    ];
+  }, []);
+
+  return (
+    <motion.div
+      id="experience"
+      className="GRID_ITEM_BOX"
+      initial={{ opacity: 0, x: -500 }}
+      animate={controls}
+      transition={{ duration: animationDuration, delay: animationDelay }}
+      threshold={1}
+      onViewportEnter={() => {
+        controls.start({ opacity: 1, x: 0 });
+      }}
+    >
+      <Box
+        sx={{
+          // height: "400px",
+          width: "100%",
+          backgroundColor: "red",
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          gap: 2,
+        }}
+      >
+        {tools?.map((tool) => (
+          <Box
+            sx={{
+              height: "60px",
+              width: "106px",
+              backgroundColor: "blue",
+            }}
+          >
+            {tool?.name}
+          </Box>
+        ))}
+      </Box>
+    </motion.div>
+  );
+};
+
+const Details = memo(() => {
+  const inView = useSectionContext((state) => state.activeSection) === "About";
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (!inView) {
+      controls.start({ opacity: 0 });
     }
   }, [inView]);
 
@@ -72,206 +341,24 @@ const Details = () => {
         minHeight: "100vh",
       }}
     >
-      <Grid
-        item
-        xs={6}
-        className="GRID_ITEM_1"
-        sx={{
-          height: "fit-content",
-          paddingTop: "6rem",
-          position: "sticky",
-          top: "0",
-        }}
-      >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={controls1}
-          transition={{ duration: animationDuration, delay: animationDelay }}
-          threshold={1}
-          onViewportEnter={() => {
-            controls1.start({ opacity: 1 });
-          }}
-          // onViewportLeave={() => {
-          //   controls1.start({ opacity: 0 });
-          // }}
-        >
-          <Box
-            pt={2}
-            sx={{
-              width: "100%",
-              position: "sticky",
-              top: "0",
-            }}
-          >
-            <Typography variant="h1" color="black" fontSize="3rem">
-              Conner McKenna
-            </Typography>
-            {/* <TypeAnimation
-              sequence={[
-                "Software Engineer",
-                typingDelay,
-                "Full Stack Developer",
-                typingDelay,
-                "Frontend Engineer",
-                typingDelay,
-                "Tech Lead",
-                typingDelay,
-                "Code Enthusiast",
-                typingDelay,
-                "Artist",
-                typingDelay,
-              ]}
-              wrapper="span"
-              speed={25}
-              style={{
-                fontSize: "2em",
-                display: "inline-block",
-                color: "black",
-              }}
-              repeat={Infinity}
-            /> */}
-            <br />
-            <ul>
-              <li>
-                <a
-                  href="#about"
-                  style={{
-                    color: "black",
-                  }}
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#experience"
-                  style={{
-                    color: "black",
-                  }}
-                >
-                  Experience
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#toolkit"
-                  style={{
-                    color: "black",
-                  }}
-                >
-                  Toolkit
-                </a>
-              </li>
-            </ul>
-          </Box>
-        </motion.div>
-      </Grid>
-      {/* {displayList && ( */}
+      <StickyHeader />
       <Grid
         item
         xs={6}
         className="GRID_ITEM"
+        mb={12}
         sx={{
           height: "100%",
           width: "100%",
           position: "relative",
         }}
       >
-        <motion.div
-          // id="about"
-          className="GRID_ITEM_BOX"
-          initial={{ opacity: 0 }}
-          animate={controls2}
-          transition={{ duration: animationDuration, delay: animationDelay }}
-          threshold={1}
-          onViewportEnter={() => {
-            controls2.start({ opacity: 1 });
-          }}
-          // onViewportLeave={() => {
-          //   controls2.start({ opacity: 0 });
-          // }}
-          style={{
-            marginTop: "6rem",
-            // background: "red",
-          }}
-        >
-          <Typography
-            id="about"
-            variant="p"
-            color="black"
-            fontSize="1rem"
-            // sx={{
-            //   background: "red",
-            //   paddingTop: "6rem",
-            // }}
-          >
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates,
-            quod tempore! Eos sunt a reiciendis veniam ab eum aperiam placeat
-            natus dolore soluta autem sequi, doloribus provident. Asperiores,
-            dolore nam?
-          </Typography>
-        </motion.div>
-
-        <motion.div
-          id="experience"
-          className="GRID_ITEM_BOX"
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          transition={{ duration: animationDuration, delay: animationDelay }}
-          variants={{
-            visible: { opacity: 1 },
-            hidden: { opacity: 0 },
-          }}
-        >
-          <ul
-            style={{
-              pointerEvents: inView ? "auto" : "none",
-              paddingTop: "6rem",
-            }}
-          >
-            {Items?.map((item, index) => (
-              <ListItem
-                key={`list-item--${index}`}
-                item={item}
-                index={index}
-                animationDuration={animationDuration}
-                animationDelay={animationDelay}
-              />
-            ))}
-          </ul>
-        </motion.div>
-        <motion.div
-          id="test"
-          className="GRID_ITEM_BOX"
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          transition={{ duration: animationDuration, delay: animationDelay }}
-          variants={{
-            visible: { opacity: 1 },
-            hidden: { opacity: 0 },
-          }}
-        >
-          <ul
-            style={{
-              pointerEvents: inView ? "auto" : "none",
-              paddingTop: "6rem",
-            }}
-          >
-            {Items?.map((item, index) => (
-              <ListItem
-                key={`list-item--${index}`}
-                item={item}
-                index={index + Items?.length}
-                animationDuration={animationDuration}
-                animationDelay={animationDelay}
-              />
-            ))}
-          </ul>
-        </motion.div>
+        <About />
+        <Experience />
+        <Toolkit />
       </Grid>
-      {/* )} */}
     </StyledGrid>
   );
-};
+});
 
 export default Details;

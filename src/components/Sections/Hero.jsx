@@ -3,6 +3,7 @@ import { Background } from "../Background";
 import { a, useTransition } from "@react-spring/web";
 import { Experience2 } from "../Experience2";
 import { button, useControls } from "leva";
+import { memo } from "react";
 
 const Lights = () => {
   return <ambientLight intensity={1} />;
@@ -30,7 +31,7 @@ function Loader({ active, total, progress, _a }) {
   );
 }
 
-const Hero = () => {
+const Hero = memo(() => {
   const { position } = useControls("Camera", {
     position: {
       x: 0,
@@ -48,8 +49,8 @@ const Hero = () => {
 
   return (
     <Canvas
-      concurrent
-      colorManagement
+      // concurrent
+      // colorManagement
       camera={{
         position: [position?.x, position?.y, position?.z],
         fov: 70,
@@ -61,6 +62,6 @@ const Hero = () => {
       <Experience2 />
     </Canvas>
   );
-};
+});
 
 export default Hero;

@@ -41,6 +41,8 @@ import useTraceUpdate from "../../useTraceUpdate";
 // pointlight2.position.set(0, 3, 2);
 // group.add(pointlight2);
 
+const FPS = 60;
+
 const useAnimation = (visible, mobile) => {
   const renderer = useRef(null);
   const camera = useRef(null);
@@ -57,7 +59,7 @@ const useAnimation = (visible, mobile) => {
   // console.log("LoadingContext:", LoadingContext);
   // const { loadingRefs, setLoading } = useContext(LoadingContext);
 
-  console.log("scrolling:", scrolling);
+  // console.log("scrolling:", scrolling);
   const scene = useRef();
   const group = useRef();
   const pointlight = useRef();
@@ -126,7 +128,7 @@ const useAnimation = (visible, mobile) => {
         // console.log("------------");
         allowAnimate.current = true;
         animate("useEffect - test");
-      }, 250);
+      }, 500);
     }
   }, [visible, scrolling]);
 
@@ -167,7 +169,7 @@ const useAnimation = (visible, mobile) => {
       setTimeout(() => {
         animationFrame.current = requestAnimationFrame(() => animate(x));
         // requestAnimationFrame(animate);
-      }, 1000 / 25);
+      }, 1000 / FPS);
       if (loadingRefs?.About === true && setLoading && count.current >= 5) {
         setLoading("About", false);
       }
