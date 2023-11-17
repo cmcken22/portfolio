@@ -4,10 +4,13 @@ import Hero from "@components/Sections/Hero";
 import { Sections } from "@constants";
 import useLoadingContext from "@contexts/LoadingContext";
 import useMobile from "@contexts/useMobile";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { a, useTransition } from "@react-spring/web";
+import createActivityDetector from "activity-detector";
 import { Leva } from "leva";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Sound from "react-sound";
+const activityDetector = createActivityDetector();
 
 function Loader({ active, total, progress, _a }) {
   const transition = useTransition(active, {
@@ -73,6 +76,7 @@ function App() {
 export default () => {
   const { mobile } = useMobile();
   const prevMobile = useRef(mobile);
+  const [playState, setPlayState] = useState(Sound.status.STOPPED);
 
   useEffect(() => {
     if (prevMobile.current !== mobile && prevMobile.current !== null) {
@@ -81,5 +85,33 @@ export default () => {
     prevMobile.current = mobile;
   }, [mobile]);
 
-  return <App />;
+  return (
+    <>
+      <App />
+      <Button
+        sx={{
+          position: "fixed",
+          top: 0,
+          zIndex: 4000,
+        }}
+        onClick={() => {
+          if (playState === Sound.status.STOPPED) {
+            setPlayState(Sound.status.PLAYING);
+          } else {
+            setPlayState(Sound.status.STOPPED);
+          }
+        }}
+      >
+        CLICK
+      </Button>
+      <Sound
+        url="/portfolio/spotifydown.com - Never Loved.mp3"
+        playStatus={playState}
+        // playFromPosition={300 /* in milliseconds */}
+        // onLoading={this.handleSongLoading}
+        // onPlaying={this.handleSongPlaying}
+        // onFinishedPlaying={this.handleSongFinishedPlaying}
+      />
+    </>
+  );
 };
