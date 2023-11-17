@@ -1,5 +1,5 @@
+import useSectionContext from "@contexts/SectionContext";
 import { Box } from "@mui/material";
-import useSectionContext from "contexts/SectionContext";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { memo, useEffect } from "react";

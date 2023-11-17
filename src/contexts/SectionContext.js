@@ -1,4 +1,4 @@
-import { Sections } from "constants";
+import { Sections } from "@constants";
 import { create } from "zustand";
 
 const sectionContext = create((set) => ({

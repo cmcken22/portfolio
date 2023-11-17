@@ -1,5 +1,5 @@
+import { CanvasSection } from "@components/CanvasSection";
 import { Html } from "@react-three/drei";
-import { CanvasSection } from "components/CanvasSection";
 import Content from "./Content";
 
 const HeroSection = ({ position }) => {

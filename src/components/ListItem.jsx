@@ -1,8 +1,8 @@
+import { Animation, Sections } from "@constants";
+import useSectionContext from "@contexts/SectionContext";
 import { Box, Chip, Grid, Typography } from "@mui/material";
-import { Sections } from "constants";
-import useSectionContext from "contexts/SectionContext";
 import { motion, useAnimation } from "framer-motion";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 
 export const Items = [
   {
@@ -57,44 +57,44 @@ export const Items = [
   // },
 ];
 
-const ListItem = memo(({ item, index, animationDuration, animationDelay }) => {
+const ListItem = memo(({ item, index }) => {
   const { startDate, endDate, position, company, description, tags } = item;
   const controls = useAnimation();
   const { activeSection } = useSectionContext();
-  const [key, setKey] = useState(0);
   const timer = useRef(null);
+
+  const activeState = useMemo(() => {
+    return { opacity: 1, x: 0 };
+  }, []);
+
+  const exitState = useMemo(() => {
+    return { opacity: 0, x: -500 };
+  }, []);
 
   useEffect(() => {
     if (activeSection !== Sections.Details) {
-      controls.start({ opacity: 0, x: -500 });
-      // controls.start({ opacity: 0 });
-    } else {
-      // setKey((prev) => prev + 1);
+      controls.start(exitState, { duration: 0 });
     }
-  }, [activeSection]);
+  }, [activeSection, exitState]);
 
   const fontColor = "rgb(148, 163, 184)";
-  // const fontColor = "black";
 
   return (
     <motion.div
-      // className="LIST_ITEM"
-      key={`${item?.company}-${key}`}
+      key={`${item?.company}--${item?.position}`}
       initial={{ opacity: 0, x: -500 }}
-      // initial={{ opacity: 0 }}
       animate={controls}
       transition={{
         ease: "linear",
-        duration: animationDuration,
-        delay: animationDelay,
-        delay: animationDelay + index * 0.1,
+        duration: Animation.duration,
+        // delay: Animation.delay,
+        delay: Animation.delay + index * 0.1,
       }}
-      threshold={1}
+      // threshold={1}
       onViewportEnter={() => {
         clearTimeout(timer.current);
         timer.current = setTimeout(() => {
-          console.log(item?.company, "enter");
-          controls.start({ opacity: 1, x: 0 });
+          controls.start(activeState);
         }, (500 / index) * 0.1);
       }}
       style={{
@@ -140,28 +140,28 @@ const ListItem = memo(({ item, index, animationDuration, animationDelay }) => {
           style={{
             position: "relative",
             zIndex: 1,
-            // backgroundColor: "rgba(0, 255, 255, 0.2)",
           }}
         >
           <Grid container>
             <Grid item xs={4}>
-              <Typography variant="p" color={fontColor} textAlign="left">
+              <Typography color={fontColor} textAlign="left">
                 {startDate} - {endDate}
               </Typography>
             </Grid>
             <Grid item xs={8} pl={2}>
-              <Typography variant="p" color={fontColor} textAlign="left">
+              <Typography color={fontColor} textAlign="left">
                 {company}
               </Typography>
-              <Typography variant="p" color={fontColor} textAlign="left">
+              <Typography color={fontColor} textAlign="left">
                 {position}
               </Typography>
-              <Typography variant="p" color={fontColor} textAlign="left">
+              <Typography color={fontColor} textAlign="left">
                 {description}
               </Typography>
               <Box display="flex" flexDirection="row" flexWrap="wrap">
                 {tags?.map((tag) => (
                   <Chip
+                    key={`tag--${tag}`}
                     label={tag}
                     variant="contained"
                     sx={{

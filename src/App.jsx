@@ -1,12 +1,12 @@
+import Mysection from "@components/Mysection";
+import Details from "@components/Sections/Details";
+import Hero from "@components/Sections/Hero";
+import { Sections } from "@constants";
+import useLoadingContext from "@contexts/LoadingContext";
 import { Box } from "@mui/material";
 import { a, useTransition } from "@react-spring/web";
-import { Sections } from "constants";
 import { Leva } from "leva";
-import { useCallback, useRef, useState } from "react";
-import Mysection from "./components/Mysection";
-import Details from "./components/Sections/Details";
-import Hero from "./components/Sections/Hero";
-import useLoadingContext from "./contexts/LoadingContext";
+import { useRef } from "react";
 
 function Loader({ active, total, progress, _a }) {
   const transition = useTransition(active, {
@@ -20,9 +20,6 @@ function Loader({ active, total, progress, _a }) {
       active && (
         <a.div className="loading" style={{ opacity }}>
           <div className="loading-bar-container">
-            {/* <p>
-              Loading {_a} out of {total} assets...
-            </p> */}
             <a.div className="loading-bar" style={{ width: progress }}></a.div>
           </div>
         </a.div>
@@ -31,27 +28,15 @@ function Loader({ active, total, progress, _a }) {
 }
 
 function App() {
-  const domContent = useRef();
   const section1 = useRef();
   const section2 = useRef();
   const { progress } = useLoadingContext();
-  const [_domContent, setDomContent] = useState();
-
-  const handleScrollTo = useCallback((ref) => {
-    console.clear();
-    console.log("ref:", ref);
-    ref.current.scrollIntoView({ behavior: "smooth" });
-  }, []);
 
   return (
     <>
       <Leva hidden />
       <Loader active={progress < 100} progress={progress} />
       <Box
-        ref={(r) => {
-          domContent.current = r;
-          setDomContent(r);
-        }}
         className="__container"
         style={{
           position: "relative",

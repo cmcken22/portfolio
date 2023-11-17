@@ -1,8 +1,10 @@
+import { Sections } from "@constants";
+import useLoadingContext from "@contexts/LoadingContext";
+import useSectionContext from "@contexts/SectionContext";
+import useMobile from "@contexts/useMobile";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { a, useTransition } from "@react-spring/web";
-import { Sections } from "constants";
-import useSectionContext from "contexts/SectionContext";
-import useMobile from "contexts/useMobile";
+import { useEffect, useState } from "react";
 import useAnimation from "./useAnimation";
 
 function ScrollIndicator({ active }) {
@@ -37,13 +39,23 @@ function ScrollIndicator({ active }) {
   });
 }
 
-const Content = ({ scrollingAway }) => {
+const Content = () => {
   const { mobile } = useMobile();
+  const { loading } = useLoadingContext();
+  const [delayedStart, setDelayedStart] = useState(false);
   const inView = useSectionContext()?.activeSection === Sections.Hero;
   useAnimation(inView, mobile);
 
   const text1 = "Conner";
   const text2 = "McKenna";
+
+  useEffect(() => {
+    if (!loading) {
+      setTimeout(() => {
+        setDelayedStart(true);
+      }, 500);
+    }
+  }, [loading]);
 
   return (
     <div
@@ -69,7 +81,7 @@ const Content = ({ scrollingAway }) => {
           <br />
           {text2}
         </div>
-        <ScrollIndicator active={!scrollingAway} />
+        <ScrollIndicator active={inView && delayedStart} />
       </div>
 
       <div className="canvas-container">

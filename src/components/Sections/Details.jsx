@@ -1,14 +1,12 @@
+import ListItem, { Items } from "@components/ListItem";
+import { Animation, Sections } from "@constants";
+import useSectionContext from "@contexts/SectionContext";
 import { Box, Grid, Typography, styled } from "@mui/material";
-import { Sections } from "constants";
-import useSectionContext from "contexts/SectionContext";
 import { motion, stagger, useAnimate, useAnimation } from "framer-motion";
 import { memo, useEffect, useMemo } from "react";
 import { TypeAnimation } from "react-type-animation";
-import ListItem, { Items } from "../ListItem";
 
 const typingDelay = 2000;
-const animationDuration = 0.5;
-const animationDelay = 0.5;
 const fontColor = "rgb(148, 163, 184)";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
@@ -76,8 +74,8 @@ const StickyHeader = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={controls}
-        transition={{ duration: animationDuration, delay: animationDelay }}
-        threshold={1}
+        transition={{ duration: Animation.duration, delay: Animation.delay }}
+        // threshold={1}
         onViewportEnter={() => {
           controls.start({ opacity: 1 });
         }}
@@ -172,8 +170,8 @@ const About = () => {
       className="GRID_ITEM_BOX"
       initial={{ opacity: 0 }}
       animate={controls}
-      transition={{ duration: animationDuration, delay: animationDelay }}
-      threshold={1}
+      transition={{ duration: Animation.duration, delay: Animation.delay }}
+      // threshold={1}
       onViewportEnter={() => {
         controls.start({ opacity: 1 });
       }}
@@ -181,7 +179,7 @@ const About = () => {
         marginTop: "6rem",
       }}
     >
-      <Typography id="about" variant="p" color={fontColor} fontSize="1rem">
+      <Typography id="about" color={fontColor} fontSize="1rem">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates,
         quod tempore! Eos sunt a reiciendis veniam ab eum aperiam placeat natus
         dolore soluta autem sequi, doloribus provident. Asperiores, dolore nam?
@@ -206,8 +204,7 @@ const Experience = () => {
       className="GRID_ITEM_BOX"
       initial={{ opacity: 0 }}
       animate={controls}
-      transition={{ duration: animationDuration, delay: animationDelay }}
-      threshold={1}
+      transition={{ duration: Animation.duration, delay: Animation.delay }}
       onViewportEnter={() => {
         controls.start({ opacity: 1 });
       }}
@@ -219,13 +216,7 @@ const Experience = () => {
         }}
       >
         {Items?.map((item, index) => (
-          <ListItem
-            key={`list-item--${index}`}
-            item={item}
-            index={index}
-            animationDuration={animationDuration}
-            animationDelay={animationDelay}
-          />
+          <ListItem key={`list-item--${index}`} item={item} index={index} />
         ))}
       </ul>
     </motion.div>
@@ -289,7 +280,7 @@ const Toolkit = () => {
       className="GRID_ITEM_BOX"
       initial={{ opacity: 0, x: -500 }}
       animate={controls}
-      transition={{ duration: animationDuration, delay: animationDelay }}
+      transition={{ duration: Animation.duration, delay: Animation.delay }}
       threshold={1}
       onViewportEnter={() => {
         controls.start({ opacity: 1, x: 0 });
@@ -308,6 +299,7 @@ const Toolkit = () => {
       >
         {tools?.map((tool) => (
           <Box
+            key={`tool--${tool?.name}`}
             sx={{
               height: "60px",
               width: "106px",
