@@ -6,6 +6,7 @@ import ListItem, { Items } from "../ListItem";
 import { red, green, blue } from "@mui/material/colors";
 import { TypeAnimation } from "react-type-animation";
 import { InView } from "react-intersection-observer";
+import { Sections } from "../../Constants";
 
 const typingDelay = 2000;
 const animationDuration = 0.5;
@@ -53,7 +54,8 @@ function useMenuAnimation(isOpen) {
 }
 
 const StickyHeader = () => {
-  const inView = useSectionContext((state) => state.activeSection) === "About";
+  const inView =
+    useSectionContext((state) => state.activeSection) === Sections.Details;
   const controls = useAnimation();
 
   useEffect(() => {
@@ -158,7 +160,8 @@ const StickyHeader = () => {
 };
 
 const About = () => {
-  const inView = useSectionContext((state) => state.activeSection) === "About";
+  const inView =
+    useSectionContext((state) => state.activeSection) === Sections.Details;
   const controls = useAnimation();
 
   useEffect(() => {
@@ -192,7 +195,8 @@ const About = () => {
 };
 
 const Experience = () => {
-  const inView = useSectionContext((state) => state.activeSection) === "About";
+  const inView =
+    useSectionContext((state) => state.activeSection) === Sections.Details;
   const controls = useAnimation();
 
   useEffect(() => {
@@ -234,7 +238,8 @@ const Experience = () => {
 };
 
 const Toolkit = () => {
-  const inView = useSectionContext((state) => state.activeSection) === "About";
+  const inView =
+    useSectionContext((state) => state.activeSection) === Sections.Details;
   const controls = useAnimation();
 
   useEffect(() => {

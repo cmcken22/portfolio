@@ -1,14 +1,9 @@
-import { animate, useMotionValue } from "framer-motion";
-import { framerMotionConfig } from "../config";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, Suspense, useMemo, useRef, useState } from "react";
-import About from "./Sections/About";
-import Skills from "./Sections/Skills";
-import PastExperience from "./Sections/PastExperience";
-import Contact from "./Sections/Contact";
-import _state from "./state";
-import useScrolling from "../contexts/useScrolling";
+import { Suspense, useEffect, useMemo, useRef } from "react";
 import useMobile from "../contexts/useMobile";
+import useScrolling from "../contexts/useScrolling";
+import About from "./Sections/About";
+import _state from "./state";
 
 const useStateManager = () => {
   const { size } = useThree();
@@ -80,7 +75,7 @@ export const Experience2 = (props) => {
           bgColor={bgColors.About}
           position={250}
           domContent={domContent}
-          scrollToPos={scrollToPos}
+          scrollTo={scrollTo}
           menuOpened={menuOpened}
           mobile={mobile}
         />

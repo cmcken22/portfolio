@@ -1,9 +1,8 @@
-import { Canvas } from "@react-three/fiber";
-import { Background } from "../Background";
 import { a, useTransition } from "@react-spring/web";
-import { Experience2 } from "../Experience2";
+import { Canvas } from "@react-three/fiber";
 import { button, useControls } from "leva";
 import { memo } from "react";
+import { Experience2 } from "../Experience2";
 
 const Lights = () => {
   return <ambientLight intensity={1} />;
@@ -31,7 +30,7 @@ function Loader({ active, total, progress, _a }) {
   );
 }
 
-const Hero = memo(() => {
+const Hero = memo(({ scrollTo, domContent }) => {
   const { position } = useControls("Camera", {
     position: {
       x: 0,
@@ -49,17 +48,15 @@ const Hero = memo(() => {
 
   return (
     <Canvas
-      // concurrent
-      // colorManagement
       camera={{
         position: [position?.x, position?.y, position?.z],
         fov: 70,
       }}
       eventPrefix="client"
+      eventSource={domContent}
     >
-      {/* <Background /> */}
       <Lights />
-      <Experience2 />
+      <Experience2 scrollTo={scrollTo} domContent={domContent} />
     </Canvas>
   );
 });

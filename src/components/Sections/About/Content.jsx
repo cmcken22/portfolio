@@ -1,12 +1,7 @@
-import useAnimation from "./useAnimation";
-import { a, useTransition } from "@react-spring/web";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { useContext } from "react";
-import { LoadingContext } from "../../../contexts/LoadingContext";
-import { Menu } from "@mui/material";
-import { MenuContext } from "../../../contexts/MenuContext";
+import { a, useTransition } from "@react-spring/web";
 import { useSectionContext } from "../../../App";
-import Spline from "@splinetool/react-spline";
+import { Sections } from "../../../Constants";
 
 function ScrollIndicator({ active }) {
   const transition = useTransition(active, {
@@ -24,8 +19,9 @@ function ScrollIndicator({ active }) {
           bottom: "0%",
           height: "40px",
           width: "40px",
-          // background: "blue",
+          background: "blue",
           zIndex: 3,
+          cursor: "pointer",
           ...style,
         }}
       >
@@ -40,10 +36,10 @@ function ScrollIndicator({ active }) {
   });
 }
 
-const Content = ({ mobile, scrollingAway }) => {
-  const inView = useSectionContext((state) => state.activeSection) === "Hero";
+const Content = ({ mobile, scrollingAway, scrollTo }) => {
+  const inView =
+    useSectionContext((state) => state.activeSection) === Sections.Hero;
   useAnimation(inView, mobile);
-  // useAnimation2(inView, mobile);
 
   const text1 = "Conner";
   const text2 = "McKenna";
@@ -56,7 +52,7 @@ const Content = ({ mobile, scrollingAway }) => {
         position: "relative",
       }}
     >
-      <div className="headline-container">
+      <div className="headline-container" onClick={() => alert("click")}>
         <div id="text-behind">
           {text1}
           <br />
@@ -78,9 +74,6 @@ const Content = ({ mobile, scrollingAway }) => {
       <div className="canvas-container">
         <canvas id="canvas"></canvas>
       </div>
-      {/* <div className="canvas-container">
-        <Spline scene="https://prod.spline.design/rejY8jiGrk0axCFM/scene.splinecode" />
-      </div> */}
     </div>
   );
 };

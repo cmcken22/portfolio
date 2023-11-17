@@ -1,48 +1,24 @@
-import React, {
-  createContext,
-  useRef,
-  useState,
-  useContext,
-  useEffect,
-  useCallback,
-} from "react";
+import { create } from "zustand";
 
-export const LoadingContext = createContext({
-  loadingRefs: {
-    About: true,
-  },
-  // setLoading: () => {},
-});
+export const loadingContext = create((set) => ({
+  loading: true,
+  progress: 0,
+  setLoading: (value) => set(() => ({ loading: value })),
+  incrementProgress: (incrementor = 1) =>
+    set((state) => {
+      const nextProgress = state.progress + incrementor;
+      console.log("__nextProgress:", nextProgress);
+      return {
+        ...state,
+        loading: nextProgress >= 100 ? false : state.loading,
+        progress: nextProgress,
+      };
+    }),
+}));
 
-function LoadingContextProvider({ children }) {
-  const [loadingRefs, setLoadingRef] = useState({
-    About: true,
-  });
-  const stateRef = useRef(loadingRefs);
+const useLoadingContext = () => {
+  const state = loadingContext((state) => state);
+  return state;
+};
 
-  const handleSetLoading = useCallback(
-    (section, value) => {
-      if (stateRef.current[section] !== value) {
-        stateRef.current[section] = value;
-        setLoadingRef((prevState) => ({
-          ...prevState,
-          [section]: value,
-        }));
-      }
-    },
-    [setLoadingRef]
-  );
-
-  return (
-    <LoadingContext.Provider
-      value={{
-        loadingRefs,
-        setLoading: handleSetLoading,
-      }}
-    >
-      {children}
-    </LoadingContext.Provider>
-  );
-}
-
-export default LoadingContextProvider;
+export default useLoadingContext;

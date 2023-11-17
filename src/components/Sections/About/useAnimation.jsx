@@ -1,16 +1,8 @@
-import { useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import * as THREE from "https://cdn.skypack.dev/three@0.124.0";
 import { RGBELoader } from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/loaders/RGBELoader.js";
 import { OBJLoader } from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/loaders/OBJLoader.js";
-// import { OBJExporter } from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/loaders/OBJExporter.js";
-import { useThree } from "@react-three/fiber";
-import { LoadingContext } from "../../../contexts/LoadingContext";
-import useLoading from "../../../contexts/useLoading";
-import useScrolling from "../../../contexts/useScrolling";
-import { OBJExporter } from "three/addons/exporters/OBJExporter.js";
-import { saveAs } from "file-saver";
-import SplineLoader from "@splinetool/loader";
-import useTraceUpdate from "../../useTraceUpdate";
+import { useCallback, useEffect, useRef } from "react";
+import useLoadingContext from "../../../contexts/LoadingContext";
 
 // create a new RGBELoader to import the HDR
 // const hdrEquirect = new RGBELoader()
@@ -44,31 +36,32 @@ import useTraceUpdate from "../../useTraceUpdate";
 const FPS = 60;
 
 const useAnimation = (visible, mobile) => {
+  // scene refs
   const renderer = useRef(null);
   const camera = useRef(null);
   const theta1 = useRef(0);
-  const initialized = useRef(false);
-  const allowAnimate = useRef(visible);
   const object = useRef(null);
-  const animationFrame = useRef(null);
-  const timer = useRef(null);
-  const count = useRef(0);
-  const { loadingRefs, setLoading } = useLoading();
-  const { scrolling } = useScrolling();
-  // console.clear();
-  // console.log("LoadingContext:", LoadingContext);
-  // const { loadingRefs, setLoading } = useContext(LoadingContext);
-
-  // console.log("scrolling:", scrolling);
   const scene = useRef();
   const group = useRef();
   const pointlight = useRef();
   const pointlight2 = useRef();
+  // scene refs end
+
+  const initialized = useRef(false);
+  const allowAnimate = useRef(visible);
+  const animationFrame = useRef(null);
+  const timer = useRef(null);
+  const count = useRef(0);
+
+  const { loading, incrementProgress } = useLoadingContext();
 
   useEffect(() => {
+    // only do this once, after the component is initialized
+    // we do not need to do this every time the component re-renders
+    if (initialized.current) return;
+
     // create a new RGBELoader to import the HDR
     const hdrEquirect = new RGBELoader()
-      // add your HDR //
       .setPath(
         "https://raw.githubusercontent.com/miroleon/gradient_hdr_freebie/main/Gradient_HDR_Freebies/"
       )
@@ -102,46 +95,33 @@ const useAnimation = (visible, mobile) => {
 
   useEffect(() => {
     if (!initialized.current) return;
-    // console.log("\n-------------");
-    // console.log("visible:", visible);
-
-    if (!visible || scrolling) {
+    if (!visible) {
       if (timer.current) {
         clearTimeout(timer.current);
         timer.current = null;
       }
       allowAnimate.current = false;
-      // console.log("------------");
-      // console.log("SETTING TO FALSE:", allowAnimate?.current);
-      // console.log("animationFrame.current:", animationFrame.current);
-      // console.log("------------");
       cancelAnimationFrame(animationFrame.current);
     }
-    if (visible && !scrolling) {
+    if (visible) {
       if (timer.current) {
         clearTimeout(timer.current);
         timer.current = null;
       }
       timer.current = setTimeout(() => {
-        // console.log("\n\n------------");
-        // console.log("SETTING TO TRUE:", allowAnimate?.current);
-        // console.log("------------");
         allowAnimate.current = true;
         animate("useEffect - test");
       }, 500);
     }
-  }, [visible, scrolling]);
+  }, [visible]);
 
   const update = useCallback((x) => {
+    if (!initialized.current) return;
     if (!allowAnimate.current) return;
-    // console.log("updating", x);
-    // Continuously animate theta1 irrespective of scrolling to ensure there's an inherent animation in the 3D visualization.
-    theta1.current += 0.0025;
 
-    // create a panning animation for the camera
-    camera.current.position.x = Math.sin(theta1.current) * 10;
-    camera.current.position.z = Math.cos(theta1.current) * 10;
-    camera.current.position.y = Math.cos(theta1.current);
+    // increment theta to rotate the lights
+    // this creates a cool effect on the material of the object
+    theta1.current += 0.0025;
 
     pointlight.current.position.x = Math.sin(theta1.current + 1) * 11;
     pointlight.current.position.z = Math.cos(theta1.current + 1) * 11;
@@ -160,22 +140,22 @@ const useAnimation = (visible, mobile) => {
 
   const animate = useCallback(
     (x) => {
-      console.log("ANIMATE___", x);
       if (!allowAnimate?.current) return;
       update(x);
       renderer.current.render(scene.current, camera.current);
-      // animationFrame.current = requestAnimationFrame(() => animate(x));
 
       setTimeout(() => {
         animationFrame.current = requestAnimationFrame(() => animate(x));
-        // requestAnimationFrame(animate);
       }, 1000 / FPS);
-      if (loadingRefs?.About === true && setLoading && count.current >= 5) {
-        setLoading("About", false);
+
+      if (loading === true) {
+        if (count.current < 5) {
+          incrementProgress(20);
+        }
       }
       count.current++;
     },
-    [update]
+    [update, loading, incrementProgress]
   );
 
   const initScene = useCallback(() => {
@@ -206,36 +186,15 @@ const useAnimation = (visible, mobile) => {
       envMapIntensity: 10,
     });
 
-    console.log("material1:", material1);
-
     // Load the model
     const objloader = new OBJLoader();
-    objloader.load(
-      // "https://raw.githubusercontent.com/miroleon/peace-of-mind/main/assets/buddha.obj",
-      "/portfolio/models/craneo.OBJ",
-      (obj) => {
-        object.current = obj;
-        object.current.children[0].material = material1;
-        object.current.scale.setScalar(mobile ? 1.25 : 2);
-        object.current.position.set(0, 0.25, 0);
-        group.current.add(object.current);
-      }
-    );
-
-    // setTimeout(() => {
-    //   console.clear();
-    //   try {
-    //     const exporter = new OBJExporter();
-    //     const test = exporter.parse(scene);
-    //     console.log("test:", test);
-    //     saveAs(test, `test.obj`);
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // }, 5000);
-    // debugger;
-
-    // renderer.current.render(scene, camera.current);
+    objloader.load("/portfolio/models/craneo.OBJ", (obj) => {
+      object.current = obj;
+      object.current.children[0].material = material1;
+      object.current.scale.setScalar(mobile ? 1.25 : 2);
+      object.current.position.set(0, 0.25, 0);
+      group.current.add(object.current);
+    });
 
     if (visible) {
       animate("initScene");
@@ -247,13 +206,6 @@ const useAnimation = (visible, mobile) => {
     initScene();
     initialized.current = true;
   }, [initScene]);
-
-  useEffect(() => {
-    if (!initialized.current) return;
-    if (visible) {
-      // animate("useEffect - visible");
-    }
-  }, [visible, animate]);
 
   useEffect(() => {
     if (!initialized.current) return;
