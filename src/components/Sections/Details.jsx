@@ -4,7 +4,8 @@ import { Animation, Sections } from "@constants";
 import useSectionContext from "@contexts/SectionContext";
 import { Box, Grid, Typography, styled } from "@mui/material";
 import { motion, stagger, useAnimate, useAnimation } from "framer-motion";
-import { memo, useEffect } from "react";
+import debounce from "lodash.debounce";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { TypeAnimation } from "react-type-animation";
 
 const typingDelay = 2000;
@@ -53,12 +54,55 @@ function useMenuAnimation(isOpen) {
 const StickyHeader = () => {
   const inView = useSectionContext()?.activeSection === Sections.Details;
   const controls = useAnimation();
+  const [activeSection, setActiveSection] = useState("about");
+  const scrollElm = useRef(null);
 
   useEffect(() => {
     if (!inView) {
       controls.start({ opacity: 0 });
     }
   }, [inView]);
+
+  const handleScroll = useCallback(() => {
+    console.log("scroll");
+    const elm1 = document.getElementById("about");
+    const elm2 = document.getElementById("experience");
+    const elm3 = document.getElementById("toolkit");
+    const elms = [elm1, elm2, elm3];
+
+    // detect closest element to top of the scroll container
+    let closest = null;
+    let closestDistance = Infinity;
+    elms.forEach((elm) => {
+      if (elm) {
+        const distance = Math.abs(elm.getBoundingClientRect().top);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closest = elm;
+        }
+      }
+    });
+
+    // set active section
+    if (closest) {
+      const id = closest.id;
+      setActiveSection(id);
+    }
+  }, [setActiveSection]);
+
+  const debouncedHandleScroll = debounce(handleScroll, 100);
+
+  useEffect(() => {
+    scrollElm.current = document.querySelector(".__container");
+    if (scrollElm.current) {
+      scrollElm.current.addEventListener("scroll", debouncedHandleScroll);
+    }
+    return () => {
+      if (scrollElm.current) {
+        scrollElm.current.removeEventListener("scroll", debouncedHandleScroll);
+      }
+    };
+  }, [debouncedHandleScroll]);
 
   return (
     <Grid
@@ -123,6 +167,7 @@ const StickyHeader = () => {
                 href="#about"
                 style={{
                   color: fontColor,
+                  fontWeight: activeSection === "about" ? "bold" : "normal",
                 }}
               >
                 About
@@ -133,6 +178,8 @@ const StickyHeader = () => {
                 href="#experience"
                 style={{
                   color: fontColor,
+                  fontWeight:
+                    activeSection === "experience" ? "bold" : "normal",
                 }}
               >
                 Experience
@@ -143,6 +190,7 @@ const StickyHeader = () => {
                 href="#toolkit"
                 style={{
                   color: fontColor,
+                  fontWeight: activeSection === "toolkit" ? "bold" : "normal",
                 }}
               >
                 Toolkit

@@ -7,22 +7,13 @@ Source: https://sketchfab.com/3d-models/skull-downloadable-1a9db900738d44298b0bc
 Title: Skull downloadable
 */
 
-import React, { useEffect, useMemo, useState } from "react";
-import { useGLTF, TransformControls, OrbitControls } from "@react-three/drei";
-import {
-  Color,
-  DebugLayerMaterial,
-  Depth,
-  Fresnel,
-  LayerMaterial,
-} from "lamina";
-import * as LAYERS from "lamina";
-import { button, useControls } from "leva";
-import * as THREE from "three";
-import initialMaterial from "./initialMaterial.js";
-import { useFrame, useThree } from "@react-three/fiber";
-import { motion } from "framer-motion";
+import { useGLTF } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import { animate, useMotionValue } from "framer-motion";
+import { Depth, Fresnel, LayerMaterial } from "lamina";
+import { button, useControls } from "leva";
+import React, { useEffect } from "react";
+import * as THREE from "three";
 
 const M = () => {
   const { CA, CB, CC } = useControls("LIGHT", {
@@ -101,7 +92,7 @@ const M = () => {
 
 export function Skull(props) {
   const { onLoadComplete, inView, menuOpened } = props;
-  const { nodes, materials } = useGLTF("/portfolio/models/Skull.glb");
+  const { nodes, materials } = useGLTF("/models/Skull.glb");
   const group = React.useRef();
   const count = React.useRef(0);
 
@@ -225,4 +216,4 @@ export function Skull(props) {
   );
 }
 
-useGLTF.preload("/portfolio/models/Skull.glb");
+useGLTF.preload("/models/Skull.glb");

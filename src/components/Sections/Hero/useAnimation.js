@@ -33,7 +33,7 @@ const useAnimation = (visible, mobile) => {
     if (!enter) return;
     setTimeout(() => {
       setDelayedEnter(true);
-    }, 1000);
+    }, 250);
   }, [enter]);
 
   useEffect(() => {
@@ -134,7 +134,7 @@ const useAnimation = (visible, mobile) => {
 
   const animate = useCallback(
     (x) => {
-      console.log("animate:", allowAnimate.current);
+      // console.log("animate:", allowAnimate.current);
       if (!allowAnimate?.current) return;
       update(x);
       renderer.current.render(scene.current, camera.current);
@@ -144,8 +144,8 @@ const useAnimation = (visible, mobile) => {
       }, 1000 / FPS);
 
       if (loading === true) {
-        if (count.current < 5) {
-          incrementProgress(20);
+        if (count.current < 10) {
+          incrementProgress(100 / 10);
         } else {
           allowAnimate.current = false;
         }
@@ -185,7 +185,7 @@ const useAnimation = (visible, mobile) => {
 
     // Load the model
     const objloader = new OBJLoader();
-    objloader.load("/portfolio/models/craneo.OBJ", (obj) => {
+    objloader.load("/models/craneo.OBJ", (obj) => {
       console.log("xxx OBJECT LOADED");
       object.current = obj;
       object.current.children[0].material = material1;

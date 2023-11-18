@@ -5,7 +5,7 @@ import jsonPathConfig from "./jsconfig.paths.json";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/portfolio/",
+  base: "/",
   resolve: {
     alias: Object.entries(jsonPathConfig.compilerOptions.paths).map(
       ([k, v]) => {

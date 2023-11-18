@@ -67,7 +67,8 @@ function GateKeeper({ onClick }) {
           }}
         >
           <IoMusicalNotes />
-          ENTER <IoMusicalNotes />
+          ENTER
+          <IoMusicalNotes />
         </Box>
       </button>
       <Button
@@ -113,7 +114,7 @@ const App = memo(() => {
         )}
       </AnimatePresence>
       <Sound
-        url="/portfolio/spotifydown.com - Never Loved.mp3"
+        url="/spotifydown.com - Never Loved.mp3"
         playStatus={musicPlayState}
         // onLoading={this.handleSongLoading}
         // onPlaying={this.handleSongPlaying}
