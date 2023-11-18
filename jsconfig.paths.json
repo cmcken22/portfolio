@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "paths": {
-      "@components": ["./src/components"],
-      "@contexts": ["./src/contexts"],
-      "@constants": ["./src/constants"]
-    }
-  }
-}
