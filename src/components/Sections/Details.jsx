@@ -2,6 +2,7 @@ import ListItem, { Items } from "@components/ListItem";
 import Toolkit from "@components/Toolkit";
 import { Animation, Sections } from "@constants";
 import useSectionContext from "@contexts/SectionContext";
+import { useBreakPoint } from "@contexts/useMobile";
 import { Box, Grid, Typography, styled } from "@mui/material";
 import { motion, stagger, useAnimate, useAnimation } from "framer-motion";
 import debounce from "lodash.debounce";
@@ -16,17 +17,23 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
   paddingLeft: theme.spacing(6),
   paddingRight: theme.spacing(6),
 
-  [theme.breakpoints.down("md")]: {
-    // backgroundColor: red[500],
-  },
-  [theme.breakpoints.up("md")]: {
-    // backgroundColor: blue[500],
-  },
   [theme.breakpoints.up("lg")]: {
-    // backgroundColor: green[500],
     paddingLeft: theme.spacing(12),
     paddingRight: theme.spacing(12),
   },
+
+  // [theme.breakpoints.down("sm")]: {
+  //   backgroundColor: "red",
+  // },
+  // [theme.breakpoints.down("md")]: {
+  //   backgroundColor: red[500],
+  // },
+  // [theme.breakpoints.up("md")]: {
+  //   backgroundColor: blue[500],
+  // },
+  // [theme.breakpoints.up("lg")]: {
+  //   backgroundColor: green[500],
+  // },
 }));
 
 const staggerMenuItems = stagger(0.2, { startDelay: 0.15 });
@@ -64,7 +71,6 @@ const StickyHeader = () => {
   }, [inView]);
 
   const handleScroll = useCallback(() => {
-    console.log("scroll");
     const elm1 = document.getElementById("about");
     const elm2 = document.getElementById("experience");
     const elm3 = document.getElementById("toolkit");
@@ -107,13 +113,19 @@ const StickyHeader = () => {
   return (
     <Grid
       item
-      xs={6}
+      xs={12}
+      md={6}
       className="GRID_ITEM_1"
       sx={{
         height: "fit-content",
-        paddingTop: "6rem",
-        position: "sticky",
+        position: {
+          md: "sticky",
+        },
         top: "0",
+        paddingTop: {
+          xs: 10,
+          md: 12,
+        },
       }}
     >
       <motion.div
@@ -216,15 +228,19 @@ const About = () => {
   }, [inView]);
 
   return (
-    <motion.div
+    <Box
       id="about"
       className="GRID_ITEM_BOX"
+      component={motion.div}
       initial={{ opacity: 1 }}
       animate={controls}
       transition={{ duration: Animation.duration, delay: Animation.delay }}
       onViewportEnter={() => {}}
-      style={{
-        paddingTop: "6rem",
+      sx={{
+        paddingTop: {
+          xs: 10,
+          md: 12,
+        },
       }}
     >
       <Typography id="about" color={fontColor} fontSize="1rem" width="100%">
@@ -232,7 +248,7 @@ const About = () => {
         quod tempore! Eos sunt a reiciendis veniam ab eum aperiam placeat natus
         dolore soluta autem sequi, doloribus provident. Asperiores, dolore nam?
       </Typography>
-    </motion.div>
+    </Box>
   );
 };
 
@@ -274,6 +290,8 @@ const Experience = () => {
 const Details = memo(() => {
   const inView = useSectionContext((state) => state.activeSection) === "About";
   const controls = useAnimation();
+  const bp = useBreakPoint();
+  console.log("bp:", bp);
 
   useEffect(() => {
     if (!inView) {
@@ -292,14 +310,14 @@ const Details = memo(() => {
       <StickyHeader />
       <Grid
         item
-        xs={6}
+        xs={12}
+        md={6}
         className="GRID_ITEM"
         mb={12}
         sx={{
           height: "100%",
           width: "100%",
           position: "relative",
-          // paddingTop: "6rem",
         }}
       >
         <About />

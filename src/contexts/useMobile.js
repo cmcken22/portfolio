@@ -9,11 +9,11 @@ const mobileContext = create((set) => ({
   setSize: (value) => set((state) => ({ size: value })),
 }));
 
-const useBreakPoint = () => {
+export const useBreakPoint = () => {
   const theme = useTheme();
   const xs = useMediaQuery(theme.breakpoints.down("sm"));
-  const sm = useMediaQuery(theme.breakpoints.between("sm", "lg"));
-  const md = useMediaQuery(theme.breakpoints.between("md", "xl"));
+  const sm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const md = useMediaQuery(theme.breakpoints.between("md", "lg"));
   const lg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
   const xl = useMediaQuery(theme.breakpoints.up("xl"));
 
@@ -30,7 +30,7 @@ const useMobile = () => {
   const breakpoint = useBreakPoint();
 
   useEffect(() => {
-    if (breakpoint === "xs") {
+    if (breakpoint === "xs" || breakpoint === "sm") {
       state.setMobile(true);
     } else {
       state.setMobile(false);

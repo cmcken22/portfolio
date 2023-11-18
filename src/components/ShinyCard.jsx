@@ -1,6 +1,8 @@
+import useMobile from "@contexts/useMobile";
 import styled from "@emotion/styled";
+import { Box } from "@mui/material";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { memo, useEffect, useRef } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 import HoverCard from "./HoverCard";
 
 const Container = styled.div`
@@ -24,6 +26,7 @@ const ShinyCard = memo(({ children }) => {
   const cardRef = useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const { mobile } = useMobile();
 
   const rotateX = useTransform(mouseY, (newMouseY) => {
     if (!cardRef.current) return 0;
@@ -55,7 +58,8 @@ const ShinyCard = memo(({ children }) => {
     return newRotateX;
   });
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
+    if (mobile) return;
     // Debounce the mouse move event
     if (!handleMouseMove.debounced) {
       handleMouseMove.debounced = true;
@@ -74,7 +78,9 @@ const ShinyCard = memo(({ children }) => {
         handleMouseMove.debounced = false;
       });
     }
-  };
+  }, []);
+
+  // console.log("mobile:", mobile);
 
   useEffect(() => {
     if (cardRef.current) {
@@ -86,14 +92,20 @@ const ShinyCard = memo(({ children }) => {
         cardRef.current.removeEventListener("mousemove", handleMouseMove);
       }
     };
-  }, []);
+  }, [handleMouseMove]);
 
   return (
-    <div
+    <Box
       ref={cardRef}
-      style={{
+      sx={{
         // background: "blue",
         perspective: "1000px",
+        "& .card-wrapper": {
+          width: {
+            xs: "100%",
+            md: "fit-content",
+          },
+        },
       }}
       onMouseLeave={() => {
         mouseX.set(0);
@@ -102,15 +114,15 @@ const ShinyCard = memo(({ children }) => {
     >
       <RotationWrapper
         style={{
-          rotateX,
-          rotateY,
+          rotateX: mobile ? 0 : rotateX,
+          rotateY: mobile ? 0 : rotateY,
         }}
       >
-        <CardWrapper>
+        <CardWrapper className="card-wrapper">
           <HoverCard>{children}</HoverCard>
         </CardWrapper>
       </RotationWrapper>
-    </div>
+    </Box>
   );
 });
 

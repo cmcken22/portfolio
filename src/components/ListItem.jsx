@@ -1,5 +1,6 @@
 import { Animation, Sections } from "@constants";
 import useSectionContext from "@contexts/SectionContext";
+import useMobile from "@contexts/useMobile";
 import { Box, Chip, Grid, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { memo, useEffect, useMemo, useRef } from "react";
@@ -63,6 +64,7 @@ const ListItem = memo(({ item, index }) => {
   const controls = useAnimation();
   const { activeSection } = useSectionContext();
   const timer = useRef(null);
+  const { mobile } = useMobile();
 
   const activeState = useMemo(() => {
     return { opacity: 1, x: 0 };
@@ -77,6 +79,13 @@ const ListItem = memo(({ item, index }) => {
       controls.start(exitState, { duration: 0 });
     }
   }, [activeSection, exitState]);
+
+  useEffect(() => {
+    console.log("activeSection:", activeSection, mobile);
+    if (activeSection === Sections.Details && mobile) {
+      controls.start(activeState, { duration: 0 });
+    }
+  }, [activeSection, mobile]);
 
   const fontColor = "rgb(148, 163, 184)";
 
@@ -98,27 +107,25 @@ const ListItem = memo(({ item, index }) => {
       }}
       style={{
         willChange: "opacity, transform",
-        // backgroundColor: "red",
         marginBottom: "6rem",
       }}
     >
-      {/* <HoverCard sx={{ marginBottom: 6 }}> */}
       <ShinyCard>
         <li className="LIST_ITEM">
           <Grid container>
-            <Grid item xs={4}>
+            <Grid item xs={3} md={4}>
               <Typography color={fontColor} textAlign="left">
                 {startDate} - {endDate}
               </Typography>
             </Grid>
-            <Grid item xs={8} pl={2}>
-              <Typography color={fontColor} textAlign="left">
+            <Grid item xs={9} md={8} pl={2}>
+              <Typography color={fontColor} textAlign="left" width="100%">
                 {company}
               </Typography>
-              <Typography color={fontColor} textAlign="left">
+              <Typography color={fontColor} textAlign="left" width="100%">
                 {position}
               </Typography>
-              <Typography color={fontColor} textAlign="left">
+              <Typography color={fontColor} textAlign="left" width="100%">
                 {description}
               </Typography>
               <Box display="flex" flexDirection="row" flexWrap="wrap">

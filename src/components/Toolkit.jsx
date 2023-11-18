@@ -1,5 +1,6 @@
 import { Animation, Sections } from "@constants";
 import useSectionContext from "@contexts/SectionContext";
+import useMobile from "@contexts/useMobile";
 import { Box, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
@@ -50,12 +51,19 @@ const Tools = [
 const Toolkit = () => {
   const inView = useSectionContext()?.activeSection === Sections.Details;
   const controls = useAnimation();
+  const { mobile } = useMobile();
 
   useEffect(() => {
-    if (!inView) {
+    if (!inView && !mobile) {
       controls.start({ opacity: 0, x: -500 }, { duration: 0 });
     }
-  }, [inView]);
+  }, [inView, mobile]);
+
+  useEffect(() => {
+    if (mobile) {
+      controls.start({ opacity: 1, x: 0 }, { duration: 0 });
+    }
+  }, [mobile, inView]);
 
   return (
     <motion.div

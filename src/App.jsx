@@ -7,10 +7,11 @@ import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
 import useMobile from "@contexts/useMobile";
 import { Box, Button } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { a, useTransition } from "@react-spring/web";
 import { AnimatePresence, motion } from "framer-motion";
 import { Leva } from "leva";
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { IoMusicalNotes } from "react-icons/io5";
 import Sound from "react-sound";
 
@@ -165,5 +166,21 @@ export default () => {
     prevMobile.current = mobile;
   }, [mobile]);
 
-  return <App />;
+  const breakpointValues = useMemo(
+    () => ({
+      xs: 0,
+      sm: 796,
+      md: 1024,
+      lg: 1200,
+      xl: 1201,
+    }),
+    []
+  );
+  const theme = createTheme({ breakpoints: { values: breakpointValues } });
+
+  return (
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+  );
 };
