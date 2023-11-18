@@ -1498,6 +1498,11 @@ estree-walker@^0.6.1:
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.6.1.tgz#53049143f40c6eb918b23671d1fe3219f3a1b362"
   integrity sha512-SqmZANLWS0mnatqbSfRP5g8OXZC12Fgg1IwNtLsyHDzJizORW4khDfjPqJZsemPWBB2uqykUah5YpQ6epsqC/w==
 
+events@^1.0.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
+  integrity sha512-kEcvvCBByWXGnZy6JUlgAp2gBIUjfCAV6P6TgT1/aaQKcmuAEC4OZTV1I4EWQLz2gxZw76atuVyvHhTxvi0Flw==
+
 exenv@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
@@ -2005,6 +2010,13 @@ mixin-deep@^1.2.0:
   dependencies:
     for-in "^1.0.2"
     is-extendable "^1.0.1"
+
+mouse-position@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/mouse-position/-/mouse-position-2.1.0.tgz#07da807a5b085397ba17ba2e8cee48e67001bd20"
+  integrity sha512-Ra8/RFn9e9/D2v9syhF5bLo4yiWvqZzcC/5bHOvkixDAkvO3WhlWN2xQRHSirMoYk2bagIae2upXXwxTxzI3BQ==
+  dependencies:
+    events "^1.0.1"
 
 ms@2.1.2:
   version "2.1.2"

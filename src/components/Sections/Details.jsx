@@ -2,15 +2,15 @@ import ListItem, { Items } from "@components/ListItem";
 import Toolkit from "@components/Toolkit";
 import { Animation, Sections } from "@constants";
 import useSectionContext from "@contexts/SectionContext";
-import { useBreakPoint } from "@contexts/useMobile";
+import useMobile from "@contexts/useMobile";
 import { Box, Grid, Typography, styled } from "@mui/material";
-import { motion, stagger, useAnimate, useAnimation } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import debounce from "lodash.debounce";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { TypeAnimation } from "react-type-animation";
 
 const typingDelay = 2000;
-const fontColor = "rgb(148, 163, 184)";
+export const fontColor = "rgb(148, 163, 184)";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   maxWidth: "1280px",
@@ -36,41 +36,21 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
   // },
 }));
 
-const staggerMenuItems = stagger(0.2, { startDelay: 0.15 });
-
-function useMenuAnimation(isOpen) {
-  const [scope, animate] = useAnimate();
-
-  useEffect(() => {
-    return;
-    animate(
-      "li",
-      isOpen
-        ? { opacity: 1, scale: 1, filter: "blur(0px)" }
-        : { opacity: 0, scale: 0.3, filter: "blur(20px)" },
-      {
-        duration: 0.2,
-        delay: isOpen ? staggerMenuItems : 0,
-      }
-    );
-  }, [isOpen]);
-
-  return scope;
-}
-
 const StickyHeader = () => {
   const inView = useSectionContext()?.activeSection === Sections.Details;
   const controls = useAnimation();
   const [activeSection, setActiveSection] = useState("about");
   const scrollElm = useRef(null);
+  const { small } = useMobile();
 
   useEffect(() => {
-    if (!inView) {
+    if (!inView && !small) {
       controls.start({ opacity: 0 });
     }
-  }, [inView]);
+  }, [inView, small]);
 
   const handleScroll = useCallback(() => {
+    if (small) return;
     const elm1 = document.getElementById("about");
     const elm2 = document.getElementById("experience");
     const elm3 = document.getElementById("toolkit");
@@ -110,6 +90,43 @@ const StickyHeader = () => {
     };
   }, [debouncedHandleScroll]);
 
+  const renderList = useCallback(() => {
+    const list = [
+      {
+        id: "about",
+        label: "About",
+      },
+      {
+        id: "experience",
+        label: "Experience",
+      },
+      {
+        id: "toolkit",
+        label: "Toolkit",
+      },
+    ];
+
+    if (small) return null;
+
+    return (
+      <ul>
+        {list.map((item) => (
+          <li key={item?.id}>
+            <a
+              href={`#${item?.id}`}
+              style={{
+                color: fontColor,
+                fontWeight: activeSection === item?.id ? "bold" : "normal",
+              }}
+            >
+              {item?.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    );
+  }, [small, activeSection]);
+
   return (
     <Grid
       item
@@ -129,10 +146,9 @@ const StickyHeader = () => {
       }}
     >
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={small ? { opacity: 1 } : { opacity: 0 }}
         animate={controls}
         transition={{ duration: Animation.duration, delay: Animation.delay }}
-        // threshold={1}
         onViewportEnter={() => {
           controls.start({ opacity: 1 });
         }}
@@ -172,46 +188,38 @@ const StickyHeader = () => {
             }}
             repeat={Infinity}
           />
-          <br />
-          <ul>
-            <li>
-              <a
-                href="#about"
-                style={{
-                  color: fontColor,
-                  fontWeight: activeSection === "about" ? "bold" : "normal",
-                }}
-              >
-                About
-              </a>
-            </li>
-            <li>
-              <a
-                href="#experience"
-                style={{
-                  color: fontColor,
-                  fontWeight:
-                    activeSection === "experience" ? "bold" : "normal",
-                }}
-              >
-                Experience
-              </a>
-            </li>
-            <li>
-              <a
-                href="#toolkit"
-                style={{
-                  color: fontColor,
-                  fontWeight: activeSection === "toolkit" ? "bold" : "normal",
-                }}
-              >
-                Toolkit
-              </a>
-            </li>
-          </ul>
+          {renderList()}
         </Box>
       </motion.div>
     </Grid>
+  );
+};
+
+export const StickySectionHeader = ({ children, sx }) => {
+  return (
+    <Box
+      sx={{
+        height: "60px",
+        width: "calc(100% + 20rem)",
+        backgroundColor: "red",
+        position: "sticky",
+        marginLeft: "-10rem",
+        top: "0",
+        paddingLeft: "10rem",
+        zIndex: 5000,
+        backdropFilter: "blur(8px)",
+        backgroundColor: "rgba(15, 23, 42, 0.75)",
+        borderBottomColor: "rgb(229, 231, 235)",
+        alignItems: "center",
+        display: {
+          xs: "flex",
+          md: "none",
+        },
+        ...sx,
+      }}
+    >
+      {children}
+    </Box>
   );
 };
 
@@ -243,7 +251,27 @@ const About = () => {
         },
       }}
     >
-      <Typography id="about" color={fontColor} fontSize="1rem" width="100%">
+      <StickySectionHeader>
+        <Typography variant="h2" color={fontColor} fontSize="2rem">
+          About
+        </Typography>
+      </StickySectionHeader>
+      <Typography
+        id="about"
+        color={fontColor}
+        fontSize="1rem"
+        width="100%"
+        sx={{
+          marginTop: {
+            xs: 2,
+            md: 0,
+          },
+          paddingBottom: {
+            xs: 12,
+            md: 0,
+          },
+        }}
+      >
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates,
         quod tempore! Eos sunt a reiciendis veniam ab eum aperiam placeat natus
         dolore soluta autem sequi, doloribus provident. Asperiores, dolore nam?
@@ -255,6 +283,7 @@ const About = () => {
 const Experience = () => {
   const inView = useSectionContext()?.activeSection === Sections.Details;
   const controls = useAnimation();
+  const { small } = useMobile();
 
   useEffect(() => {
     if (!inView) {
@@ -266,13 +295,18 @@ const Experience = () => {
     <motion.div
       id="experience"
       className="GRID_ITEM_BOX"
-      initial={{ opacity: 0 }}
+      initial={small ? { opacity: 1 } : { opacity: 0 }}
       animate={controls}
       transition={{ duration: Animation.duration, delay: Animation.delay }}
       onViewportEnter={() => {
         controls.start({ opacity: 1 });
       }}
     >
+      <StickySectionHeader>
+        <Typography variant="h2" color={fontColor} fontSize="2rem">
+          Experience
+        </Typography>
+      </StickySectionHeader>
       <ul
         style={{
           pointerEvents: inView ? "auto" : "none",
@@ -290,8 +324,6 @@ const Experience = () => {
 const Details = memo(() => {
   const inView = useSectionContext((state) => state.activeSection) === "About";
   const controls = useAnimation();
-  const bp = useBreakPoint();
-  console.log("bp:", bp);
 
   useEffect(() => {
     if (!inView) {
@@ -303,9 +335,7 @@ const Details = memo(() => {
     <StyledGrid
       container
       className="GRID_CONTAINER"
-      sx={{
-        minHeight: "100vh",
-      }}
+      sx={{ minHeight: "100vh" }}
     >
       <StickyHeader />
       <Grid

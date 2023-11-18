@@ -1,13 +1,9 @@
 import useMobile from "@contexts/useMobile";
 import styled from "@emotion/styled";
 import { Box } from "@mui/material";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { animate, motion, useMotionValue, useTransform } from "framer-motion";
 import { memo, useCallback, useEffect, useRef } from "react";
 import HoverCard from "./HoverCard";
-
-const Container = styled.div`
-  position: relative;
-`;
 
 const RotationWrapper = styled(motion.div)`
   width: 100%;
@@ -22,11 +18,37 @@ const CardWrapper = styled(motion.div)`
   backdrop-filter: blur(4px) brightness(120%);
 `;
 
-const ShinyCard = memo(({ children }) => {
+function getRelativeCoordinates(event, referenceElement) {
+  const position = {
+    x: event.pageX,
+    y: event.pageY,
+  };
+
+  const offset = {
+    left: referenceElement.offsetLeft,
+    top: referenceElement.offsetTop,
+  };
+
+  let reference = referenceElement.offsetParent;
+
+  while (reference) {
+    offset.left += reference.offsetLeft;
+    offset.top += reference.offsetTop;
+    reference = reference.offsetParent;
+  }
+
+  return {
+    x: position.x - offset.left,
+    y: position.y - offset.top,
+  };
+}
+
+const ShinyCard = memo(({ active, children }) => {
   const cardRef = useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const { mobile } = useMobile();
+  const { small } = useMobile();
+  const mouseIdleTimer = useRef(null);
 
   const rotateX = useTransform(mouseY, (newMouseY) => {
     if (!cardRef.current) return 0;
@@ -58,29 +80,50 @@ const ShinyCard = memo(({ children }) => {
     return newRotateX;
   });
 
-  const handleMouseMove = useCallback((e) => {
-    if (mobile) return;
-    // Debounce the mouse move event
-    if (!handleMouseMove.debounced) {
-      handleMouseMove.debounced = true;
-
-      requestAnimationFrame(() => {
-        const divRect = cardRef.current.getBoundingClientRect();
-        const centerX = divRect.left + divRect.width / 2;
-        const centerY = divRect.top + divRect.height / 2;
-
-        const mouseXRelativeToCenter = e.clientX - centerX;
-        const mouseYRelativeToCenter = e.clientY - centerY;
-
-        mouseX.set(mouseXRelativeToCenter);
-        mouseY.set(mouseYRelativeToCenter);
-
-        handleMouseMove.debounced = false;
-      });
+  useEffect(() => {
+    if (!active) {
+      animate(mouseX, 0);
+      animate(mouseY, 0);
     }
-  }, []);
+  }, [active]);
 
-  // console.log("mobile:", mobile);
+  const handleMouseMove = useCallback(
+    (e) => {
+      if (small) return;
+      // Debounce the mouse move event
+      if (!handleMouseMove.debounced) {
+        handleMouseMove.debounced = true;
+
+        requestAnimationFrame(() => {
+          // console.log("__mouseMouve:", blockMouseMovement.current);
+          // if (blockMouseMovement.current) {
+          //   handleMouseMove.debounced = false;
+          //   return;
+          // }
+          const divRect = cardRef.current.getBoundingClientRect();
+          const centerX = divRect.left + divRect.width / 2;
+          const centerY = divRect.top + divRect.height / 2;
+
+          const mouseXRelativeToCenter = e.clientX - centerX;
+          const mouseYRelativeToCenter = e.clientY - centerY;
+
+          // mouseX.set(mouseXRelativeToCenter);
+          // mouseY.set(mouseYRelativeToCenter);
+          animate(mouseX, mouseXRelativeToCenter);
+          animate(mouseY, mouseYRelativeToCenter);
+
+          handleMouseMove.debounced = false;
+
+          clearTimeout(mouseIdleTimer.current);
+          mouseIdleTimer.current = setTimeout(() => {
+            animate(mouseX, 0);
+            animate(mouseY, 0);
+          }, 1000);
+        });
+      }
+    },
+    [small]
+  );
 
   useEffect(() => {
     if (cardRef.current) {
@@ -98,12 +141,20 @@ const ShinyCard = memo(({ children }) => {
     <Box
       ref={cardRef}
       sx={{
-        // background: "blue",
+        margin: "-1.5rem",
+        padding: "1.5rem",
         perspective: "1000px",
+        // backgroundColor: "blue",
         "& .card-wrapper": {
           width: {
             xs: "100%",
             md: "fit-content",
+          },
+        },
+        position: "relative",
+        "&:hover": {
+          "& > .box-shadow": {
+            opacity: "1 !important",
           },
         },
       }}
@@ -114,13 +165,22 @@ const ShinyCard = memo(({ children }) => {
     >
       <RotationWrapper
         style={{
-          rotateX: mobile ? 0 : rotateX,
-          rotateY: mobile ? 0 : rotateY,
+          rotateX: small ? 0 : rotateX,
+          rotateY: small ? 0 : rotateY,
         }}
       >
-        <CardWrapper className="card-wrapper">
+        <Box
+          className="card-wrapper"
+          component={motion.div}
+          sx={{
+            borderRadius: "20px",
+            backdropFilter: {
+              md: "blur(4px) brightness(120%)",
+            },
+          }}
+        >
           <HoverCard>{children}</HoverCard>
-        </CardWrapper>
+        </Box>
       </RotationWrapper>
     </Box>
   );

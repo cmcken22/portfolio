@@ -12,6 +12,7 @@ import { SiRedux } from "react-icons/si";
 import "semantic-ui-css/semantic.min.css";
 import { Icon } from "semantic-ui-react";
 import HoverCard from "./HoverCard";
+import { StickySectionHeader, fontColor } from "./Sections/Details";
 
 const Tools = [
   {
@@ -51,104 +52,111 @@ const Tools = [
 const Toolkit = () => {
   const inView = useSectionContext()?.activeSection === Sections.Details;
   const controls = useAnimation();
-  const { mobile } = useMobile();
+  const { mobile, small } = useMobile();
 
   useEffect(() => {
-    if (!inView && !mobile) {
+    if (!inView && !small) {
       controls.start({ opacity: 0, x: -500 }, { duration: 0 });
     }
-  }, [inView, mobile]);
+  }, [inView, small]);
 
   useEffect(() => {
-    if (mobile) {
+    if (small) {
       controls.start({ opacity: 1, x: 0 }, { duration: 0 });
     }
-  }, [mobile, inView]);
+  }, [small, inView]);
 
   return (
-    <motion.div
-      id="toolkit"
-      className="GRID_ITEM_BOX"
-      initial={{ opacity: 0, x: -500 }}
-      animate={controls}
-      transition={{ duration: Animation.duration, delay: Animation.delay }}
-      threshold={1}
-      onViewportEnter={() => {
-        controls.start({ opacity: 1, x: 0 });
-      }}
-    >
-      <HoverCard>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            gap: 2,
-            justifyContent: "center",
-            "& svg, i, .MuiTypography-root": {
-              transition: "all ease-in-out 0.3s !important",
-            },
-            "&:hover": {
+    <>
+      <StickySectionHeader>
+        <Typography variant="h2" color={fontColor} fontSize="2rem">
+          Toolkit
+        </Typography>
+      </StickySectionHeader>
+      <motion.div
+        id="toolkit"
+        className="GRID_ITEM_BOX"
+        initial={{ opacity: 0, x: -500 }}
+        animate={controls}
+        transition={{ duration: Animation.duration, delay: Animation.delay }}
+        threshold={1}
+        onViewportEnter={() => {
+          controls.start({ opacity: 1, x: 0 });
+        }}
+      >
+        <HoverCard>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap: 2,
+              justifyContent: "center",
               "& svg, i, .MuiTypography-root": {
-                color: "rgb(94, 234, 212)",
-                cursor: "default",
+                transition: "all ease-in-out 0.3s !important",
               },
-            },
-          }}
-        >
-          {Tools?.map((tool) => (
-            <Box
-              key={`tool--${tool?.name}`}
-              sx={{
-                height: "60px",
-                flex: "1",
-                display: "flex",
-                alignItems: "center",
-                px: 1,
-                // "&:hover": {
-                //   "& svg, i, .MuiTypography-root": {
-                //     color: "rgb(94, 234, 212)",
-                //     cursor: "default",
-                //   },
-                // },
-              }}
-            >
+              "&:hover": {
+                "& svg, i, .MuiTypography-root": {
+                  color: "rgb(94, 234, 212)",
+                  cursor: "default",
+                },
+              },
+            }}
+          >
+            {Tools?.map((tool) => (
               <Box
+                key={`tool--${tool?.name}`}
                 sx={{
-                  height: "30px",
-                  width: "30px",
-                  marginRight: 1,
-                  // backgroundColor: "red",
-                  "& > svg, i": {
-                    height: "100%",
-                    width: "100%",
-                  },
-                  "& > .docker": {
-                    position: "relative",
-                    top: "3px",
-                  },
+                  height: "60px",
+                  flex: "1",
+                  display: "flex",
+                  alignItems: "center",
+                  px: 1,
                   // "&:hover": {
-                  //   "& > svg, i": {
+                  //   "& svg, i, .MuiTypography-root": {
                   //     color: "rgb(94, 234, 212)",
+                  //     cursor: "default",
                   //   },
                   // },
                 }}
               >
-                {tool?.Icon && tool?.Icon()}
+                <Box
+                  sx={{
+                    height: "30px",
+                    width: "30px",
+                    marginRight: 1,
+                    // backgroundColor: "red",
+                    "& > svg, i": {
+                      height: "100%",
+                      width: "100%",
+                    },
+                    "& > .docker": {
+                      position: "relative",
+                      top: "3px",
+                    },
+                    // "&:hover": {
+                    //   "& > svg, i": {
+                    //     color: "rgb(94, 234, 212)",
+                    //   },
+                    // },
+                  }}
+                >
+                  {tool?.Icon && tool?.Icon()}
+                </Box>
+                <Typography
+                  sx={{
+                    width: "fit-content",
+                  }}
+                >
+                  {tool?.name}
+                </Typography>
               </Box>
-              <Typography
-                sx={{
-                  width: "fit-content",
-                }}
-              >
-                {tool?.name}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-      </HoverCard>
-    </motion.div>
+            ))}
+          </Box>
+        </HoverCard>
+      </motion.div>
+    </>
   );
 };
 

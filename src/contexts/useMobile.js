@@ -5,17 +5,19 @@ import { create } from "zustand";
 const mobileContext = create((set) => ({
   mobile: null,
   size: null,
+  small: false,
   setMobile: (value) => set((state) => ({ mobile: value })),
   setSize: (value) => set((state) => ({ size: value })),
+  setSmall: (value) => set((state) => ({ small: value })),
 }));
 
 export const useBreakPoint = () => {
   const theme = useTheme();
-  const xs = useMediaQuery(theme.breakpoints.down("sm"));
-  const sm = useMediaQuery(theme.breakpoints.between("sm", "md"));
-  const md = useMediaQuery(theme.breakpoints.between("md", "lg"));
-  const lg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
-  const xl = useMediaQuery(theme.breakpoints.up("xl"));
+  const xs = useMediaQuery(theme.breakpoints.down("xs"));
+  const sm = useMediaQuery(theme.breakpoints.down("sm"));
+  const md = useMediaQuery(theme.breakpoints.down("md"));
+  const lg = useMediaQuery(theme.breakpoints.down("lg"));
+  const xl = useMediaQuery(theme.breakpoints.down("xl"));
 
   if (xs) return "xs";
   if (sm) return "sm";
@@ -30,11 +32,10 @@ const useMobile = () => {
   const breakpoint = useBreakPoint();
 
   useEffect(() => {
-    if (breakpoint === "xs" || breakpoint === "sm") {
-      state.setMobile(true);
-    } else {
-      state.setMobile(false);
-    }
+    state.setMobile(breakpoint === "xs" || breakpoint === "sm");
+    state.setSmall(
+      breakpoint === "xs" || breakpoint === "sm" || breakpoint === "md"
+    );
   }, [breakpoint]);
 
   return state;

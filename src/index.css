@@ -27,8 +27,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* background: #f15946; */
-  background: #11151c;
-  transition: 0.4s ease-in-out;
+  /* background: #11151c; */
+  /* background: rgb(15, 23, 42); */
+  /* transition: 0.4s ease-in-out; */
 }
 
 html,
@@ -38,6 +39,8 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+  background: rgb(15, 23, 42);
+  transition: 0.4s ease-in-out;
 }
 
 .scrollArea {
@@ -314,7 +317,8 @@ a:hover {
   background: #111;
 }
 
-.glow-on-hover {
+.glow-on-hover,
+.glow-on-hover-mobile {
   width: 220px;
   height: 50px;
   border: none;
@@ -327,7 +331,8 @@ a:hover {
   border-radius: 10px;
 }
 
-.glow-on-hover:before {
+.glow-on-hover:before,
+.glow-on-hover-mobile:before {
   content: "";
   background: linear-gradient(
     45deg,
@@ -356,19 +361,24 @@ a:hover {
   border-radius: 10px;
 }
 
-.glow-on-hover:active {
+.glow-on-hover:active,
+.glow-on-hover-mobile:active {
   color: #000;
 }
 
-.glow-on-hover:active:after {
+.glow-on-hover:active:after,
+.glow-on-hover-mobile:active:after {
   background: transparent;
 }
 
-.glow-on-hover:hover:before {
+.glow-on-hover:hover:before,
+/* ignore hover for mobile so button is always displaying animation */
+.glow-on-hover-mobile:before {
   opacity: 1;
 }
 
-.glow-on-hover:after {
+.glow-on-hover:after,
+.glow-on-hover-mobile:after {
   z-index: -1;
   content: "";
   position: absolute;

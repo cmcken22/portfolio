@@ -8,7 +8,7 @@ const CardWrapper = styled(motion.div)`
   // backdrop-filter: blur(4px) brightness(120%);
 `;
 
-const HoverCard = memo(({ children, sx, sx2 }) => {
+const HoverCard = memo(({ children, sx, sx2, onMouseEnter, onMouseLeave }) => {
   return (
     <Box
       className="hover-card"
@@ -20,6 +20,12 @@ const HoverCard = memo(({ children, sx, sx2 }) => {
           },
         },
         ...sx,
+      }}
+      onMouseEnter={(e) => {
+        if (onMouseEnter) onMouseEnter(e);
+      }}
+      onMouseLeave={(e) => {
+        if (onMouseLeave) onMouseLeave(e);
       }}
     >
       <CardWrapper

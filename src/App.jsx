@@ -5,13 +5,14 @@ import Hero from "@components/Sections/Hero";
 import { Animation, Sections } from "@constants";
 import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
+import useSectionContext from "@contexts/SectionContext";
 import useMobile from "@contexts/useMobile";
 import { Box, Button } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { a, useTransition } from "@react-spring/web";
 import { AnimatePresence, motion } from "framer-motion";
 import { Leva } from "leva";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef } from "react";
 import { IoMusicalNotes } from "react-icons/io5";
 import Sound from "react-sound";
 
@@ -35,7 +36,8 @@ function Loader({ active, total, progress, _a }) {
 }
 
 function GateKeeper({ onClick }) {
-  // const controls = useAnimation();
+  const { mobile } = useMobile();
+
   const handleClick = useCallback((value) => {
     onClick(value);
   }, []);
@@ -55,7 +57,7 @@ function GateKeeper({ onClick }) {
       }}
     >
       <button
-        className="glow-on-hover"
+        className={mobile ? "glow-on-hover-mobile" : "glow-on-hover"}
         type="button"
         onClick={() => handleClick(true)}
       >
@@ -90,9 +92,19 @@ const App = memo(() => {
   const section1 = useRef();
   const section2 = useRef();
   const { progress } = useLoadingContext();
+  const { activeSection } = useSectionContext();
   const { enter, setEnter, musicPlayState, playMusic, allowMusic } =
     useAppContext();
-  // const [playState, setPlayState] = useState(Sound.status.STOPPED);
+
+  useEffect(() => {
+    if (activeSection !== Sections.Details) {
+      const root = document.getElementById("root");
+      root.style.backgroundColor = "#11151c";
+    } else {
+      const root = document.getElementById("root");
+      root.style.backgroundColor = "rgb(15, 23, 42)";
+    }
+  }, [activeSection]);
 
   return (
     <>
@@ -157,22 +169,21 @@ const App = memo(() => {
 export default () => {
   const { mobile } = useMobile();
   const prevMobile = useRef(mobile);
-  const [playState, setPlayState] = useState(Sound.status.STOPPED);
 
   useEffect(() => {
     if (prevMobile.current !== mobile && prevMobile.current !== null) {
-      window.location.reload();
+      // window.location.reload();
     }
     prevMobile.current = mobile;
   }, [mobile]);
 
   const breakpointValues = useMemo(
     () => ({
-      xs: 0,
-      sm: 796,
+      xs: 639,
+      sm: 768,
       md: 1024,
       lg: 1200,
-      xl: 1201,
+      xl: 1400,
     }),
     []
   );
