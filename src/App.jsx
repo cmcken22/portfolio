@@ -1,16 +1,18 @@
+import MusicToggle from "@components/MusicToggle";
 import Mysection from "@components/Mysection";
 import Details from "@components/Sections/Details";
 import Hero from "@components/Sections/Hero";
-import { Sections } from "@constants";
+import { Animation, Sections } from "@constants";
+import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
 import useMobile from "@contexts/useMobile";
 import { Box, Button } from "@mui/material";
 import { a, useTransition } from "@react-spring/web";
-import createActivityDetector from "activity-detector";
+import { AnimatePresence, motion } from "framer-motion";
 import { Leva } from "leva";
-import { useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { IoMusicalNotes } from "react-icons/io5";
 import Sound from "react-sound";
-const activityDetector = createActivityDetector();
 
 function Loader({ active, total, progress, _a }) {
   const transition = useTransition(active, {
@@ -31,15 +33,92 @@ function Loader({ active, total, progress, _a }) {
   );
 }
 
-function App() {
+function GateKeeper({ onClick }) {
+  // const controls = useAnimation();
+  const handleClick = useCallback((value) => {
+    onClick(value);
+  }, []);
+
+  return (
+    <motion.div
+      key="gatekeeper"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: Animation.duration }}
+      className="loading"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+      }}
+    >
+      <button
+        className="glow-on-hover"
+        type="button"
+        onClick={() => handleClick(true)}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.5rem",
+          }}
+        >
+          <IoMusicalNotes />
+          ENTER <IoMusicalNotes />
+        </Box>
+      </button>
+      <Button
+        className="alt-enter"
+        type="button"
+        sx={{
+          color: "rgb(94, 234, 212)",
+        }}
+        onClick={() => handleClick(false)}
+      >
+        Enter
+      </Button>
+    </motion.div>
+  );
+}
+
+const App = memo(() => {
   const section1 = useRef();
   const section2 = useRef();
   const { progress } = useLoadingContext();
+  const { enter, setEnter, musicPlayState, playMusic, allowMusic } =
+    useAppContext();
+  // const [playState, setPlayState] = useState(Sound.status.STOPPED);
 
   return (
     <>
+      <MusicToggle />
       <Leva hidden />
       <Loader active={progress < 100} progress={progress} />
+      <AnimatePresence>
+        {progress === 100 && !enter && (
+          <GateKeeper
+            onClick={(value) => {
+              setEnter(true);
+              if (value) {
+                allowMusic(true);
+                setTimeout(() => {
+                  playMusic();
+                });
+              }
+            }}
+          />
+        )}
+      </AnimatePresence>
+      <Sound
+        url="/portfolio/spotifydown.com - Never Loved.mp3"
+        playStatus={musicPlayState}
+        // onLoading={this.handleSongLoading}
+        // onPlaying={this.handleSongPlaying}
+        // onFinishedPlaying={this.handleSongFinishedPlaying}
+      />
       <Box
         className="__container"
         style={{
@@ -71,7 +150,7 @@ function App() {
       </Box>
     </>
   );
-}
+});
 
 export default () => {
   const { mobile } = useMobile();
@@ -85,33 +164,5 @@ export default () => {
     prevMobile.current = mobile;
   }, [mobile]);
 
-  return (
-    <>
-      <App />
-      <Button
-        sx={{
-          position: "fixed",
-          top: 0,
-          zIndex: 4000,
-        }}
-        onClick={() => {
-          if (playState === Sound.status.STOPPED) {
-            setPlayState(Sound.status.PLAYING);
-          } else {
-            setPlayState(Sound.status.STOPPED);
-          }
-        }}
-      >
-        CLICK
-      </Button>
-      <Sound
-        url="/portfolio/spotifydown.com - Never Loved.mp3"
-        playStatus={playState}
-        // playFromPosition={300 /* in milliseconds */}
-        // onLoading={this.handleSongLoading}
-        // onPlaying={this.handleSongPlaying}
-        // onFinishedPlaying={this.handleSongFinishedPlaying}
-      />
-    </>
-  );
+  return <App />;
 };

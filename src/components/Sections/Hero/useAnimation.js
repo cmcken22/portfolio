@@ -1,37 +1,9 @@
+import useAppContext from "@contexts/AppContext";
+import useLoadingContext from "@contexts/LoadingContext";
 import * as THREE from "https://cdn.skypack.dev/three@0.124.0";
 import { RGBELoader } from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/loaders/RGBELoader.js";
 import { OBJLoader } from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/loaders/OBJLoader.js";
-import { useCallback, useEffect, useRef } from "react";
-import useLoadingContext from "../../../contexts/LoadingContext";
-
-// create a new RGBELoader to import the HDR
-// const hdrEquirect = new RGBELoader()
-//   // add your HDR //
-//   .setPath(
-//     "https://raw.githubusercontent.com/miroleon/gradient_hdr_freebie/main/Gradient_HDR_Freebies/"
-//   )
-//   .load("ml_gradient_freebie_01.hdr", function () {
-//     hdrEquirect.mapping = THREE.EquirectangularReflectionMapping;
-//   });
-
-// var scene = new THREE.Scene();
-// scene.environment = hdrEquirect;
-// scene.fog = new THREE.FogExp2(0x11151c, 0.15);
-
-// // create a group to add your camera and object
-// // by creating a group, you can can work around the fact that three.js currently doesn't allow to add a rotation to the HDR
-// // when you add the camera and the object to the group, you can later animate the entire group
-// // you can then create a scene within the group, but then rotate the entire group, which simulates the rotation of the HDR
-// var group = new THREE.Group();
-// scene.add(group);
-
-// const pointlight = new THREE.PointLight(0x85ccb8, 7.5, 20);
-// pointlight.position.set(0, 3, 2);
-// group.add(pointlight);
-
-// const pointlight2 = new THREE.PointLight(0x9f85cc, 7.5, 20);
-// pointlight2.position.set(0, 3, 2);
-// group.add(pointlight2);
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const FPS = 60;
 
@@ -52,14 +24,24 @@ const useAnimation = (visible, mobile) => {
   const animationFrame = useRef(null);
   const timer = useRef(null);
   const count = useRef(0);
+  const [delayedEnter, setDelayedEnter] = useState(false);
 
   const { loading, incrementProgress } = useLoadingContext();
+  const { enter } = useAppContext();
+
+  useEffect(() => {
+    if (!enter) return;
+    setTimeout(() => {
+      setDelayedEnter(true);
+    }, 1000);
+  }, [enter]);
 
   useEffect(() => {
     // only do this once, after the component is initialized
     // we do not need to do this every time the component re-renders
     if (initialized.current) return;
 
+    console.log("xxx loading HDR");
     // create a new RGBELoader to import the HDR
     const hdrEquirect = new RGBELoader()
       .setPath(
@@ -89,15 +71,20 @@ const useAnimation = (visible, mobile) => {
     group.current.add(pointlight2.current);
 
     return () => {
-      // alert("unmounting");
+      if (!initialized.current) return;
       initialized.current = false;
       cancelAnimationFrame(animationFrame.current);
+
+      if (!scene.current || !scene?.current?.children) return;
+      while (scene.current.children.length > 0) {
+        scene.current.remove(scene.current?.children[0]);
+      }
     };
   }, []);
 
   useEffect(() => {
     if (!initialized.current) return;
-    if (!visible) {
+    if (!visible || !delayedEnter) {
       if (timer.current) {
         clearTimeout(timer.current);
         timer.current = null;
@@ -105,7 +92,7 @@ const useAnimation = (visible, mobile) => {
       allowAnimate.current = false;
       cancelAnimationFrame(animationFrame.current);
     }
-    if (visible) {
+    if (visible && delayedEnter) {
       if (timer.current) {
         clearTimeout(timer.current);
         timer.current = null;
@@ -115,7 +102,7 @@ const useAnimation = (visible, mobile) => {
         animate("useEffect - test");
       }, 500);
     }
-  }, [visible]);
+  }, [visible, delayedEnter]);
 
   const update = useCallback((x) => {
     if (!initialized.current) return;
@@ -147,6 +134,7 @@ const useAnimation = (visible, mobile) => {
 
   const animate = useCallback(
     (x) => {
+      console.log("animate:", allowAnimate.current);
       if (!allowAnimate?.current) return;
       update(x);
       renderer.current.render(scene.current, camera.current);
@@ -158,8 +146,9 @@ const useAnimation = (visible, mobile) => {
       if (loading === true) {
         if (count.current < 5) {
           incrementProgress(20);
+        } else {
+          allowAnimate.current = false;
         }
-        // incrementProgress(0.01);
       }
       count.current++;
     },
@@ -197,6 +186,7 @@ const useAnimation = (visible, mobile) => {
     // Load the model
     const objloader = new OBJLoader();
     objloader.load("/portfolio/models/craneo.OBJ", (obj) => {
+      console.log("xxx OBJECT LOADED");
       object.current = obj;
       object.current.children[0].material = material1;
       object.current.scale.setScalar(mobile ? 1.25 : 2);
@@ -215,9 +205,12 @@ const useAnimation = (visible, mobile) => {
     initialized.current = true;
   }, [initScene]);
 
+  const doneRef = useRef(false);
+
   useEffect(() => {
     if (!initialized.current) return;
-    if (visible && object.current) {
+    if (visible && object.current && !doneRef.current) {
+      doneRef.current = true;
       object.current.scale.setScalar(mobile ? 1.25 : 2);
     }
   }, [mobile, visible]);
