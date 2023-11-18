@@ -118,12 +118,20 @@ const ListItem = memo(({ item, index }) => {
       <ShinyCard active={cardHoverStatus?.[index]}>
         <li className="LIST_ITEM">
           <Grid container>
-            <Grid item xs={3} md={4}>
+            <Grid item xs={12} sm={3} md={4}>
               <Typography color={fontColor} textAlign="left">
                 {startDate} - {endDate}
               </Typography>
             </Grid>
-            <Grid item xs={9} md={8} pl={2}>
+            <Grid
+              item
+              xs={12}
+              sm={9}
+              md={8}
+              sx={{
+                paddingLeft: { md: "1rem" },
+              }}
+            >
               <Typography color={fontColor} textAlign="left" width="100%">
                 {company}
               </Typography>
@@ -163,6 +171,7 @@ const ListItem = memo(({ item, index }) => {
     position,
     startDate,
     tags,
+    small,
   ]);
 
   const renderWrapper = useCallback(() => {

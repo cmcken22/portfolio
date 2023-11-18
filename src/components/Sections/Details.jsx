@@ -2,7 +2,7 @@ import ListItem, { Items } from "@components/ListItem";
 import Toolkit from "@components/Toolkit";
 import { Animation, Sections } from "@constants";
 import useSectionContext from "@contexts/SectionContext";
-import useMobile from "@contexts/useMobile";
+import useMobile, { useBreakPoint } from "@contexts/useMobile";
 import { Box, Grid, Typography, styled } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import debounce from "lodash.debounce";
@@ -127,6 +127,59 @@ const StickyHeader = () => {
     );
   }, [small, activeSection]);
 
+  const renderSocials = useCallback(() => {
+    const list = [
+      {
+        id: "github",
+        label: "Github",
+        link: "",
+      },
+      {
+        id: "linkedin",
+        label: "LinkedIn",
+        link: "",
+      },
+      {
+        id: "instagram",
+        label: "Instagram",
+        link: "",
+      },
+      {
+        id: "imgur",
+        label: "imgur",
+        link: "",
+      },
+    ];
+
+    return (
+      <Box
+        display="flex"
+        flexDirection="row"
+        gap={2}
+        sx={{
+          position: {
+            md: "absolute",
+          },
+          marginTop: "2rem",
+          bottom: {
+            xs: "3rem",
+            md: "6rem",
+          },
+        }}
+      >
+        {list?.map((item) => (
+          <Box
+            sx={{
+              height: "24px",
+              width: "24px",
+              backgroundColor: "rgba(45, 45, 45, 0.7)",
+            }}
+          />
+        ))}
+      </Box>
+    );
+  }, []);
+
   return (
     <Grid
       item
@@ -134,7 +187,11 @@ const StickyHeader = () => {
       md={6}
       className="GRID_ITEM_1"
       sx={{
-        height: "fit-content",
+        height: {
+          xs: "fit-content",
+          md: "100vh",
+        },
+        // backgroundColor: "red",
         position: {
           md: "sticky",
         },
@@ -153,14 +210,7 @@ const StickyHeader = () => {
           controls.start({ opacity: 1 });
         }}
       >
-        <Box
-          pt={2}
-          sx={{
-            width: "100%",
-            position: "sticky",
-            top: "0",
-          }}
-        >
+        <Box pt={2}>
           <Typography variant="h1" color={fontColor} fontSize="3rem">
             Conner McKenna
           </Typography>
@@ -189,6 +239,7 @@ const StickyHeader = () => {
             repeat={Infinity}
           />
           {renderList()}
+          {renderSocials()}
         </Box>
       </motion.div>
     </Grid>
@@ -200,12 +251,11 @@ export const StickySectionHeader = ({ children, sx }) => {
     <Box
       sx={{
         height: "60px",
-        width: "calc(100% + 20rem)",
-        backgroundColor: "red",
+        width: "97vw",
         position: "sticky",
-        marginLeft: "-10rem",
         top: "0",
-        paddingLeft: "10rem",
+        marginLeft: "-48px",
+        paddingLeft: "48px",
         zIndex: 5000,
         backdropFilter: "blur(8px)",
         backgroundColor: "rgba(15, 23, 42, 0.75)",
@@ -324,6 +374,9 @@ const Experience = () => {
 const Details = memo(() => {
   const inView = useSectionContext((state) => state.activeSection) === "About";
   const controls = useAnimation();
+  const bp = useBreakPoint();
+
+  console.log("bp:", bp);
 
   useEffect(() => {
     if (!inView) {
@@ -348,6 +401,10 @@ const Details = memo(() => {
           height: "100%",
           width: "100%",
           position: "relative",
+          // marginTop: {
+          //   sm: "6rem !important",
+          //   md: "6rem !important",
+          // },
         }}
       >
         <About />
