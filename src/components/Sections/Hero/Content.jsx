@@ -1,11 +1,38 @@
 import { Sections } from "@constants";
+import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
 import useSectionContext from "@contexts/SectionContext";
 import useMobile from "@contexts/useMobile";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useMediaQuery } from "@mui/material";
 import { a, useTransition } from "@react-spring/web";
-import { useEffect, useState } from "react";
-import useAnimation from "./useAnimation";
+import { useCallback, useEffect, useRef, useState } from "react";
+import SkullAnimation from "../../../SkullAnimation";
+
+// @media screen and (max-width: 480px)
+/* Mobile Landscape */
+// @media screen and (min-width: 481px) and (max-width: 767px)
+
+/* Tablet */
+// @media screen and (min-width: 768px) and (max-width: 1023px)
+
+/* Small Desktop */
+// @media screen and (min-width: 1024px) and (max-width: 1199px)
+
+const useCustomBreakPoints = () => {
+  const xs = useMediaQuery("(max-width: 480px)");
+  const sm = useMediaQuery("(min-width: 481px) and (max-width: 767px)");
+  const md = useMediaQuery("(min-width: 768px) and (max-width: 1023px)");
+  const lg = useMediaQuery("(min-width: 1024px) and (max-width: 1199px)");
+  const xl = useMediaQuery("(min-width: 1200px)");
+
+  if (xs) return "xs";
+  if (sm) return "sm";
+  if (md) return "md";
+  if (lg) return "lg";
+  if (xl) return "xl";
+  return "xl";
+};
 
 function ScrollIndicator({ active }) {
   const transition = useTransition(active, {
@@ -42,20 +69,107 @@ function ScrollIndicator({ active }) {
 const Content = () => {
   const { mobile } = useMobile();
   const { loading } = useLoadingContext();
+  const { enter } = useAppContext();
   const [delayedStart, setDelayedStart] = useState(false);
   const inView = useSectionContext()?.activeSection === Sections.Hero;
-  useAnimation(inView, mobile);
+  // useAnimation(inView, mobile);
+  const skullAnimation = useRef(null);
+
+  const bp = useCustomBreakPoints();
+
+  const getScalar = useCallback(() => {
+    if (bp === "xs") return 0.9;
+    if (bp === "sm") return 1.15;
+    if (bp === "md") return 1.5;
+    if (bp === "lg") return 2;
+    if (bp === "xl") return 2.5;
+    return 1;
+  }, [bp]);
+
+  const getPosition = useCallback(() => {
+    if (bp === "xs") return 0.14;
+    if (bp === "sm") return 0.1;
+    if (bp === "md") return 0.25;
+    if (bp === "lg") return 0.25;
+    if (bp === "xl") return 0.25;
+    return 0.25;
+  }, [bp]);
+
+  useEffect(() => {
+    console.clear();
+    if (!skullAnimation.current) {
+      skullAnimation.current = new SkullAnimation(getPosition(), getScalar());
+      console.log("skullAnimation:", skullAnimation.current);
+    }
+  }, [getPosition, getScalar]);
 
   const text1 = "Conner";
   const text2 = "McKenna";
 
   useEffect(() => {
     if (!loading) {
-      setTimeout(() => {
-        setDelayedStart(true);
+      if (!enter) {
+        console.log("FINISHED LOADING", enter);
+        skullAnimation.current?.pause();
+      } else {
+        console.log("FINISHED LOADING", enter);
+        skullAnimation.current?.setAllowRotation(true);
+        skullAnimation.current?.resume();
+      }
+    }
+  }, [loading, enter]);
+
+  const timer = useRef(null);
+
+  useEffect(() => {
+    if (!inView) {
+      clearTimeout(timer.current);
+      skullAnimation.current?.pause();
+    } else {
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => {
+        if (skullAnimation?.current) {
+          skullAnimation.current?.resume();
+        }
       }, 500);
     }
-  }, [loading]);
+  }, [inView]);
+
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "x") {
+      console.log(
+        "skullAnimation.current?.state:",
+        skullAnimation.current?.state
+      );
+      // skullAnimation.current?.destroy();
+      if (skullAnimation.current?.state === "PAUSED") {
+        skullAnimation.current?.resume();
+      } else {
+        skullAnimation.current?.pause();
+      }
+    }
+  }, []);
+
+  const handleScroll = useCallback((e) => {
+    // if (skullAnimation?.current) {
+    //   skullAnimation.current?.pause();
+    // }
+    // clearTimeout(timer.current);
+    // timer.current = setTimeout(() => {
+    //   if (skullAnimation?.current) {
+    //     skullAnimation.current?.resume();
+    //   }
+    // }, 1000);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleKeyDown, handleScroll]);
 
   return (
     <div
@@ -81,7 +195,7 @@ const Content = () => {
           <br />
           {text2}
         </div>
-        <ScrollIndicator active={inView && delayedStart} />
+        <ScrollIndicator active={inView} />
       </div>
 
       <div className="canvas-container">

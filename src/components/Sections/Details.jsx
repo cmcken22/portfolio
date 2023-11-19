@@ -117,7 +117,7 @@ const StickyHeader = () => {
       <Box
         sx={{
           display: {
-            sm: "none",
+            xs: "none",
             md: "block",
           },
         }}
@@ -315,7 +315,7 @@ export const StickySectionHeader = ({ children, sx }) => {
     <Box
       sx={{
         height: "60px",
-        width: "97vw",
+        width: "100vw",
         position: "sticky",
         top: "0",
         marginLeft: "-48px",

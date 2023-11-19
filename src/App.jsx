@@ -8,7 +8,7 @@ import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
 import useSectionContext from "@contexts/SectionContext";
 import useMobile from "@contexts/useMobile";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { a, useTransition } from "@react-spring/web";
 import { AnimatePresence, motion } from "framer-motion";
@@ -17,29 +17,43 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { IoMusicalNotes } from "react-icons/io5";
 import Sound from "react-sound";
 
-function Loader({ active, total, progress, _a }) {
+function Loader({ active, total, progress: p, _a }) {
   const [delayedStart, setDelayedStart] = useState(active);
 
   const transition = useTransition(delayedStart, {
     from: { opacity: 1, progress: 0 },
     leave: { opacity: 0, progress: 100 },
-    update: { progress },
+    update: { progress: p },
   });
 
   useEffect(() => {
-    if (progress >= 100 && !active) {
+    if (p >= 100 && !active) {
       setTimeout(() => {
         setDelayedStart(false);
-      }, 500);
+      }, 2000);
     }
-  }, [active, progress]);
+  }, [active, p]);
+
+  console.log("p:", p);
 
   return transition(({ progress, opacity }, active) => {
     if (!active) return null;
     return (
       <a.div className="loading" style={{ opacity }}>
-        <div className="loading-bar-container">
-          <a.div className="loading-bar" style={{ width: progress }}></a.div>
+        <div className="loading-bar-container" style={{ position: "relative" }}>
+          <a.div className="loading-bar" style={{ width: progress }}>
+            <Typography
+              variant="h6"
+              textAlign="center"
+              width="100%"
+              position="absolute"
+              top="0"
+              left="0"
+              sx={{ color: "white", fontWeight: "bold" }}
+            >
+              {Math.round(p)}%
+            </Typography>
+          </a.div>
         </div>
       </a.div>
     );
@@ -106,22 +120,67 @@ const App = memo(() => {
   const { activeSection } = useSectionContext();
   const { enter, setEnter, musicPlayState, playMusic, allowMusic } =
     useAppContext();
+  const { mobile } = useMobile();
 
   useEffect(() => {
     if (activeSection !== Sections.Details) {
-      const root = document.getElementById("root");
+      const root = document.body;
       root.style.backgroundColor = "#11151c";
     } else {
-      const root = document.getElementById("root");
+      const root = document.body;
       root.style.backgroundColor = "rgb(15, 23, 42)";
     }
   }, [activeSection]);
+
+  const timer = useRef(null);
+
+  const handleMouseMove = useCallback(
+    (e) => {
+      const root = document.getElementById("root");
+      if (!root) return;
+
+      if (mobile) {
+        root.style.background = "none";
+        window.removeEventListener("mousemove", handleMouseMove);
+        return;
+      }
+
+      cancelAnimationFrame(timer.current);
+
+      timer.current = requestAnimationFrame(() => {
+        const x = e.clientX;
+        const y = e.clientY;
+        $("#root").css(
+          "background",
+          "radial-gradient(600px at " +
+            x +
+            "px " +
+            y +
+            "px, rgba(29, 78, 216, 0.15), transparent 80%)"
+        );
+      });
+    },
+    [mobile]
+  );
+
+  useEffect(() => {
+    if (activeSection === Sections.Details) {
+      window.addEventListener("mousemove", handleMouseMove);
+    } else {
+      window.removeEventListener("mousemove", handleMouseMove);
+    }
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [handleMouseMove, activeSection]);
 
   return (
     <>
       <MusicToggle />
       <Leva hidden />
-      <Loader active={progress !== 100} progress={progress} />
+      {progress !== 100 && (
+        <Loader active={progress !== 100} progress={progress} />
+      )}
       <AnimatePresence>
         {progress === 100 && !enter && (
           <GateKeeper

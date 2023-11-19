@@ -107,8 +107,13 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
-  background: rgb(15, 23, 42);
-  transition: 0.4s ease-in-out;
+  /* background: rgb(15, 23, 42); */
+  /* transition: 0.4s ease-in-out; */
+  /* background: radial-gradient(
+    600px at 1034px 352px,
+    rgba(29, 78, 216, 0.15),
+    transparent 80%
+  ); */
 }
 
 .scrollArea {
@@ -190,7 +195,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--background-color);
+  /* background-color: var(--background-color); */
   font-family: "Open Sans", sans-serif;
   color: var(--text-color);
   /* text-align: center; */
@@ -461,17 +466,20 @@ a:hover {
 .glow-on-hover:active,
 .glow-on-hover-mobile:active {
   color: #000;
+  border-radius: 10px;
 }
 
 .glow-on-hover:active:after,
 .glow-on-hover-mobile:active:after {
   background: transparent;
+  border-radius: 10px;
 }
 
 .glow-on-hover:hover:before,
 /* ignore hover for mobile so button is always displaying animation */
 .glow-on-hover-mobile:before {
   opacity: 1;
+  border-radius: 10px;
 }
 
 .glow-on-hover:after,

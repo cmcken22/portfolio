@@ -149,6 +149,15 @@ const useAnimation = (visible, mobile) => {
         animate("useEffect - test");
       }, 500);
     }
+    return () => {
+      if (!initialized.current) return;
+      if (timer.current) {
+        clearTimeout(timer.current);
+        timer.current = null;
+      }
+      allowAnimate.current = false;
+      cancelAnimationFrame(animationFrame.current);
+    };
   }, [visible, delayedEnter]);
 
   const update = useCallback((x) => {
@@ -179,6 +188,8 @@ const useAnimation = (visible, mobile) => {
     camera.current.lookAt(0, 0, 0);
   }, []);
 
+  const timerxxx = useRef(null);
+
   const animate = useCallback(
     (x) => {
       // console.log("animate:", allowAnimate.current);
@@ -186,7 +197,11 @@ const useAnimation = (visible, mobile) => {
       update(x);
       renderer.current.render(scene.current, camera.current);
 
-      setTimeout(() => {
+      // cancelAnimationFrame(animationFrame.current);
+
+      clearTimeout(timerxxx.current);
+
+      timerxxx.current = setTimeout(() => {
         animationFrame.current = requestAnimationFrame(() => animate(x));
       }, 1000 / FPS);
 
