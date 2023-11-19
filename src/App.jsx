@@ -2,6 +2,7 @@ import MusicToggle from "@components/MusicToggle";
 import Mysection from "@components/Mysection";
 import Details from "@components/Sections/Details";
 import Hero from "@components/Sections/Hero";
+import typography from "@components/typography";
 import { Animation, Sections } from "@constants";
 import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
@@ -197,7 +198,10 @@ export default () => {
     }),
     []
   );
-  const theme = createTheme({ breakpoints: { values: breakpointValues } });
+  const theme = createTheme({
+    typography,
+    breakpoints: { values: breakpointValues },
+  });
 
   return (
     <ThemeProvider theme={theme}>

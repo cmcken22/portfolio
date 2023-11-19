@@ -13,14 +13,13 @@ import { MdEmail } from "react-icons/md";
 import { TypeAnimation } from "react-type-animation";
 
 const typingDelay = 2000;
-export const fontColor = "rgb(148, 163, 184)";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   maxWidth: "1280px",
   paddingLeft: theme.spacing(6),
   paddingRight: theme.spacing(6),
 
-  [theme.breakpoints.up("lg")]: {
+  [theme.breakpoints.up("md")]: {
     paddingLeft: theme.spacing(12),
     paddingRight: theme.spacing(12),
   },
@@ -45,12 +44,17 @@ const StickyHeader = () => {
   const [activeSection, setActiveSection] = useState("about");
   const scrollElm = useRef(null);
   const { small } = useMobile();
+  const [typingAnimationKey, setTypingAnimationKey] = useState(0);
 
   useEffect(() => {
     if (!inView && !small) {
       controls.start({ opacity: 0 });
     }
   }, [inView, small]);
+
+  useEffect(() => {
+    setTypingAnimationKey((prev) => prev + 1);
+  }, [inView]);
 
   const handleScroll = useCallback(() => {
     if (small) return;
@@ -112,18 +116,48 @@ const StickyHeader = () => {
     if (small) return null;
 
     return (
-      <ul>
+      <ul style={{ marginTop: "4rem" }}>
         {list.map((item) => (
           <li key={item?.id}>
-            <a
-              href={`#${item?.id}`}
-              style={{
-                color: fontColor,
-                fontWeight: activeSection === item?.id ? "bold" : "normal",
+            <Box
+              py="12px"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                "&:hover": {
+                  "& .line": {
+                    height: "1px",
+                    width: "64px",
+                  },
+                  "& a": {
+                    fontWeight: "bold !important",
+                    color: "white !important",
+                  },
+                },
               }}
             >
-              {item?.label}
-            </a>
+              <Box
+                className="line"
+                sx={{
+                  height: activeSection === item?.id ? "1px" : "0.5px",
+                  width: activeSection === item?.id ? "64px" : "32px",
+                  backgroundColor: "white",
+                  marginRight: 1,
+                  transition: "all 0.2s ease-in-out",
+                }}
+              />
+
+              <a
+                href={`#${item?.id}`}
+                style={{
+                  fontWeight: activeSection === item?.id ? "bold" : "normal",
+                  transition: "all 0.2s ease-in-out",
+                  color: activeSection === item?.id ? "white" : "",
+                }}
+              >
+                {item?.label}
+              </a>
+            </Box>
           </li>
         ))}
       </ul>
@@ -175,7 +209,6 @@ const StickyHeader = () => {
             sx={{
               height: "24px",
               width: "24px",
-              // backgroundColor: "red",
               "& svg": {
                 height: "100%",
                 width: "100%",
@@ -218,7 +251,6 @@ const StickyHeader = () => {
           xs: "fit-content",
           md: "100vh",
         },
-        // backgroundColor: "red",
         position: {
           md: "sticky",
         },
@@ -238,10 +270,9 @@ const StickyHeader = () => {
         }}
       >
         <Box pt={2}>
-          <Typography variant="h1" color={fontColor} fontSize="3rem">
-            Conner McKenna
-          </Typography>
+          <Typography variant="h1">Conner McKenna</Typography>
           <TypeAnimation
+            key={typingAnimationKey}
             sequence={[
               "Software Engineer",
               typingDelay,
@@ -261,7 +292,6 @@ const StickyHeader = () => {
             style={{
               fontSize: "2em",
               display: "inline-block",
-              color: fontColor,
             }}
             repeat={Infinity}
           />
@@ -330,20 +360,12 @@ const About = () => {
       }}
     >
       <StickySectionHeader>
-        <Typography variant="h2" color={fontColor} fontSize="2rem">
-          About
-        </Typography>
+        <Typography variant="h2">About</Typography>
       </StickySectionHeader>
       <Typography
         id="about"
-        color={fontColor}
-        fontSize="1rem"
         width="100%"
         sx={{
-          // marginTop: {
-          //   xs: 2,
-          //   md: 0,
-          // },
           paddingBottom: {
             xs: 12,
             md: 0,
@@ -381,9 +403,7 @@ const Experience = () => {
       }}
     >
       <StickySectionHeader>
-        <Typography variant="h2" color={fontColor} fontSize="2rem">
-          Experience
-        </Typography>
+        <Typography variant="h2">Experience</Typography>
       </StickySectionHeader>
       <Box
         sx={{

@@ -128,8 +128,12 @@ const ListItem = memo(({ item, index }) => {
           <li className="LIST_ITEM">
             <Grid container>
               <Grid item xs={12} sm={3} md={4}>
-                <Typography color={fontColor} textAlign="left">
-                  {startDate} - {endDate}
+                <Typography
+                  // color={fontColor}
+                  textAlign="left"
+                  fontSize="12px"
+                >
+                  {startDate} — {endDate}
                 </Typography>
               </Grid>
               <Grid
@@ -146,26 +150,25 @@ const ListItem = memo(({ item, index }) => {
                   color={fontColor}
                   textAlign="left"
                   width="100%"
-                  fontSize="1rem"
                   sx={{
                     transition: "all ease-in-out 0.3s !important",
                   }}
                 >
                   {company}
                 </Typography>
-                <Typography color={fontColor} textAlign="left" width="100%">
+                <Typography textAlign="left" width="100%">
                   {position}
                 </Typography>
                 <Typography
-                  color={fontColor}
                   textAlign="left"
                   width="100%"
-                  fontSize="14px"
+                  variant="body2"
+                  // fontSize="14px"
                   mt={2}
                 >
                   {description}
                 </Typography>
-                <Box display="flex" flexDirection="row" flexWrap="wrap">
+                <Box display="flex" flexDirection="row" flexWrap="wrap" mt={1}>
                   {tags?.map((tag) => (
                     <Chip
                       key={`tag--${tag}`}

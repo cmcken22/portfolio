@@ -12,7 +12,7 @@ import { FaNodeJs, FaReact, FaSass } from "react-icons/fa";
 import { IoLogoJavascript } from "react-icons/io5";
 import { SiRedux } from "react-icons/si";
 import HoverCard from "./HoverCard";
-import { StickySectionHeader, fontColor } from "./Sections/Details";
+import { StickySectionHeader } from "./Sections/Details";
 
 const Tools = [
   {
@@ -74,9 +74,7 @@ const Toolkit = () => {
   return (
     <>
       <StickySectionHeader>
-        <Typography variant="h2" color={fontColor} fontSize="2rem">
-          Toolkit
-        </Typography>
+        <Typography variant="h2">Toolkit</Typography>
       </StickySectionHeader>
       <motion.div
         id="toolkit"
@@ -97,6 +95,7 @@ const Toolkit = () => {
               flexDirection: "row",
               flexWrap: "wrap",
               gap: 2,
+              maxWidth: "600px",
               justifyContent: "center",
               "& svg, i, .MuiTypography-root": {
                 transition: "all ease-in-out 0.3s !important",
@@ -114,7 +113,8 @@ const Toolkit = () => {
                 key={`tool--${tool?.name}`}
                 sx={{
                   height: "60px",
-                  flex: "1",
+                  // flex: "1 0 21%",
+                  flex: 1,
                   display: "flex",
                   alignItems: "center",
                   px: 1,
