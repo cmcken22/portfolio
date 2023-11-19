@@ -113,56 +113,63 @@ const StickyHeader = () => {
       },
     ];
 
-    if (small) return null;
-
     return (
-      <ul style={{ marginTop: "4rem" }}>
-        {list.map((item) => (
-          <li key={item?.id}>
-            <Box
-              py="12px"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                "&:hover": {
-                  "& .line": {
-                    height: "1px",
-                    width: "64px",
-                  },
-                  "& a": {
-                    fontWeight: "bold !important",
-                    color: "white !important",
-                  },
-                },
-              }}
-            >
+      <Box
+        sx={{
+          display: {
+            sm: "none",
+            md: "block",
+          },
+        }}
+      >
+        <ul style={{ marginTop: "4rem" }}>
+          {list.map((item) => (
+            <li key={item?.id}>
               <Box
-                className="line"
+                py="12px"
                 sx={{
-                  height: activeSection === item?.id ? "1px" : "0.5px",
-                  width: activeSection === item?.id ? "64px" : "32px",
-                  backgroundColor: "white",
-                  marginRight: 1,
-                  transition: "all 0.2s ease-in-out",
-                }}
-              />
-
-              <a
-                href={`#${item?.id}`}
-                style={{
-                  fontWeight: activeSection === item?.id ? "bold" : "normal",
-                  transition: "all 0.2s ease-in-out",
-                  color: activeSection === item?.id ? "white" : "",
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": {
+                    "& .line": {
+                      height: "1px",
+                      width: "64px",
+                    },
+                    "& a": {
+                      fontWeight: "bold !important",
+                      color: "white !important",
+                    },
+                  },
                 }}
               >
-                {item?.label}
-              </a>
-            </Box>
-          </li>
-        ))}
-      </ul>
+                <Box
+                  className="line"
+                  sx={{
+                    height: activeSection === item?.id ? "1px" : "0.5px",
+                    width: activeSection === item?.id ? "64px" : "32px",
+                    backgroundColor: "white",
+                    marginRight: 1,
+                    transition: "all 0.2s ease-in-out",
+                  }}
+                />
+
+                <a
+                  href={`#${item?.id}`}
+                  style={{
+                    fontWeight: activeSection === item?.id ? "bold" : "normal",
+                    transition: "all 0.2s ease-in-out",
+                    color: activeSection === item?.id ? "white" : "",
+                  }}
+                >
+                  {item?.label}
+                </a>
+              </Box>
+            </li>
+          ))}
+        </ul>
+      </Box>
     );
-  }, [small, activeSection]);
+  }, [activeSection]);
 
   const renderSocials = useCallback(() => {
     const list = [
