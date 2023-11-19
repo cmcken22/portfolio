@@ -7,6 +7,9 @@ import { Box, Grid, Typography, styled } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import debounce from "lodash.debounce";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { BsInstagram } from "react-icons/bs";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
 import { TypeAnimation } from "react-type-animation";
 
 const typingDelay = 2000;
@@ -132,22 +135,22 @@ const StickyHeader = () => {
       {
         id: "github",
         label: "Github",
-        link: "",
+        icon: () => <FaGithub />,
       },
       {
         id: "linkedin",
         label: "LinkedIn",
-        link: "",
+        icon: () => <FaLinkedin />,
       },
       {
         id: "instagram",
         label: "Instagram",
-        link: "",
+        icon: () => <BsInstagram />,
       },
       {
-        id: "imgur",
-        label: "imgur",
-        link: "",
+        id: "email",
+        label: "Email",
+        icon: () => <MdEmail />,
       },
     ];
 
@@ -172,9 +175,21 @@ const StickyHeader = () => {
             sx={{
               height: "24px",
               width: "24px",
-              backgroundColor: "rgba(45, 45, 45, 0.7)",
+              // backgroundColor: "rgba(45, 45, 45, 0.7)",
+              "& svg": {
+                height: "100%",
+                width: "100%",
+                cursor: "pointer",
+              },
+              "&:hover": {
+                "& svg": {
+                  color: "rgb(94, 234, 212)",
+                },
+              },
             }}
-          />
+          >
+            {item?.icon()}
+          </Box>
         ))}
       </Box>
     );
@@ -261,6 +276,7 @@ export const StickySectionHeader = ({ children, sx }) => {
         backgroundColor: "rgba(15, 23, 42, 0.75)",
         borderBottomColor: "rgb(229, 231, 235)",
         alignItems: "center",
+        marginBottom: "1rem",
         display: {
           xs: "flex",
           md: "none",
@@ -312,10 +328,10 @@ const About = () => {
         fontSize="1rem"
         width="100%"
         sx={{
-          marginTop: {
-            xs: 2,
-            md: 0,
-          },
+          // marginTop: {
+          //   xs: 2,
+          //   md: 0,
+          // },
           paddingBottom: {
             xs: 12,
             md: 0,
@@ -357,16 +373,19 @@ const Experience = () => {
           Experience
         </Typography>
       </StickySectionHeader>
-      <ul
-        style={{
-          pointerEvents: inView ? "auto" : "none",
-          paddingTop: "6rem",
+      <Box
+        sx={{
+          paddingTop: {
+            md: 12,
+          },
         }}
       >
-        {Items?.map((item, index) => (
-          <ListItem key={`list-item--${index}`} item={item} index={index} />
-        ))}
-      </ul>
+        <ul style={{ pointerEvents: inView ? "auto" : "none" }}>
+          {Items?.map((item, index) => (
+            <ListItem key={`list-item--${index}`} item={item} index={index} />
+          ))}
+        </ul>
+      </Box>
     </motion.div>
   );
 };
@@ -375,8 +394,7 @@ const Details = memo(() => {
   const inView = useSectionContext((state) => state.activeSection) === "About";
   const controls = useAnimation();
   const bp = useBreakPoint();
-
-  console.log("bp:", bp);
+  // console.log("bp:", bp);
 
   useEffect(() => {
     if (!inView) {
@@ -388,7 +406,16 @@ const Details = memo(() => {
     <StyledGrid
       container
       className="GRID_CONTAINER"
-      sx={{ minHeight: "100vh" }}
+      sx={{
+        minHeight: "100vh",
+        // backgroundColor: {
+        //   xs: "red",
+        //   sm: red[100],
+        //   md: blue[500],
+        //   lg: green[500],
+        //   xl: "purple",
+        // },
+      }}
     >
       <StickyHeader />
       <Grid
@@ -401,10 +428,6 @@ const Details = memo(() => {
           height: "100%",
           width: "100%",
           position: "relative",
-          // marginTop: {
-          //   sm: "6rem !important",
-          //   md: "6rem !important",
-          // },
         }}
       >
         <About />

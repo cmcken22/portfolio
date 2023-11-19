@@ -35,6 +35,7 @@ body {
 html,
 body,
 #root {
+  font-size: 16px;
   width: 100%;
   height: 100%;
   margin: 0;
@@ -146,13 +147,15 @@ body {
   right: 0;
   bottom: 0;
   pointer-events: none;
+  /* background: pink; */
 }
-
-.typing-text {
-  font-family: "Roboto", sans-serif;
-  font-size: clamp(24px, 20vw, 200px);
-  font-weight: 800;
-}
+/* 
+.headline-container > div {
+  width: 165px;
+  height: fit-content;
+  white-space: wrap;
+  word-wrap: break-word;
+} */
 
 #text-behind,
 #text-front,
@@ -175,29 +178,50 @@ body {
   #text-behind-blur {
     font-size: clamp(17px, 14vw, 200px);
   }
-  .typing-text {
-    font-size: clamp(17px, 14vw, 200px);
-  }
 }
 
 /* Mobile Landscape */
 @media screen and (min-width: 481px) and (max-width: 767px) {
   /* Your CSS for mobile landscape devices here */
+  #text-behind,
+  #text-front,
+  #text-behind-blur {
+    /* color: red !important; */
+    font-size: clamp(17.5px, calc(17.5vw * 0.83334), 200px);
+  }
 }
 
 /* Tablet */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   /* Your CSS for tablet devices here */
+  #text-behind,
+  #text-front,
+  #text-behind-blur {
+    /* color: blue !important; */
+    font-size: clamp(20px, calc(20vw * 0.83334), 200px);
+  }
 }
 
 /* Small Desktop */
 @media screen and (min-width: 1024px) and (max-width: 1199px) {
   /* Your CSS for small desktop screens here */
+  #text-behind,
+  #text-front,
+  #text-behind-blur {
+    /* color: blue !important; */
+    font-size: clamp(21px, calc(21vw * 0.83334), 200px);
+  }
 }
 
 /* Desktop */
 @media screen and (min-width: 1200px) and (max-width: 1439px) {
   /* Your CSS for desktop screens here */
+  /* #text-behind,
+  #text-front,
+  #text-behind-blur {
+    color: green !important;
+    font-size: clamp(45px, calc(45vw * 0.83334), 200px);
+  } */
 }
 
 /* Large Desktop */
@@ -226,6 +250,12 @@ body {
 }
 
 /* Less relevant code */
+
+.typing-text {
+  font-family: "Roboto", sans-serif;
+  font-size: clamp(24px, 20vw, 200px);
+  font-weight: 800;
+}
 
 .more-content {
   height: 500vh;

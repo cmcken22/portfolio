@@ -129,7 +129,7 @@ const ListItem = memo(({ item, index }) => {
               sm={9}
               md={8}
               sx={{
-                paddingLeft: { md: "1rem" },
+                paddingLeft: { sm: "1rem" },
               }}
             >
               <Typography color={fontColor} textAlign="left" width="100%">

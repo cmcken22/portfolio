@@ -27,14 +27,29 @@ export const useBreakPoint = () => {
   return "";
 };
 
+const detectMobile = () => {
+  if (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    )
+  ) {
+    return true;
+  }
+  return false;
+};
+
 const useMobile = () => {
   const state = mobileContext((state) => state);
   const breakpoint = useBreakPoint();
 
   useEffect(() => {
-    state.setMobile(breakpoint === "xs" || breakpoint === "sm");
+    const mobileDevice = detectMobile();
+    state.setMobile(breakpoint === "xs" || breakpoint === "sm" || mobileDevice);
     state.setSmall(
-      breakpoint === "xs" || breakpoint === "sm" || breakpoint === "md"
+      breakpoint === "xs" ||
+        breakpoint === "sm" ||
+        breakpoint === "md" ||
+        mobileDevice
     );
   }, [breakpoint]);
 

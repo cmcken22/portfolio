@@ -65,18 +65,18 @@ const Content = () => {
         position: "relative",
       }}
     >
-      <div className="headline-container" onClick={() => alert("click")}>
-        <div id="text-behind">
+      <div className="headline-container">
+        <div id="text-behind" className="hero-text">
           {text1}
           <br />
           {text2}
         </div>
-        <div id="text-behind-blur">
+        <div id="text-behind-blur" className="hero-text">
           {text1}
           <br />
           {text2}
         </div>
-        <div id="text-front">
+        <div id="text-front" className="hero-text">
           {text1}
           <br />
           {text2}

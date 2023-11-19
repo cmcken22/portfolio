@@ -1,11 +1,37 @@
 import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
+import { useMediaQuery } from "@mui/material";
 import * as THREE from "https://cdn.skypack.dev/three@0.124.0";
 import { RGBELoader } from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/loaders/RGBELoader.js";
 import { OBJLoader } from "https://cdn.skypack.dev/three@0.134.0/examples/jsm/loaders/OBJLoader.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const FPS = 60;
+
+// @media screen and (max-width: 480px)
+/* Mobile Landscape */
+// @media screen and (min-width: 481px) and (max-width: 767px)
+
+/* Tablet */
+// @media screen and (min-width: 768px) and (max-width: 1023px)
+
+/* Small Desktop */
+// @media screen and (min-width: 1024px) and (max-width: 1199px)
+
+const useCustomBreakPoints = () => {
+  const xs = useMediaQuery("(max-width: 480px)");
+  const sm = useMediaQuery("(min-width: 481px) and (max-width: 767px)");
+  const md = useMediaQuery("(min-width: 768px) and (max-width: 1023px)");
+  const lg = useMediaQuery("(min-width: 1024px) and (max-width: 1199px)");
+  const xl = useMediaQuery("(min-width: 1200px)");
+
+  if (xs) return "xs";
+  if (sm) return "sm";
+  if (md) return "md";
+  if (lg) return "lg";
+  if (xl) return "xl";
+  return "xl";
+};
 
 const useAnimation = (visible, mobile) => {
   // scene refs
@@ -28,6 +54,27 @@ const useAnimation = (visible, mobile) => {
 
   const { loading, incrementProgress } = useLoadingContext();
   const { enter } = useAppContext();
+  const bp = useCustomBreakPoints();
+
+  const getScalar = useCallback(() => {
+    if (bp === "xs") return 0.9;
+    if (bp === "sm") return 1.15;
+    if (bp === "md") return 1.5;
+    if (bp === "lg") return 2;
+    if (bp === "xl") return 2.5;
+    return 1;
+  }, [bp]);
+
+  const getPosition = useCallback(() => {
+    if (bp === "xs") return 0.12;
+    if (bp === "sm") return 0.1;
+    if (bp === "md") return 0.25;
+    if (bp === "lg") return 0.25;
+    if (bp === "xl") return 0.25;
+    return 0.25;
+  }, [bp]);
+
+  console.log("bp:", bp, getScalar(), getPosition());
 
   useEffect(() => {
     if (!enter) return;
@@ -40,8 +87,8 @@ const useAnimation = (visible, mobile) => {
     // only do this once, after the component is initialized
     // we do not need to do this every time the component re-renders
     if (initialized.current) return;
-
     console.log("xxx loading HDR");
+
     // create a new RGBELoader to import the HDR
     const hdrEquirect = new RGBELoader()
       .setPath(
@@ -189,15 +236,16 @@ const useAnimation = (visible, mobile) => {
       console.log("xxx OBJECT LOADED");
       object.current = obj;
       object.current.children[0].material = material1;
-      object.current.scale.setScalar(mobile ? 1.25 : 2);
-      object.current.position.set(0, 0.25, 0);
+      object.current.scale.setScalar(getScalar());
+      // object.current.position.set(0, 0.25, 0);
+      object.current.position.set(0, getPosition(), 0);
       group.current.add(object.current);
     });
 
     if (visible) {
       animate("initScene");
     }
-  }, [visible, mobile, animate]);
+  }, [visible, mobile, animate, getScalar]);
 
   useEffect(() => {
     if (initialized.current) return;
@@ -205,15 +253,16 @@ const useAnimation = (visible, mobile) => {
     initialized.current = true;
   }, [initScene]);
 
-  const doneRef = useRef(false);
+  // const doneRef = useRef(false);
 
   useEffect(() => {
     if (!initialized.current) return;
-    if (visible && object.current && !doneRef.current) {
-      doneRef.current = true;
-      object.current.scale.setScalar(mobile ? 1.25 : 2);
+    if (visible && object.current) {
+      // doneRef.current = true;
+      object.current.scale.setScalar(getScalar());
+      object.current.position.set(0, getPosition(), 0);
     }
-  }, [mobile, visible]);
+  }, [visible, bp, getScalar]);
 };
 
 export default useAnimation;

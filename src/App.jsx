@@ -12,27 +12,37 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { a, useTransition } from "@react-spring/web";
 import { AnimatePresence, motion } from "framer-motion";
 import { Leva } from "leva";
-import { memo, useCallback, useEffect, useMemo, useRef } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { IoMusicalNotes } from "react-icons/io5";
 import Sound from "react-sound";
 
 function Loader({ active, total, progress, _a }) {
-  const transition = useTransition(active, {
+  const [delayedStart, setDelayedStart] = useState(active);
+
+  const transition = useTransition(delayedStart, {
     from: { opacity: 1, progress: 0 },
     leave: { opacity: 0, progress: 100 },
     update: { progress },
   });
 
-  return transition(
-    ({ progress, opacity }, active) =>
-      active && (
-        <a.div className="loading" style={{ opacity }}>
-          <div className="loading-bar-container">
-            <a.div className="loading-bar" style={{ width: progress }}></a.div>
-          </div>
-        </a.div>
-      )
-  );
+  useEffect(() => {
+    if (progress >= 100 && !active) {
+      setTimeout(() => {
+        setDelayedStart(false);
+      }, 500);
+    }
+  }, [active, progress]);
+
+  return transition(({ progress, opacity }, active) => {
+    if (!active) return null;
+    return (
+      <a.div className="loading" style={{ opacity }}>
+        <div className="loading-bar-container">
+          <a.div className="loading-bar" style={{ width: progress }}></a.div>
+        </div>
+      </a.div>
+    );
+  });
 }
 
 function GateKeeper({ onClick }) {
@@ -110,7 +120,7 @@ const App = memo(() => {
     <>
       <MusicToggle />
       <Leva hidden />
-      <Loader active={progress < 100} progress={progress} />
+      <Loader active={progress !== 100} progress={progress} />
       <AnimatePresence>
         {progress === 100 && !enter && (
           <GateKeeper
