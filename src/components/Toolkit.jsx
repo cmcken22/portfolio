@@ -1,6 +1,8 @@
 import { Animation, Sections } from "@constants";
 import useSectionContext from "@contexts/SectionContext";
 import useMobile from "@contexts/useMobile";
+import { faDocker } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
@@ -9,8 +11,6 @@ import { DiMongodb } from "react-icons/di";
 import { FaNodeJs, FaReact, FaSass } from "react-icons/fa";
 import { IoLogoJavascript } from "react-icons/io5";
 import { SiRedux } from "react-icons/si";
-import "semantic-ui-css/semantic.min.css";
-import { Icon } from "semantic-ui-react";
 import HoverCard from "./HoverCard";
 import { StickySectionHeader, fontColor } from "./Sections/Details";
 
@@ -45,7 +45,12 @@ const Tools = [
   },
   {
     name: "Docker",
-    Icon: () => <Icon name="docker" size="large" />,
+    Icon: () => (
+      <FontAwesomeIcon
+        icon={faDocker}
+        style={{ color: "rgb(136, 139, 148)" }}
+      />
+    ),
   },
 ];
 
@@ -98,7 +103,7 @@ const Toolkit = () => {
               },
               "&:hover": {
                 "& svg, i, .MuiTypography-root": {
-                  color: "rgb(94, 234, 212)",
+                  color: "rgb(94, 234, 212) !important",
                   cursor: "default",
                 },
               },
@@ -113,12 +118,6 @@ const Toolkit = () => {
                   display: "flex",
                   alignItems: "center",
                   px: 1,
-                  // "&:hover": {
-                  //   "& svg, i, .MuiTypography-root": {
-                  //     color: "rgb(94, 234, 212)",
-                  //     cursor: "default",
-                  //   },
-                  // },
                 }}
               >
                 <Box
@@ -126,20 +125,10 @@ const Toolkit = () => {
                     height: "30px",
                     width: "30px",
                     marginRight: 1,
-                    // backgroundColor: "red",
                     "& > svg, i": {
                       height: "100%",
                       width: "100%",
                     },
-                    "& > .docker": {
-                      position: "relative",
-                      top: "3px",
-                    },
-                    // "&:hover": {
-                    //   "& > svg, i": {
-                    //     color: "rgb(94, 234, 212)",
-                    //   },
-                    // },
                   }}
                 >
                   {tool?.Icon && tool?.Icon()}

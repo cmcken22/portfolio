@@ -66,7 +66,7 @@ const useAnimation = (visible, mobile) => {
   }, [bp]);
 
   const getPosition = useCallback(() => {
-    if (bp === "xs") return 0.12;
+    if (bp === "xs") return 0.14;
     if (bp === "sm") return 0.1;
     if (bp === "md") return 0.25;
     if (bp === "lg") return 0.25;

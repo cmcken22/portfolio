@@ -115,51 +115,76 @@ const ListItem = memo(({ item, index }) => {
 
   const renderContent = useCallback(() => {
     return (
-      <ShinyCard active={cardHoverStatus?.[index]}>
-        <li className="LIST_ITEM">
-          <Grid container>
-            <Grid item xs={12} sm={3} md={4}>
-              <Typography color={fontColor} textAlign="left">
-                {startDate} - {endDate}
-              </Typography>
+      <Box
+        sx={{
+          "&:hover": {
+            "& .company": {
+              color: "rgb(94, 234, 212)",
+            },
+          },
+        }}
+      >
+        <ShinyCard active={cardHoverStatus?.[index] && !small}>
+          <li className="LIST_ITEM">
+            <Grid container>
+              <Grid item xs={12} sm={3} md={4}>
+                <Typography color={fontColor} textAlign="left">
+                  {startDate} - {endDate}
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={9}
+                md={8}
+                sx={{
+                  paddingLeft: { sm: "1rem" },
+                }}
+              >
+                <Typography
+                  className="company"
+                  color={fontColor}
+                  textAlign="left"
+                  width="100%"
+                  fontSize="1rem"
+                  sx={{
+                    transition: "all ease-in-out 0.3s !important",
+                  }}
+                >
+                  {company}
+                </Typography>
+                <Typography color={fontColor} textAlign="left" width="100%">
+                  {position}
+                </Typography>
+                <Typography
+                  color={fontColor}
+                  textAlign="left"
+                  width="100%"
+                  fontSize="14px"
+                  mt={2}
+                >
+                  {description}
+                </Typography>
+                <Box display="flex" flexDirection="row" flexWrap="wrap">
+                  {tags?.map((tag) => (
+                    <Chip
+                      key={`tag--${tag}`}
+                      label={tag}
+                      variant="contained"
+                      sx={{
+                        marginRight: "8px",
+                        marginTop: "8px",
+                        background: "rgba(45, 212, 191, 0.1)",
+                        color: "rgb(94, 234, 212)",
+                      }}
+                    />
+                  ))}
+                </Box>
+              </Grid>
             </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={9}
-              md={8}
-              sx={{
-                paddingLeft: { sm: "1rem" },
-              }}
-            >
-              <Typography color={fontColor} textAlign="left" width="100%">
-                {company}
-              </Typography>
-              <Typography color={fontColor} textAlign="left" width="100%">
-                {position}
-              </Typography>
-              <Typography color={fontColor} textAlign="left" width="100%">
-                {description}
-              </Typography>
-              <Box display="flex" flexDirection="row" flexWrap="wrap">
-                {tags?.map((tag) => (
-                  <Chip
-                    key={`tag--${tag}`}
-                    label={tag}
-                    variant="contained"
-                    sx={{
-                      marginRight: "8px",
-                      marginTop: "8px",
-                      background: "rgba(45, 212, 191, 0.1)",
-                      color: "rgb(94, 234, 212)",
-                    }}
-                  />
-                ))}
-              </Box>
-            </Grid>
-          </Grid>
-        </li>
-      </ShinyCard>
+          </li>
+        </ShinyCard>
+      </Box>
     );
   }, [
     cardHoverStatus,

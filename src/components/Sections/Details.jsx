@@ -175,7 +175,7 @@ const StickyHeader = () => {
             sx={{
               height: "24px",
               width: "24px",
-              // backgroundColor: "rgba(45, 45, 45, 0.7)",
+              // backgroundColor: "red",
               "& svg": {
                 height: "100%",
                 width: "100%",
@@ -186,6 +186,18 @@ const StickyHeader = () => {
                   color: "rgb(94, 234, 212)",
                 },
               },
+              ...(item?.id === "email"
+                ? {
+                    "& svg": {
+                      cursor: "pointer",
+                      height: "150%",
+                      width: "150%",
+                      position: "relative",
+                      top: "-6px",
+                      left: "-3px",
+                    },
+                  }
+                : {}),
             }}
           >
             {item?.icon()}

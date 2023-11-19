@@ -179,7 +179,7 @@ const ShinyCard = memo(({ active, children }) => {
             },
           }}
         >
-          <HoverCard>{children}</HoverCard>
+          <HoverCard disabled={!active}>{children}</HoverCard>
         </Box>
       </RotationWrapper>
     </Box>
