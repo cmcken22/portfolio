@@ -10,54 +10,44 @@ import useSectionContext from "@contexts/SectionContext";
 import useMobile from "@contexts/useMobile";
 import { Box, Button, Typography } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { a, useTransition } from "@react-spring/web";
 import { AnimatePresence, motion } from "framer-motion";
 import { Leva } from "leva";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { IoMusicalNotes } from "react-icons/io5";
 import Sound from "react-sound";
 
-function Loader({ active, total, progress: p, _a }) {
-  const [delayedStart, setDelayedStart] = useState(active);
+function Loader({ progress, onFinish }) {
+  if (progress >= 100) {
+    onFinish();
+  }
 
-  const transition = useTransition(delayedStart, {
-    from: { opacity: 1, progress: 0 },
-    leave: { opacity: 0, progress: 100 },
-    update: { progress: p },
-  });
-
-  useEffect(() => {
-    if (p >= 100 && !active) {
-      setTimeout(() => {
-        setDelayedStart(false);
-      }, 2000);
-    }
-  }, [active, p]);
-
-  console.log("p:", p);
-
-  return transition(({ progress, opacity }, active) => {
-    if (!active) return null;
-    return (
-      <a.div className="loading" style={{ opacity }}>
-        <div className="loading-bar-container" style={{ position: "relative" }}>
-          <a.div className="loading-bar" style={{ width: progress }}>
-            <Typography
-              variant="h6"
-              textAlign="center"
-              width="100%"
-              position="absolute"
-              top="0"
-              left="0"
-              sx={{ color: "white", fontWeight: "bold" }}
-            >
-              {Math.round(p)}%
-            </Typography>
-          </a.div>
+  return (
+    <motion.div
+      key="loader"
+      className="loading"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: Animation.duration }}
+      style={{ zIndex: 1001 }}
+    >
+      <div className="loading-bar-container" style={{ position: "relative" }}>
+        <div className="loading-bar" style={{ width: progress }}>
+          <Typography
+            variant="h6"
+            textAlign="center"
+            width="100%"
+            position="absolute"
+            top="0"
+            left="0"
+            sx={{ color: "white", fontWeight: "bold" }}
+          >
+            {Math.round(progress)}%
+          </Typography>
         </div>
-      </a.div>
-    );
-  });
+      </div>
+    </motion.div>
+  );
 }
 
 function GateKeeper({ onClick }) {
@@ -76,6 +66,7 @@ function GateKeeper({ onClick }) {
       transition={{ duration: Animation.duration }}
       className="loading"
       style={{
+        backgroundColor: "red !important",
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
@@ -121,6 +112,7 @@ const App = memo(() => {
   const { enter, setEnter, musicPlayState, playMusic, allowMusic } =
     useAppContext();
   const { mobile } = useMobile();
+  const [delayedStart, setDelayedStart] = useState(false);
 
   useEffect(() => {
     if (activeSection !== Sections.Details) {
@@ -178,11 +170,20 @@ const App = memo(() => {
     <>
       <MusicToggle />
       <Leva hidden />
-      {progress !== 100 && (
-        <Loader active={progress !== 100} progress={progress} />
-      )}
       <AnimatePresence>
-        {progress === 100 && !enter && (
+        {!delayedStart && (
+          <Loader
+            progress={progress}
+            onFinish={() => {
+              setTimeout(() => {
+                setDelayedStart(true);
+              });
+            }}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {progress === 100 && !enter && delayedStart && (
           <GateKeeper
             onClick={(value) => {
               setEnter(true);
