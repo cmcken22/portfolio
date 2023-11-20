@@ -38,12 +38,14 @@ class SkullAnimation {
     this.scalar = scalar;
     if (!this.object) return;
     this.object.scale.setScalar(this.scalar);
+    this.render();
   };
 
   setPosition = (position) => {
     this.position = position;
     if (!this.object) return;
     this.object.position.set(0, this.position, 0);
+    this.render();
   };
 
   setAllowRotation = (allowRotation) => {
@@ -111,6 +113,12 @@ class SkullAnimation {
     this.camera.lookAt(0, 0, 0);
   };
 
+  render = () => {
+    if (this.scene && this.camera) {
+      this.renderer.render(this.scene, this.camera);
+    }
+  };
+
   animate = (timestamp) => {
     if (this.state === "PAUSED") return;
 
@@ -120,7 +128,7 @@ class SkullAnimation {
     this.counter++;
     // console.log("elapsed:", elapsed);
     this.update(elapsed / 1000); // Pass elapsed time in seconds
-    this.renderer.render(this.scene, this.camera);
+    this.render();
 
     // Calculate the time to wait until the next frame
     // const delay = 1000 / FPS - (elapsed % (1000 / FPS));

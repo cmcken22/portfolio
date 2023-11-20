@@ -1,6 +1,6 @@
 import ListItem, { Items } from "@components/ListItem";
 import StickySectionHeader from "@components/StickySectionHeader";
-import { Animation, Sections } from "@constants";
+import { Animation, Pages } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import { Box, Typography } from "@mui/material";
@@ -8,7 +8,7 @@ import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
 
 const Experience = () => {
-  const inView = usePageContext()?.activePage === Sections.Details;
+  const inView = usePageContext()?.activePage === Pages.Details;
   const controls = useAnimation();
   const { small } = useMobile();
 

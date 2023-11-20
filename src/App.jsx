@@ -1,7 +1,7 @@
 import MusicToggle from "@components/MusicToggle";
 import Mysection from "@components/Mysection";
 import typography from "@components/typography";
-import { Animation, Sections } from "@constants";
+import { Animation, Pages } from "@constants";
 import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
 import usePageContext from "@contexts/PageContext";
@@ -115,7 +115,7 @@ const App = memo(() => {
   const [delayedStart, setDelayedStart] = useState(false);
 
   useEffect(() => {
-    if (activePage !== Sections.Details) {
+    if (activePage !== Pages.Details) {
       const root = document.body;
       root.style.backgroundColor = "#11151c";
     } else {
@@ -156,7 +156,7 @@ const App = memo(() => {
   );
 
   useEffect(() => {
-    if (activePage === Sections.Details) {
+    if (activePage === Pages.Details) {
       window.addEventListener("mousemove", handleMouseMove);
     } else {
       window.removeEventListener("mousemove", handleMouseMove);
@@ -221,7 +221,7 @@ const App = memo(() => {
       >
         <div ref={section1}>
           <Mysection
-            sectionName={Sections.Hero}
+            sectionName={Pages.Hero}
             threshold={0.8}
             sx={{ height: "100vh", overflow: "hidden" }}
           >
@@ -229,7 +229,7 @@ const App = memo(() => {
           </Mysection>
         </div>
         <div ref={section2}>
-          <Mysection sectionName={Sections.Details} threshold={0.1}>
+          <Mysection sectionName={Pages.Details} threshold={0.1}>
             <Details />
           </Mysection>
         </div>

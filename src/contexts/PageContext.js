@@ -1,8 +1,8 @@
-import { Sections } from "@constants";
+import { Pages } from "@constants";
 import { create } from "zustand";
 
 const pageContext = create((set) => ({
-  activePage: Sections.Hero,
+  activePage: Pages.Hero,
   setActivePage: (sectionName) => set(() => ({ activePage: sectionName })),
 }));
 

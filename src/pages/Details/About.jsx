@@ -1,12 +1,12 @@
 import StickySectionHeader from "@components/StickySectionHeader";
-import { Animation, Sections } from "@constants";
+import { Animation, Pages } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import { Box, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
 
 const About = () => {
-  const inView = usePageContext()?.activePage === Sections.Details;
+  const inView = usePageContext()?.activePage === Pages.Details;
   const controls = useAnimation();
 
   useEffect(() => {
@@ -34,7 +34,15 @@ const About = () => {
       }}
     >
       <StickySectionHeader>
-        <Typography variant="h2">About</Typography>
+        <Typography
+          variant="h2"
+          sx={{
+            backgroundColor: "blue",
+            width: "100%",
+          }}
+        >
+          About
+        </Typography>
       </StickySectionHeader>
       <Typography
         id="about"

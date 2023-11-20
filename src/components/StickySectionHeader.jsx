@@ -12,6 +12,7 @@ const StickySectionHeader = ({ children, sx }) => {
         paddingLeft: "48px",
         zIndex: 5000,
         backdropFilter: "blur(8px)",
+        backgroundColor: "red",
         // backgroundColor: "rgba(15, 23, 42, 0.75)",
         // borderBottomColor: "rgb(229, 231, 235)",
         alignItems: "center",

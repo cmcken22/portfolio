@@ -1,4 +1,4 @@
-import { Animation, Sections } from "@constants";
+import { Animation, Pages } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
@@ -101,13 +101,13 @@ const ListItem = memo(({ item, index }) => {
   }, []);
 
   useEffect(() => {
-    if (activePage !== Sections.Details && !small) {
+    if (activePage !== Pages.Details && !small) {
       controls.start(exitState, { duration: 0 });
     }
   }, [activePage, exitState, small]);
 
   useEffect(() => {
-    if (activePage === Sections.Details && small) {
+    if (activePage === Pages.Details && small) {
       controls.start(activeState, { duration: 0 });
     }
   }, [activePage, small]);

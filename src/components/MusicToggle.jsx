@@ -24,7 +24,10 @@ const MusicToggle = () => {
       onClick={handleClick}
       sx={{
         position: "fixed",
-        top: "1.5rem",
+        top: {
+          xs: "0.9rem",
+          md: "1.5rem",
+        },
         right: "1.5rem",
         zIndex: 100,
         height: "30px",
@@ -45,7 +48,6 @@ const MusicToggle = () => {
         "& .music-icon--in-active": {
           opacity: 0,
         },
-
         "&:hover .music-icon--active": {
           opacity: 0,
         },
@@ -54,9 +56,7 @@ const MusicToggle = () => {
         },
       }}
     >
-      {/* {musicPlayState === Sound.status.PLAYING ? ( */}
       <MusicNoteIcon
-        // position="absolute"
         top="0"
         className={
           musicPlayState === Sound.status.PLAYING
@@ -64,16 +64,13 @@ const MusicToggle = () => {
             : "music-icon music-icon--in-active"
         }
       />
-      {/* // ) : ( */}
       <MusicOffIcon
-        // position="absolute"
         className={
           musicPlayState !== Sound.status.PLAYING
             ? "music-icon music-icon--active"
             : "music-icon music-icon--in-active"
         }
       />
-      {/* // )} */}
     </Box>
   );
 };

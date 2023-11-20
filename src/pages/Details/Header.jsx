@@ -1,4 +1,4 @@
-import { Animation, Sections } from "@constants";
+import { Animation, Pages } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import { Box, Grid, Typography } from "@mui/material";
@@ -13,7 +13,7 @@ import { TypeAnimation } from "react-type-animation";
 const typingDelay = 2000;
 
 const Header = () => {
-  const inView = usePageContext()?.activePage === Sections.Details;
+  const inView = usePageContext()?.activePage === Pages.Details;
   const controls = useAnimation();
   const [activeSection, setActiveSection] = useState("about");
   const scrollElm = useRef(null);

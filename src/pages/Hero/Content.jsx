@@ -1,4 +1,4 @@
-import { Sections } from "@constants";
+import { Pages } from "@constants";
 import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
 import usePageContext from "@contexts/PageContext";
@@ -36,7 +36,6 @@ const useCustomBreakPoints = () => {
 
 function ScrollIndicator({ active }) {
   const h = use100vh();
-  console.log("use100vh:", h);
 
   const transition = useTransition(active, {
     from: { opacity: 0 },
@@ -73,7 +72,7 @@ function ScrollIndicator({ active }) {
 const Content = () => {
   const { loading } = useLoadingContext();
   const { enter } = useAppContext();
-  const inView = usePageContext()?.activePage === Sections.Hero;
+  const inView = usePageContext()?.activePage === Pages.Hero;
   const skullAnimation = useRef(null);
 
   const bp = useCustomBreakPoints();

@@ -1,6 +1,6 @@
 import HoverCard from "@components/HoverCard";
 import StickySectionHeader from "@components/StickySectionHeader";
-import { Animation, Sections } from "@constants";
+import { Animation, Pages } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import { faDocker } from "@fortawesome/free-brands-svg-icons";
@@ -55,7 +55,7 @@ const Tools = [
 ];
 
 const Toolkit = () => {
-  const inView = usePageContext()?.activePage === Sections.Details;
+  const inView = usePageContext()?.activePage === Pages.Details;
   const controls = useAnimation();
   const { small } = useMobile();
   const [hoverRef, setHoverRef] = useState(null);

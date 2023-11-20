@@ -1,4 +1,4 @@
-import { Sections } from "@constants";
+import { Pages } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import { Grid, styled } from "@mui/material";
 import { useAnimation } from "framer-motion";
@@ -33,7 +33,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 }));
 
 const Details = memo(() => {
-  const inView = usePageContext().activePage === Sections.Details;
+  const inView = usePageContext().activePage === Pages.Details;
   const controls = useAnimation();
 
   useEffect(() => {

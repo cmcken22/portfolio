@@ -1,4 +1,4 @@
-export const Sections = {
+export const Pages = {
   Hero: "hero",
   Details: "details",
 };
