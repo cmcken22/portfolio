@@ -139,10 +139,17 @@ const ShinyCard = memo(({ active, children }) => {
 
   return (
     <Box
+      className="shiny-card"
       ref={cardRef}
       sx={{
-        margin: "-1.5rem",
-        padding: "1.5rem",
+        margin: {
+          xs: 0,
+          md: "-1.5rem",
+        },
+        padding: {
+          xs: 0,
+          md: "1.5rem",
+        },
         perspective: "1000px",
         // backgroundColor: "blue",
         "& .card-wrapper": {

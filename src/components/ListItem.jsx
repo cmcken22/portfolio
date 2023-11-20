@@ -154,7 +154,6 @@ const ListItem = memo(({ item, index }) => {
                   textAlign="left"
                   width="100%"
                   variant="body2"
-                  // fontSize="14px"
                   mt={2}
                 >
                   {description()}

@@ -5,7 +5,9 @@ import { Box, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
 
-function yearsSinceDate(specificDate = new Date("2017-07-01")) {
+const carreerStateDate = new Date("2017-07-01");
+
+const yearsSinceDate = (specificDate = carreerStateDate) => {
   const currentDate = new Date();
   const timeDifference = currentDate - specificDate;
   // Calculate the number of milliseconds in a year
@@ -15,7 +17,8 @@ function yearsSinceDate(specificDate = new Date("2017-07-01")) {
   // Round down to the nearest whole year
   const roundedYears = Math.floor(yearsSince);
   return roundedYears;
-}
+};
+
 const AboutText = () => {
   return (
     <Box
@@ -89,15 +92,7 @@ const About = () => {
       }}
     >
       <StickySectionHeader>
-        <Typography
-          variant="h2"
-          sx={{
-            backgroundColor: "blue",
-            width: "100%",
-          }}
-        >
-          About
-        </Typography>
+        <Typography variant="h2">About</Typography>
       </StickySectionHeader>
       <AboutText />
     </Box>

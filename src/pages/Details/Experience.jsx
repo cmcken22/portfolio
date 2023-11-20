@@ -93,8 +93,10 @@ const Experience = () => {
         <Typography variant="h2">Experience</Typography>
       </StickySectionHeader>
       <Box
+        className="experience__list"
         sx={{
           paddingTop: {
+            xs: 2,
             md: 12,
           },
         }}
