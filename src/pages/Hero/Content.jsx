@@ -1,14 +1,13 @@
 import { Sections } from "@constants";
 import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
-import useSectionContext from "@contexts/SectionContext";
-import useMobile from "@contexts/useMobile";
+import usePageContext from "@contexts/PageContext";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useMediaQuery } from "@mui/material";
 import { a, useTransition } from "@react-spring/web";
-import { useCallback, useEffect, useRef, useState } from "react";
-import SkullAnimation from "../../../SkullAnimation";
+import { useCallback, useEffect, useRef } from "react";
 import { use100vh } from "react-div-100vh";
+import SkullAnimation from "../../SkullAnimation";
 
 // @media screen and (max-width: 480px)
 /* Mobile Landscape */
@@ -72,12 +71,9 @@ function ScrollIndicator({ active }) {
 }
 
 const Content = () => {
-  // const { mobile } = useMobile();
   const { loading } = useLoadingContext();
   const { enter } = useAppContext();
-  // const [delayedStart, setDelayedStart] = useState(false);
-  const inView = useSectionContext()?.activeSection === Sections.Hero;
-  // useAnimation(inView, mobile);
+  const inView = usePageContext()?.activePage === Sections.Hero;
   const skullAnimation = useRef(null);
 
   const bp = useCustomBreakPoints();

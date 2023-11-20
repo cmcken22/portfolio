@@ -1,18 +1,18 @@
+import HoverCard from "@components/HoverCard";
+import StickySectionHeader from "@components/StickySectionHeader";
 import { Animation, Sections } from "@constants";
-import useSectionContext from "@contexts/SectionContext";
+import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import { faDocker } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BiLogoTypescript } from "react-icons/bi";
 import { DiMongodb } from "react-icons/di";
 import { FaNodeJs, FaReact, FaSass } from "react-icons/fa";
 import { IoLogoJavascript } from "react-icons/io5";
 import { SiRedux } from "react-icons/si";
-import HoverCard from "./HoverCard";
-import { StickySectionHeader } from "./Sections/Details";
 
 const Tools = [
   {
@@ -24,16 +24,16 @@ const Tools = [
     Icon: () => <SiRedux />,
   },
   {
+    name: "JavaScript",
+    Icon: () => <IoLogoJavascript />,
+  },
+  {
     name: "NodeJS",
     Icon: () => <FaNodeJs />,
   },
   {
     name: "MongoDB",
     Icon: () => <DiMongodb />,
-  },
-  {
-    name: "JavaScript",
-    Icon: () => <IoLogoJavascript />,
   },
   {
     name: "Sass",
@@ -55,9 +55,10 @@ const Tools = [
 ];
 
 const Toolkit = () => {
-  const inView = useSectionContext()?.activeSection === Sections.Details;
+  const inView = usePageContext()?.activePage === Sections.Details;
   const controls = useAnimation();
-  const { mobile, small } = useMobile();
+  const { small } = useMobile();
+  const [hoverRef, setHoverRef] = useState(null);
 
   useEffect(() => {
     if (!inView && !small) {
@@ -87,18 +88,16 @@ const Toolkit = () => {
           controls.start({ opacity: 1, x: 0 });
         }}
       >
-        <HoverCard>
+        <HoverCard hoverRef={hoverRef}>
           <Box
+            ref={(r) => setHoverRef(r)}
             sx={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              gap: 2,
-              maxWidth: "600px",
-              justifyContent: "center",
+              width: "fit-content",
               "& svg, i, .MuiTypography-root": {
                 transition: "all ease-in-out 0.3s !important",
+              },
+              "& svg, i": {
+                color: "rgba(255, 255, 255, 0.5) !important",
               },
               "&:hover": {
                 "& svg, i, .MuiTypography-root": {
@@ -108,40 +107,55 @@ const Toolkit = () => {
               },
             }}
           >
-            {Tools?.map((tool) => (
-              <Box
-                key={`tool--${tool?.name}`}
-                sx={{
-                  height: "60px",
-                  // flex: "1 0 21%",
-                  flex: 1,
-                  display: "flex",
-                  alignItems: "center",
-                  px: 1,
-                }}
-              >
+            <Box
+              className="INNER_CONTAINER"
+              sx={{
+                // backgroundColor: "blue",
+                width: "100%",
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                gap: 2,
+                maxWidth: "600px",
+                justifyContent: "center",
+              }}
+            >
+              {Tools?.map((tool) => (
                 <Box
+                  key={`tool--${tool?.name}`}
                   sx={{
-                    height: "30px",
-                    width: "30px",
-                    marginRight: 1,
-                    "& > svg, i": {
-                      height: "100%",
-                      width: "100%",
-                    },
+                    height: "60px",
+                    // flex: "1 0 21%",
+                    flex: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    px: 1,
                   }}
                 >
-                  {tool?.Icon && tool?.Icon()}
+                  <Box
+                    sx={{
+                      height: "30px",
+                      width: "30px",
+                      marginRight: 1,
+                      "& > svg, i": {
+                        height: "100%",
+                        width: "100%",
+                      },
+                    }}
+                  >
+                    {tool?.Icon && tool?.Icon()}
+                  </Box>
+                  <Typography
+                    sx={{
+                      width: "fit-content",
+                    }}
+                  >
+                    {tool?.name}
+                  </Typography>
                 </Box>
-                <Typography
-                  sx={{
-                    width: "fit-content",
-                  }}
-                >
-                  {tool?.name}
-                </Typography>
-              </Box>
-            ))}
+              ))}
+            </Box>
           </Box>
         </HoverCard>
       </motion.div>

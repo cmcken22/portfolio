@@ -1,4 +1,4 @@
-import useSectionContext from "@contexts/SectionContext";
+import usePageContext from "@contexts/PageContext";
 import { Box } from "@mui/material";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
@@ -7,7 +7,7 @@ import { useInView } from "react-intersection-observer";
 gsap.registerPlugin(ScrollTrigger);
 
 const Mysection = memo(({ sectionName, children, threshold, sx }) => {
-  const { setActiveSection } = useSectionContext();
+  const { setActivePage } = usePageContext();
 
   const [sectionRef, inView] = useInView({
     threshold,
@@ -15,7 +15,7 @@ const Mysection = memo(({ sectionName, children, threshold, sx }) => {
 
   useEffect(() => {
     if (inView) {
-      setActiveSection(sectionName);
+      setActivePage(sectionName);
     }
   }, [inView]);
 

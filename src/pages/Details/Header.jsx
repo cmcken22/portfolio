@@ -1,45 +1,19 @@
-import ListItem, { Items } from "@components/ListItem";
-import Toolkit from "@components/Toolkit";
 import { Animation, Sections } from "@constants";
-import useSectionContext from "@contexts/SectionContext";
-import useMobile, { useBreakPoint } from "@contexts/useMobile";
-import { Box, Grid, Typography, styled } from "@mui/material";
+import usePageContext from "@contexts/PageContext";
+import useMobile from "@contexts/useMobile";
+import { Box, Grid, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import debounce from "lodash.debounce";
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BsInstagram } from "react-icons/bs";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+import { MdAlternateEmail } from "react-icons/md";
 import { TypeAnimation } from "react-type-animation";
 
 const typingDelay = 2000;
 
-const StyledGrid = styled(Grid)(({ theme }) => ({
-  maxWidth: "1280px",
-  paddingLeft: theme.spacing(6),
-  paddingRight: theme.spacing(6),
-
-  [theme.breakpoints.up("md")]: {
-    paddingLeft: theme.spacing(12),
-    paddingRight: theme.spacing(12),
-  },
-
-  // [theme.breakpoints.down("sm")]: {
-  //   backgroundColor: "red",
-  // },
-  // [theme.breakpoints.down("md")]: {
-  //   backgroundColor: red[500],
-  // },
-  // [theme.breakpoints.up("md")]: {
-  //   backgroundColor: blue[500],
-  // },
-  // [theme.breakpoints.up("lg")]: {
-  //   backgroundColor: green[500],
-  // },
-}));
-
-const StickyHeader = () => {
-  const inView = useSectionContext()?.activeSection === Sections.Details;
+const Header = () => {
+  const inView = usePageContext()?.activePage === Sections.Details;
   const controls = useAnimation();
   const [activeSection, setActiveSection] = useState("about");
   const scrollElm = useRef(null);
@@ -128,6 +102,7 @@ const StickyHeader = () => {
               <Box
                 py="12px"
                 sx={{
+                  width: "fit-content",
                   display: "flex",
                   alignItems: "center",
                   "&:hover": {
@@ -172,7 +147,11 @@ const StickyHeader = () => {
   }, [activeSection]);
 
   const handleOpen = useCallback((link) => {
-    window.open(link, "_blank");
+    if (link?.indexOf("mailto") !== -1) {
+      window.open(link);
+    } else {
+      window.open(link, "_blank");
+    }
   }, []);
 
   const renderSocials = useCallback(() => {
@@ -198,8 +177,8 @@ const StickyHeader = () => {
       {
         id: "email",
         label: "Email",
-        icon: () => <MdEmail />,
-        link: "https://www.linkedin.com/in/conner-mckenna",
+        icon: () => <MdAlternateEmail />,
+        link: "mailto:conner.mckenna94@gmail.com",
       },
     ];
 
@@ -236,18 +215,6 @@ const StickyHeader = () => {
                   color: "rgb(94, 234, 212)",
                 },
               },
-              ...(item?.id === "email"
-                ? {
-                    "& svg": {
-                      cursor: "pointer",
-                      height: "150%",
-                      width: "150%",
-                      position: "relative",
-                      top: "-6px",
-                      left: "-3px",
-                    },
-                  }
-                : {}),
             }}
           >
             {item?.icon()}
@@ -291,6 +258,8 @@ const StickyHeader = () => {
           <TypeAnimation
             key={typingAnimationKey}
             sequence={[
+              "",
+              typingDelay / 2,
               "Software Engineer",
               typingDelay,
               "Full Stack Developer",
@@ -313,6 +282,13 @@ const StickyHeader = () => {
             }}
             repeat={Infinity}
           />
+          <Typography
+            variant="body1"
+            sx={{ marginTop: "1rem" }}
+            color="primary.dark"
+          >
+            I build exceptional and accessible digital experiences for the web.
+          </Typography>
           {renderList()}
           {renderSocials()}
         </Box>
@@ -321,174 +297,4 @@ const StickyHeader = () => {
   );
 };
 
-export const StickySectionHeader = ({ children, sx }) => {
-  return (
-    <Box
-      sx={{
-        height: "60px",
-        width: "100vw",
-        position: "sticky",
-        top: "0",
-        marginLeft: "-48px",
-        paddingLeft: "48px",
-        zIndex: 5000,
-        backdropFilter: "blur(8px)",
-        // backgroundColor: "rgba(15, 23, 42, 0.75)",
-        // borderBottomColor: "rgb(229, 231, 235)",
-        alignItems: "center",
-        marginBottom: "1rem",
-        display: {
-          xs: "flex",
-          md: "none",
-        },
-        ...sx,
-      }}
-    >
-      {children}
-    </Box>
-  );
-};
-
-const About = () => {
-  const inView = useSectionContext()?.activeSection === Sections.Details;
-  const controls = useAnimation();
-
-  useEffect(() => {
-    if (!inView) {
-      controls.start({ opacity: 0 }, { duration: 0 });
-    } else {
-      controls.start({ opacity: 1 });
-    }
-  }, [inView]);
-
-  return (
-    <Box
-      id="about"
-      className="GRID_ITEM_BOX"
-      component={motion.div}
-      initial={{ opacity: 1 }}
-      animate={controls}
-      transition={{ duration: Animation.duration, delay: Animation.delay }}
-      onViewportEnter={() => {}}
-      sx={{
-        paddingTop: {
-          xs: 10,
-          md: 12,
-        },
-      }}
-    >
-      <StickySectionHeader>
-        <Typography variant="h2">About</Typography>
-      </StickySectionHeader>
-      <Typography
-        id="about"
-        width="100%"
-        sx={{
-          paddingBottom: {
-            xs: 12,
-            md: 0,
-          },
-        }}
-      >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates,
-        quod tempore! Eos sunt a reiciendis veniam ab eum aperiam placeat natus
-        dolore soluta autem sequi, doloribus provident. Asperiores, dolore nam?
-      </Typography>
-    </Box>
-  );
-};
-
-const Experience = () => {
-  const inView = useSectionContext()?.activeSection === Sections.Details;
-  const controls = useAnimation();
-  const { small } = useMobile();
-
-  useEffect(() => {
-    if (!inView) {
-      controls.start({ opacity: 0 });
-    }
-  }, [inView]);
-
-  return (
-    <motion.div
-      id="experience"
-      className="GRID_ITEM_BOX"
-      initial={small ? { opacity: 1 } : { opacity: 0 }}
-      animate={controls}
-      transition={{ duration: Animation.duration, delay: Animation.delay }}
-      onViewportEnter={() => {
-        controls.start({ opacity: 1 });
-      }}
-    >
-      <StickySectionHeader>
-        <Typography variant="h2">Experience</Typography>
-      </StickySectionHeader>
-      <Box
-        sx={{
-          paddingTop: {
-            md: 12,
-          },
-        }}
-      >
-        <ul style={{ pointerEvents: inView ? "auto" : "none" }}>
-          {Items?.map((item, index) => (
-            <ListItem key={`list-item--${index}`} item={item} index={index} />
-          ))}
-        </ul>
-      </Box>
-    </motion.div>
-  );
-};
-
-const Details = memo(() => {
-  const inView = useSectionContext((state) => state.activeSection) === "About";
-  const controls = useAnimation();
-  const bp = useBreakPoint();
-  // console.log("bp:", bp);
-
-  useEffect(() => {
-    if (!inView) {
-      controls.start({ opacity: 0 });
-    }
-  }, [inView]);
-
-  return (
-    <StyledGrid
-      container
-      className="GRID_CONTAINER"
-      sx={{
-        minHeight: "100vh",
-        // backgroundColor: {
-        //   xs: "red",
-        //   sm: red[100],
-        //   md: blue[500],
-        //   lg: green[500],
-        //   xl: "purple",
-        // },
-      }}
-    >
-      <StickyHeader />
-      <Grid
-        item
-        xs={12}
-        md={6}
-        className="GRID_ITEM"
-        mb={12}
-        sx={{
-          height: "100%",
-          width: "100%",
-          position: "relative",
-        }}
-      >
-        <About />
-        <Experience />
-        <br />
-        <br />
-        <br />
-        <Toolkit />
-      </Grid>
-    </StyledGrid>
-  );
-});
-
-export default Details;
+export default Header;

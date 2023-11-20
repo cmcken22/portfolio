@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "paths": {
+      "@pages": ["./src/pages"],
       "@components": ["./src/components"],
       "@contexts": ["./src/contexts"],
       "@constants": ["./src/constants"]

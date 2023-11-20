@@ -3,11 +3,12 @@ import lerp from "lerp";
 import { useControls } from "leva";
 import React, { createContext, useContext, useRef } from "react";
 import state from "./state";
+import { use100vh } from "react-div-100vh";
 
 const offsetContext = createContext(0);
 
-function CanvasSection({ children, offset, factor, ...props }) {
-  const { offset: parentOffset, sectionHeight, aspect } = useSection();
+function CanvasSection({ children, offset, factor, diff, ...props }) {
+  const { offset: parentOffset, sectionHeight, aspect } = useSection(diff);
 
   const ref = useRef();
   offset = offset !== undefined ? offset : parentOffset;
@@ -20,15 +21,14 @@ function CanvasSection({ children, offset, factor, ...props }) {
     },
   });
 
-  useFrame(() => {
-    const curY = ref.current.position.y;
-    const curTop = state.top.current / aspect;
-    ref.current.position.y = lerp(curY, (curTop / state.zoom) * factor, 0.1);
-  });
+  // useFrame(() => {
+  //   const curY = ref.current.position.y;
+  //   const curTop = state.top.current / aspect;
+  //   // ref.current.position.y = lerp(curY, (curTop / state.zoom) * factor, 0.1);
+  // });
 
   return (
     <offsetContext.Provider value={offset}>
-      {/* <group {...props} position={[0, -sectionHeight * offset * factor, 0]}> */}
       <group {...props} position={[position?.x, position?.y, position?.z]}>
         <group ref={ref}>{children}</group>
       </group>
@@ -36,12 +36,18 @@ function CanvasSection({ children, offset, factor, ...props }) {
   );
 }
 
-function useSection() {
+function useSection(diff = 0) {
   const { sections, pages, zoom } = state;
+  const height = use100vh();
   const { size, viewport } = useThree();
   const offset = useContext(offsetContext);
   const viewportWidth = viewport?.width;
-  const viewportHeight = viewport?.height;
+  const viewportHeight = viewport?.height - diff;
+  // const viewportWidth = viewport?.width;
+  // const viewportHeight = height ?? 876;
+  // console.log("viewport?.height:", viewport?.height);
+  // console.log("height:", height);
+
   const canvasWidth = viewportWidth / zoom;
   const canvasHeight = viewportHeight / zoom;
   const mobile = size.width < 700;

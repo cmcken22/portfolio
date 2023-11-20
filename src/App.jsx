@@ -1,15 +1,15 @@
 import MusicToggle from "@components/MusicToggle";
 import Mysection from "@components/Mysection";
-import Details from "@components/Sections/Details";
-import Hero from "@components/Sections/Hero";
 import typography from "@components/typography";
 import { Animation, Sections } from "@constants";
 import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
-import useSectionContext from "@contexts/SectionContext";
+import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import { Box, Button, Typography } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Details from "@pages/Details";
+import Hero from "@pages/Hero";
 import { AnimatePresence, motion } from "framer-motion";
 import { Leva } from "leva";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -108,21 +108,21 @@ const App = memo(() => {
   const section1 = useRef();
   const section2 = useRef();
   const { progress } = useLoadingContext();
-  const { activeSection } = useSectionContext();
+  const { activePage } = usePageContext();
   const { enter, setEnter, musicPlayState, playMusic, allowMusic } =
     useAppContext();
   const { mobile } = useMobile();
   const [delayedStart, setDelayedStart] = useState(false);
 
   useEffect(() => {
-    if (activeSection !== Sections.Details) {
+    if (activePage !== Sections.Details) {
       const root = document.body;
       root.style.backgroundColor = "#11151c";
     } else {
       const root = document.body;
       root.style.backgroundColor = "rgb(15, 23, 42)";
     }
-  }, [activeSection]);
+  }, [activePage]);
 
   const timer = useRef(null);
 
@@ -156,7 +156,7 @@ const App = memo(() => {
   );
 
   useEffect(() => {
-    if (activeSection === Sections.Details) {
+    if (activePage === Sections.Details) {
       window.addEventListener("mousemove", handleMouseMove);
     } else {
       window.removeEventListener("mousemove", handleMouseMove);
@@ -164,7 +164,7 @@ const App = memo(() => {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [handleMouseMove, activeSection]);
+  }, [handleMouseMove, activePage]);
 
   return (
     <>
@@ -183,7 +183,8 @@ const App = memo(() => {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {progress === 100 && !enter && delayedStart && (
+        {/* {progress === 100 && !enter && delayedStart && ( */}
+        {!enter && delayedStart && (
           <GateKeeper
             onClick={(value) => {
               setEnter(true);

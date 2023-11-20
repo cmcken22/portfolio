@@ -1,5 +1,5 @@
 import { Animation, Sections } from "@constants";
-import useSectionContext from "@contexts/SectionContext";
+import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { Box, Chip, Grid, Typography } from "@mui/material";
@@ -87,7 +87,7 @@ export const useCardContext = () => {
 const ListItem = memo(({ item, index }) => {
   const { startDate, endDate, positions, company, description, tags } = item;
   const controls = useAnimation();
-  const { activeSection } = useSectionContext();
+  const { activePage } = usePageContext();
   const timer = useRef(null);
   const { cardHoverStatus, setCardHoverStatus } = useCardContext();
   const { small } = useMobile();
@@ -101,16 +101,16 @@ const ListItem = memo(({ item, index }) => {
   }, []);
 
   useEffect(() => {
-    if (activeSection !== Sections.Details && !small) {
+    if (activePage !== Sections.Details && !small) {
       controls.start(exitState, { duration: 0 });
     }
-  }, [activeSection, exitState, small]);
+  }, [activePage, exitState, small]);
 
   useEffect(() => {
-    if (activeSection === Sections.Details && small) {
+    if (activePage === Sections.Details && small) {
       controls.start(activeState, { duration: 0 });
     }
-  }, [activeSection, small]);
+  }, [activePage, small]);
 
   const handleOpenLink = useCallback((link) => {
     window.open(link, "_blank");
