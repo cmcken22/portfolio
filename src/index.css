@@ -157,7 +157,8 @@ body,
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  /* padding: 24px; */
+  /* background: blue; */
 }
 
 .title {
@@ -219,8 +220,22 @@ body {
   right: 0;
   bottom: 0;
   pointer-events: none;
+  position: relative;
+  top: -12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
   /* background: pink; */
+  /* height: calc(100% - 24px); */
 }
+
+@media screen and (max-width: 1023px) {
+  .headline-container {
+    /* background-color: pink; */
+    /* height: calc(100% - 24px); */
+  }
+}
+
 /* 
 .headline-container > div {
   width: 165px;
@@ -232,6 +247,8 @@ body {
 #text-behind,
 #text-front,
 #text-behind-blur {
+  width: 100%;
+  /* background: red; */
   font-family: "Roboto", sans-serif;
   position: absolute;
   text-align: center;

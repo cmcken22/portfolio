@@ -171,27 +171,35 @@ const StickyHeader = () => {
     );
   }, [activeSection]);
 
+  const handleOpen = useCallback((link) => {
+    window.open(link, "_blank");
+  }, []);
+
   const renderSocials = useCallback(() => {
     const list = [
       {
         id: "github",
         label: "Github",
         icon: () => <FaGithub />,
+        link: "https://github.com/cmcken22",
       },
       {
         id: "linkedin",
         label: "LinkedIn",
         icon: () => <FaLinkedin />,
+        link: "https://www.linkedin.com/in/conner-mckenna",
       },
       {
         id: "instagram",
         label: "Instagram",
         icon: () => <BsInstagram />,
+        link: "https://www.linkedin.com/in/conner-mckenna",
       },
       {
         id: "email",
         label: "Email",
         icon: () => <MdEmail />,
+        link: "https://www.linkedin.com/in/conner-mckenna",
       },
     ];
 
@@ -213,6 +221,8 @@ const StickyHeader = () => {
       >
         {list?.map((item) => (
           <Box
+            key={item?.id}
+            onClick={() => handleOpen(item?.link)}
             sx={{
               height: "24px",
               width: "24px",
@@ -245,7 +255,7 @@ const StickyHeader = () => {
         ))}
       </Box>
     );
-  }, []);
+  }, [handleOpen]);
 
   return (
     <Grid
@@ -299,6 +309,7 @@ const StickyHeader = () => {
             style={{
               fontSize: "2em",
               display: "inline-block",
+              fontFamily: "Inter",
             }}
             repeat={Infinity}
           />
@@ -322,8 +333,8 @@ export const StickySectionHeader = ({ children, sx }) => {
         paddingLeft: "48px",
         zIndex: 5000,
         backdropFilter: "blur(8px)",
-        backgroundColor: "rgba(15, 23, 42, 0.75)",
-        borderBottomColor: "rgb(229, 231, 235)",
+        // backgroundColor: "rgba(15, 23, 42, 0.75)",
+        // borderBottomColor: "rgb(229, 231, 235)",
         alignItems: "center",
         marginBottom: "1rem",
         display: {

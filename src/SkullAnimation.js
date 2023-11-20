@@ -34,21 +34,23 @@ class SkullAnimation {
     this.scalar = scalar;
   }
 
-  setScalar(scalar) {
+  setScalar = (scalar) => {
     this.scalar = scalar;
-    this.object.scale.setScalar(this.getScalar());
-  }
+    if (!this.object) return;
+    this.object.scale.setScalar(this.scalar);
+  };
 
-  setPosition(position) {
+  setPosition = (position) => {
     this.position = position;
-    this.object.position.set(0, this.getPosition(), 0);
-  }
+    if (!this.object) return;
+    this.object.position.set(0, this.position, 0);
+  };
 
-  setAllowRotation(allowRotation) {
+  setAllowRotation = (allowRotation) => {
     this.allowRotation = allowRotation;
-  }
+  };
 
-  addComponents() {
+  addComponents = () => {
     console.log("xxx addComponents");
     // create a new RGBELoader to import the HDR
     const hdrEquirect = new RGBELoader()
@@ -77,9 +79,9 @@ class SkullAnimation {
     this.pointlight2 = new THREE.PointLight(0x9f85cc, 7.5, 20);
     this.pointlight2.position.set(0, 3, 2);
     this.group.add(this.pointlight2);
-  }
+  };
 
-  update(deltaTime) {
+  update = (deltaTime) => {
     if (!this.allowRotation) return;
     // Adjust the movement increment based on the elapsed time (deltaTime)
     // const movementIncrement = 0.15 * deltaTime;
@@ -107,7 +109,7 @@ class SkullAnimation {
 
     // keep the camera look at 0,0,0
     this.camera.lookAt(0, 0, 0);
-  }
+  };
 
   animate = (timestamp) => {
     if (this.state === "PAUSED") return;
@@ -135,7 +137,7 @@ class SkullAnimation {
     }
   };
 
-  initScene() {
+  initScene = () => {
     console.log("xxx initScene");
     this.renderer = new THREE.WebGLRenderer({
       canvas: document.getElementById("canvas"),
@@ -184,18 +186,18 @@ class SkullAnimation {
         requestAnimationFrame(this.animate);
       });
     });
-  }
+  };
 
-  pause() {
+  pause = () => {
     this.renderer.dispose();
     this.state = "PAUSED";
     console.log("xxx pause");
     cancelAnimationFrame(this.animationFrame);
     clearTimeout(this.timer);
     // this.destroy();
-  }
+  };
 
-  resume() {
+  resume = () => {
     this.state = "PLAYING";
     this.timer = setTimeout(() => {
       this.animationFrame = requestAnimationFrame(this.animate);
@@ -210,9 +212,9 @@ class SkullAnimation {
     //   this.addComponents();
     //   this.initScene();
     // });
-  }
+  };
 
-  destroy() {
+  destroy = () => {
     console.log("xxx destroy");
     while (this.scene.children.length > 0) {
       console.log("this.scene?.children:", this.scene?.children?.length);
@@ -234,7 +236,7 @@ class SkullAnimation {
     this.scalar = 1.5;
     this.startTime = null;
     this.allowRotation = false;
-  }
+  };
 }
 
 export default SkullAnimation;

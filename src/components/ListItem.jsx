@@ -1,6 +1,7 @@
 import { Animation, Sections } from "@constants";
 import useSectionContext from "@contexts/SectionContext";
 import useMobile from "@contexts/useMobile";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { Box, Chip, Grid, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { memo, useCallback, useEffect, useMemo, useRef } from "react";
@@ -9,8 +10,8 @@ import ShinyCard from "./ShinyCard";
 export const Items = [
   {
     company: "LockDocs Inc.",
-    link: "",
-    position: "Senior Software Engineer",
+    link: "https://lockdocs.com",
+    positions: ["Sr Software Engineer"],
     startDate: "FEB 2023",
     endDate: "PRESENT",
     description:
@@ -19,8 +20,8 @@ export const Items = [
   },
   {
     company: "Opendoor",
-    link: "",
-    position: "Software Engineer",
+    link: "https://www.opendoor.com",
+    positions: ["Software Engineer"],
     startDate: "AUG 2023",
     endDate: "NOV 2023",
     description:
@@ -29,8 +30,8 @@ export const Items = [
   },
   {
     company: "EllisDon",
-    link: "",
-    position: "Software Engineer",
+    link: "https://www.ellisdon.com",
+    positions: ["Sr Software Engineer", "Tech Lead", "Full Stack Developer"],
     startDate: "JUL 2017",
     endDate: "AUG 2023",
     description:
@@ -84,7 +85,7 @@ export const useCardContext = () => {
 };
 
 const ListItem = memo(({ item, index }) => {
-  const { startDate, endDate, position, company, description, tags } = item;
+  const { startDate, endDate, positions, company, description, tags } = item;
   const controls = useAnimation();
   const { activeSection } = useSectionContext();
   const timer = useRef(null);
@@ -111,15 +112,24 @@ const ListItem = memo(({ item, index }) => {
     }
   }, [activeSection, small]);
 
-  const fontColor = "rgb(148, 163, 184)";
+  const handleOpenLink = useCallback((link) => {
+    window.open(link, "_blank");
+  }, []);
 
   const renderContent = useCallback(() => {
     return (
       <Box
+        onClick={() => handleOpenLink(item?.link)}
         sx={{
           "&:hover": {
+            cursor: "pointer",
             "& .company": {
-              color: "rgb(94, 234, 212)",
+              color: "rgb(94, 234, 212) !important",
+            },
+            "& .out-icon": {
+              bottom: "2px !important",
+              left: "2px !important",
+              color: "rgb(94, 234, 212) !important",
             },
           },
         }}
@@ -128,11 +138,7 @@ const ListItem = memo(({ item, index }) => {
           <li className="LIST_ITEM">
             <Grid container>
               <Grid item xs={12} sm={3} md={4}>
-                <Typography
-                  // color={fontColor}
-                  textAlign="left"
-                  fontSize="12px"
-                >
+                <Typography mb={1} textAlign="left" variant="subtitle1">
                   {startDate} — {endDate}
                 </Typography>
               </Grid>
@@ -145,20 +151,59 @@ const ListItem = memo(({ item, index }) => {
                   paddingLeft: { sm: "1rem" },
                 }}
               >
-                <Typography
-                  className="company"
-                  color={fontColor}
-                  textAlign="left"
-                  width="100%"
+                <Box
                   sx={{
-                    transition: "all ease-in-out 0.3s !important",
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
-                  {company}
-                </Typography>
-                <Typography textAlign="left" width="100%">
-                  {position}
-                </Typography>
+                  <Typography
+                    className="company"
+                    textAlign="left"
+                    width="fit-content"
+                    sx={{
+                      cursor: "pointer",
+                      transition: "all ease-in-out 0.3s !important",
+                      mr: 0.5,
+                    }}
+                  >
+                    {positions?.[0]} · {company}
+                  </Typography>
+                  <Box
+                    sx={{
+                      position: "relative",
+                      display: "flex",
+                      // alignItems: "center",
+                      // backgroundColor: "red",
+                      height: "20px",
+                      width: "20px",
+                      "& svg": {
+                        transition: "all ease-in-out 0.3s !important",
+                        // backgroundColor: "blue",
+                        height: "100%",
+                        width: "100%",
+                        transform: "scale(0.8)",
+                        position: "absolute",
+                        bottom: "-2px",
+                        left: "-2px",
+                      },
+                    }}
+                  >
+                    <ArrowOutwardIcon className="out-icon" />
+                  </Box>
+                </Box>
+                {positions?.map((position, i) =>
+                  i === 0 ? null : (
+                    <Typography
+                      key={`position--${position}`}
+                      textAlign="left"
+                      width="100%"
+                      color="primary.darker"
+                    >
+                      {position}
+                    </Typography>
+                  )
+                )}
                 <Typography
                   textAlign="left"
                   width="100%"
@@ -194,28 +239,29 @@ const ListItem = memo(({ item, index }) => {
     company,
     description,
     endDate,
-    fontColor,
     index,
-    position,
+    positions,
     startDate,
     tags,
     small,
+    handleOpenLink,
   ]);
 
   const renderWrapper = useCallback(() => {
     if (small) {
       return (
-        <div
-          key={`${item?.company}--${item?.position}--small`}
+        <Box
+          key={`${item?.company}--${item?.positions?.[0]}--small`}
           className="LIST_ITEM_WRAPPER--small"
+          mb={6}
         >
           {renderContent()}
-        </div>
+        </Box>
       );
     }
     return (
       <motion.div
-        key={`${item?.company}--${item?.position}`}
+        key={`${item?.company}--${item?.positions?.[0]}`}
         className="LIST_ITEM_WRAPPER"
         initial={small ? activeState : exitState}
         animate={controls}

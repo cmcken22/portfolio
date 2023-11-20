@@ -41,6 +41,7 @@
     "mouse-position": "^2.1.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
+    "react-div-100vh": "^0.7.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
     "react-intersection-observer": "^9.5.2",

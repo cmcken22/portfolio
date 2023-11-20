@@ -8,6 +8,7 @@ import { useMediaQuery } from "@mui/material";
 import { a, useTransition } from "@react-spring/web";
 import { useCallback, useEffect, useRef, useState } from "react";
 import SkullAnimation from "../../../SkullAnimation";
+import { use100vh } from "react-div-100vh";
 
 // @media screen and (max-width: 480px)
 /* Mobile Landscape */
@@ -35,6 +36,9 @@ const useCustomBreakPoints = () => {
 };
 
 function ScrollIndicator({ active }) {
+  const h = use100vh();
+  console.log("use100vh:", h);
+
   const transition = useTransition(active, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -47,7 +51,8 @@ function ScrollIndicator({ active }) {
       <a.div
         style={{
           position: "absolute",
-          bottom: "0%",
+          // bottom: "0%",
+          top: `calc(${h}px - 40px - 1rem)`,
           height: "40px",
           width: "40px",
           zIndex: 3,
@@ -67,10 +72,10 @@ function ScrollIndicator({ active }) {
 }
 
 const Content = () => {
-  const { mobile } = useMobile();
+  // const { mobile } = useMobile();
   const { loading } = useLoadingContext();
   const { enter } = useAppContext();
-  const [delayedStart, setDelayedStart] = useState(false);
+  // const [delayedStart, setDelayedStart] = useState(false);
   const inView = useSectionContext()?.activeSection === Sections.Hero;
   // useAnimation(inView, mobile);
   const skullAnimation = useRef(null);
@@ -87,11 +92,11 @@ const Content = () => {
   }, [bp]);
 
   const getPosition = useCallback(() => {
-    if (bp === "xs") return 0.14;
-    if (bp === "sm") return 0.1;
+    if (bp === "xs") return 0.2;
+    if (bp === "sm") return 0.2;
     if (bp === "md") return 0.25;
-    if (bp === "lg") return 0.25;
-    if (bp === "xl") return 0.25;
+    if (bp === "lg") return 0.35;
+    if (bp === "xl") return 0.5;
     return 0.25;
   }, [bp]);
 
@@ -99,9 +104,29 @@ const Content = () => {
     console.clear();
     if (!skullAnimation.current) {
       skullAnimation.current = new SkullAnimation(getPosition(), getScalar());
+      // skullAnimation.current = null;
       console.log("skullAnimation:", skullAnimation.current);
     }
   }, [getPosition, getScalar]);
+
+  useEffect(() => {
+    return () => {
+      if (!skullAnimation.current) return;
+      skullAnimation.current.destroy();
+      skullAnimation.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    const scalar = getScalar();
+    const position = getPosition();
+    skullAnimation.current?.setScalar(scalar);
+    skullAnimation.current?.setPosition(position);
+
+    console.log("bp:", bp);
+    console.log("scalar:", scalar);
+    console.log("position:", position);
+  }, [bp]);
 
   const text1 = "Conner";
   const text2 = "McKenna";
@@ -195,7 +220,7 @@ const Content = () => {
           <br />
           {text2}
         </div>
-        <ScrollIndicator active={inView} />
+        <ScrollIndicator active={inView && enter} />
       </div>
 
       <div className="canvas-container">

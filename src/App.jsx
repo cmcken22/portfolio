@@ -131,11 +131,11 @@ const App = memo(() => {
       const root = document.getElementById("root");
       if (!root) return;
 
-      if (mobile) {
-        root.style.background = "none";
-        window.removeEventListener("mousemove", handleMouseMove);
-        return;
-      }
+      // if (mobile) {
+      //   root.style.background = "none";
+      //   window.removeEventListener("mousemove", handleMouseMove);
+      //   return;
+      // }
 
       cancelAnimationFrame(timer.current);
 
@@ -222,7 +222,7 @@ const App = memo(() => {
           <Mysection
             sectionName={Sections.Hero}
             threshold={0.8}
-            sx={{ height: "100vh" }}
+            sx={{ height: "100vh", overflow: "hidden" }}
           >
             <Hero />
           </Mysection>
@@ -259,7 +259,7 @@ export default () => {
     []
   );
   const theme = createTheme({
-    typography,
+    ...typography,
     breakpoints: { values: breakpointValues },
   });
 
