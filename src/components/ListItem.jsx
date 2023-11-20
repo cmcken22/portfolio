@@ -5,62 +5,8 @@ import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { Box, Chip, Grid, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { memo, useCallback, useEffect, useMemo, useRef } from "react";
-import ShinyCard from "./ShinyCard";
-
-export const Items = [
-  {
-    company: "LockDocs Inc.",
-    link: "https://lockdocs.com",
-    positions: ["Sr Software Engineer"],
-    startDate: "FEB 2023",
-    endDate: "PRESENT",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    tags: ["React", "Firebase", "NodeJS", "NestJS", "Docker"],
-  },
-  {
-    company: "Opendoor",
-    link: "https://www.opendoor.com",
-    positions: ["Software Engineer"],
-    startDate: "AUG 2023",
-    endDate: "NOV 2023",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    tags: ["React", "React Native", "NextJS", "NodeJS", "Express"],
-  },
-  {
-    company: "EllisDon",
-    link: "https://www.ellisdon.com",
-    positions: ["Sr Software Engineer", "Tech Lead", "Full Stack Developer"],
-    startDate: "JUL 2017",
-    endDate: "AUG 2023",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    tags: ["React", "NodeJS", "Express", "Micro Services", "Redis", "GCP"],
-  },
-  // {
-  //   company: "EllisDon",
-  //   link: "",
-  //   position: "Software Engineer",
-  //   startDate: "JUL 2017",
-  //   endDate: "AUG 2023",
-  //   description:
-  //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   tags: [],
-  // },
-  // {
-  //   company: "EllisDon",
-  //   link: "",
-  //   position: "Software Engineer",
-  //   startDate: "JUL 2017",
-  //   endDate: "AUG 2023",
-  //   description:
-  //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   tags: [],
-  // },
-];
-
 import { create } from "zustand";
+import ShinyCard from "./ShinyCard";
 
 export const cardContext = create((set) => ({
   currentCard: "",
@@ -211,7 +157,7 @@ const ListItem = memo(({ item, index }) => {
                   // fontSize="14px"
                   mt={2}
                 >
-                  {description}
+                  {description()}
                 </Typography>
                 <Box display="flex" flexDirection="row" flexWrap="wrap" mt={1}>
                   {tags?.map((tag) => (

@@ -62,13 +62,13 @@ const Toolkit = () => {
 
   useEffect(() => {
     if (!inView && !small) {
-      controls.start({ opacity: 0, x: -500 }, { duration: 0 });
+      controls.start({ opacity: 0 }, { duration: 0 });
     }
   }, [inView, small]);
 
   useEffect(() => {
     if (small) {
-      controls.start({ opacity: 1, x: 0 }, { duration: 0 });
+      controls.start({ opacity: 1 }, { duration: 0 });
     }
   }, [small, inView]);
 
@@ -80,12 +80,12 @@ const Toolkit = () => {
       <motion.div
         id="toolkit"
         className="GRID_ITEM_BOX"
-        initial={{ opacity: 0, x: -500 }}
+        initial={{ opacity: 0 }}
         animate={controls}
         transition={{ duration: Animation.duration, delay: Animation.delay }}
         threshold={1}
         onViewportEnter={() => {
-          controls.start({ opacity: 1, x: 0 });
+          controls.start({ opacity: 1 });
         }}
       >
         <HoverCard hoverRef={hoverRef}>

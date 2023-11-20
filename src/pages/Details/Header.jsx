@@ -5,7 +5,6 @@ import { Box, Grid, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import debounce from "lodash.debounce";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BsInstagram } from "react-icons/bs";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md";
 import { TypeAnimation } from "react-type-animation";
@@ -168,12 +167,12 @@ const Header = () => {
         icon: () => <FaLinkedin />,
         link: "https://www.linkedin.com/in/conner-mckenna",
       },
-      {
-        id: "instagram",
-        label: "Instagram",
-        icon: () => <BsInstagram />,
-        link: "https://www.linkedin.com/in/conner-mckenna",
-      },
+      // {
+      //   id: "instagram",
+      //   label: "Instagram",
+      //   icon: () => <BsInstagram />,
+      //   link: "https://www.linkedin.com/in/conner-mckenna",
+      // },
       {
         id: "email",
         label: "Email",
