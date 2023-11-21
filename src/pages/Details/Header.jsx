@@ -287,7 +287,7 @@ const Header = () => {
           controls.start({ opacity: 1 });
         }}
       >
-        <Box pt={2}>
+        <Box>
           <Typography variant="h1">Conner McKenna</Typography>
           <TypeAnimation
             key={typingAnimationKey}

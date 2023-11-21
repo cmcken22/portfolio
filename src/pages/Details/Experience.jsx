@@ -1,11 +1,13 @@
+import LinkIndicator from "@components/LinkIndicator";
 import ListItem from "@components/ListItem";
 import StickySectionHeader from "@components/StickySectionHeader";
+import UnderlinedText from "@components/UnderlinedText";
 import { Animation, Pages, Sections } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import { Box, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useSectionContext } from "./Header";
 
 export const Items = [
@@ -68,6 +70,90 @@ export const Items = [
   },
 ];
 
+const ResumeLink = ({ index }) => {
+  const controls = useAnimation();
+  const { activePage } = usePageContext();
+  const { small } = useMobile();
+  const timer = useRef(null);
+
+  const activeState = useMemo(() => {
+    return { opacity: 1, x: 0 };
+  }, []);
+
+  const exitState = useMemo(() => {
+    return { opacity: 0, x: -500 };
+  }, []);
+
+  useEffect(() => {
+    if (activePage !== Pages.Details && !small) {
+      controls.start(exitState, { duration: 0 });
+    }
+  }, [activePage, exitState, small]);
+
+  useEffect(() => {
+    if (activePage === Pages.Details && small) {
+      controls.start(activeState, { duration: 0 });
+    }
+  }, [activePage, small]);
+
+  const handleOpenResume = useCallback(() => {
+    window.open("/resume_2023.pdf", "_blank");
+  }, []);
+
+  const renderContent = useCallback(() => {
+    return (
+      <LinkIndicator
+        sx={{ mt: 6 }}
+        arrowType="straight"
+        onClick={handleOpenResume}
+      >
+        <UnderlinedText>View full resume</UnderlinedText>
+      </LinkIndicator>
+    );
+  }, [handleOpenResume]);
+
+  const renderWrapper = useCallback(() => {
+    if (small) {
+      return (
+        <Box key="resume-wrapper--small" className="resume-wrapper--small">
+          {renderContent()}
+        </Box>
+      );
+    }
+    return (
+      <Box
+        key="resume-wrapper"
+        className="resume-wrapper"
+        component={motion.div}
+        initial={small ? activeState : exitState}
+        animate={controls}
+        transition={{
+          ease: "linear",
+          duration: Animation.duration,
+          delay: Animation.delay + index * 0.1,
+        }}
+        onViewportEnter={() => {
+          clearTimeout(timer.current);
+          timer.current = setTimeout(() => {
+            controls.start(activeState);
+          }, (500 / index) * 0.1);
+        }}
+        sx={{
+          willChange: "opacity, transform",
+          marginBottom: "6rem",
+          "&:last-child": {
+            marginBottom: "0",
+          },
+        }}
+      >
+        {renderContent()}
+      </Box>
+    );
+  }, [renderContent, controls, activeState, index, small]);
+
+  return renderWrapper();
+};
+
 const Experience = () => {
   const inView = usePageContext()?.activePage === Pages.Details;
   const controls = useAnimation();
@@ -82,7 +168,7 @@ const Experience = () => {
 
   return (
     <Box
-      id="experience"
+      id={Sections.Experience}
       className="GRID_ITEM_BOX"
       component={motion.div}
       initial={small ? { opacity: 1 } : { opacity: 0 }}
@@ -90,6 +176,12 @@ const Experience = () => {
       transition={{ duration: Animation.duration, delay: Animation.delay }}
       onViewportEnter={() => controls.start({ opacity: 1 })}
       onMouseEnter={() => setActiveSection(Sections.Experience)}
+      sx={{
+        paddingTop: {
+          xs: 10,
+          md: 12,
+        },
+      }}
     >
       <StickySectionHeader>
         <Typography variant="h2">Experience</Typography>
@@ -101,6 +193,7 @@ const Experience = () => {
           ))}
         </ul>
       </Box>
+      <ResumeLink index={Items.length} />
     </Box>
   );
 };

@@ -1,5 +1,6 @@
 import CustomTooltip from "@components/CustomTooltip";
 import StickySectionHeader from "@components/StickySectionHeader";
+import UnderlinedText from "@components/UnderlinedText";
 import { Animation, Pages, Sections, SocialLinks } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import { Box, Typography, useTheme } from "@mui/material";
@@ -26,15 +27,8 @@ const AboutText = () => {
 
   return (
     <Box
-      id="about"
       width="100%"
-      variant="body1"
-      color="primary.dark"
       sx={{
-        // paddingBottom: {
-        //   xs: 12,
-        //   md: 0,
-        // },
         "& p": {
           width: "100%",
           mb: 2,
@@ -66,24 +60,24 @@ const AboutText = () => {
           placement="top"
           title="Check out some of my artwork here!"
         >
-          <Typography
+          <UnderlinedText
             onClick={() => window.open(SocialLinks.flickr, "_blank")}
             variant="body1"
             component="strong"
             color="primary.dark"
-            sx={{
-              width: "fit-content !important",
-              cursor: "pointer",
-              transition: "all ease-in-out 0.3s !important",
-              "&:hover": {
-                textDecoration: "underline",
-                textDecorationColor: theme.palette.secondary.main,
-                textUnderlineOffset: "0.25rem",
-              },
-            }}
+            // sx={{
+            //   width: "fit-content !important",
+            //   cursor: "pointer",
+            //   transition: "all ease-in-out 0.3s !important",
+            //   "&:hover": {
+            //     textDecoration: "underline",
+            //     textDecorationColor: theme.palette.secondary.main,
+            //     textUnderlineOffset: "0.25rem",
+            //   },
+            // }}
           >
             artwork
-          </Typography>
+          </UnderlinedText>
         </CustomTooltip>
         .
       </Typography>
@@ -106,6 +100,7 @@ const About = () => {
 
   return (
     <Box
+      id={Sections.About}
       className="GRID_ITEM_BOX"
       component={motion.div}
       initial={{ opacity: 1 }}
@@ -116,6 +111,11 @@ const About = () => {
         paddingTop: {
           xs: 10,
           md: 12,
+        },
+        marginBottom: {
+          xs: 0,
+          md: 6,
+          lg: 6,
         },
       }}
     >

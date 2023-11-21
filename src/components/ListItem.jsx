@@ -1,41 +1,18 @@
 import { Animation, Pages } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
-import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { Box, Chip, Grid, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { memo, useCallback, useEffect, useMemo, useRef } from "react";
-import { create } from "zustand";
+import LinkIndicator from "./LinkIndicator";
 import ShinyCard from "./ShinyCard";
-
-export const cardContext = create((set) => ({
-  currentCard: "",
-  cardHoverStatus: {},
-  setCurrentCard: (value) => set(() => ({ currentCard: value })),
-  setCardHoverStatus: (index, value) => {
-    set((state) => {
-      const { cardHoverStatus } = state;
-      const nextCardHoverStatus = { ...cardHoverStatus };
-      for (const key in nextCardHoverStatus) {
-        nextCardHoverStatus[key] = false;
-      }
-      nextCardHoverStatus[index] = value;
-      return { cardHoverStatus: nextCardHoverStatus };
-    });
-  },
-}));
-
-export const useCardContext = () => {
-  const state = cardContext((state) => state);
-  return state;
-};
 
 const ListItem = memo(({ item, index }) => {
   const { startDate, endDate, positions, company, description, tags } = item;
+  const contentRef = useRef(null);
   const controls = useAnimation();
   const { activePage } = usePageContext();
   const timer = useRef(null);
-  const { cardHoverStatus, setCardHoverStatus } = useCardContext();
   const { small } = useMobile();
 
   const activeState = useMemo(() => {
@@ -65,6 +42,7 @@ const ListItem = memo(({ item, index }) => {
   const renderContent = useCallback(() => {
     return (
       <Box
+        ref={contentRef}
         className="LIST_ITEM_TEST"
         onClick={() => handleOpenLink(item?.link)}
         sx={{
@@ -72,11 +50,6 @@ const ListItem = memo(({ item, index }) => {
           "&:hover": {
             cursor: "pointer",
             "& .company": {
-              color: "rgb(94, 234, 212) !important",
-            },
-            "& .out-icon": {
-              bottom: "2px !important",
-              left: "2px !important",
               color: "rgb(94, 234, 212) !important",
             },
           },
@@ -98,11 +71,9 @@ const ListItem = memo(({ item, index }) => {
                 paddingLeft: { sm: "1rem" },
               }}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
+              <LinkIndicator
+                arrowType="diagonal"
+                componentRef={contentRef?.current}
               >
                 <Typography
                   className="company"
@@ -111,31 +82,11 @@ const ListItem = memo(({ item, index }) => {
                   sx={{
                     cursor: "pointer",
                     transition: "all ease-in-out 0.3s !important",
-                    mr: 0.5,
                   }}
                 >
                   {positions?.[0]} · {company}
                 </Typography>
-                <Box
-                  sx={{
-                    position: "relative",
-                    display: "flex",
-                    height: "20px",
-                    width: "20px",
-                    "& svg": {
-                      transition: "all ease-in-out 0.3s !important",
-                      height: "100%",
-                      width: "100%",
-                      transform: "scale(0.8)",
-                      position: "absolute",
-                      bottom: "-2px",
-                      left: "-2px",
-                    },
-                  }}
-                >
-                  <ArrowOutwardIcon className="out-icon" />
-                </Box>
-              </Box>
+              </LinkIndicator>
               {positions?.map((position, i) =>
                 i === 0 ? null : (
                   <Typography
@@ -170,7 +121,6 @@ const ListItem = memo(({ item, index }) => {
       </Box>
     );
   }, [
-    cardHoverStatus,
     company,
     description,
     endDate,
@@ -224,25 +174,11 @@ const ListItem = memo(({ item, index }) => {
             marginBottom: "0",
           },
         }}
-        onMouseEnter={() => {
-          setCardHoverStatus(index, true);
-        }}
-        onMouseLeave={() => {
-          setCardHoverStatus(index, true);
-        }}
       >
         <ShinyCard>{renderContent()}</ShinyCard>
       </Box>
     );
-  }, [
-    renderContent,
-    controls,
-    activeState,
-    index,
-    item,
-    setCardHoverStatus,
-    small,
-  ]);
+  }, [renderContent, controls, activeState, index, item, small]);
 
   return renderWrapper();
 });

@@ -24,7 +24,7 @@ export const useBreakPoint = () => {
   if (md) return "md";
   if (lg) return "lg";
   if (xl) return "xl";
-  return "";
+  return "xl";
 };
 
 const detectMobile = () => {
