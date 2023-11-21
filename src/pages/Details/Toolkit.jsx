@@ -5,7 +5,7 @@ import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import { faDocker } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 import { BiLogoTypescript } from "react-icons/bi";
@@ -86,16 +86,14 @@ const Toolkit = () => {
         animate={controls}
         transition={{ duration: Animation.duration, delay: Animation.delay }}
         threshold={1}
-        onViewportEnter={() => {
-          controls.start({ opacity: 1 });
-        }}
+        onViewportEnter={() => controls.start({ opacity: 1 })}
         onMouseEnter={() => setActiveSection(Sections.Toolkit)}
       >
-        <HoverCard hoverRef={hoverRef}>
+        <HoverCard hoverRef={hoverRef} hover>
           <Box
             ref={(r) => setHoverRef(r)}
             sx={{
-              width: "fit-content",
+              width: "100%",
               "& svg, i, .MuiTypography-root": {
                 transition: "all ease-in-out 0.3s !important",
               },
@@ -110,37 +108,36 @@ const Toolkit = () => {
               },
             }}
           >
-            <Box
+            <Grid
+              container
               className="INNER_CONTAINER"
               sx={{
-                // backgroundColor: "blue",
-                width: "100%",
-                width: "100%",
-                display: "flex",
-                flexDirection: "row",
-                flexWrap: "wrap",
-                gap: 2,
-                maxWidth: "600px",
-                justifyContent: "center",
+                justifyContent: "space-evenly",
+                justifyContent: "space-between",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, 124px)",
+                gridGap: "1rem",
               }}
             >
               {Tools?.map((tool) => (
-                <Box
+                <Grid
+                  item
+                  className="TOOL"
                   key={`tool--${tool?.name}`}
                   sx={{
-                    height: "60px",
-                    // flex: "1 0 21%",
-                    flex: 0,
                     display: "flex",
                     alignItems: "center",
-                    px: 1,
+                    height: "40px",
+                    color: "white",
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
                   <Box
                     sx={{
-                      height: "30px",
-                      width: "30px",
-                      marginRight: 1,
+                      height: "20px",
+                      width: "20px",
+                      mr: "1rem !important",
                       "& > svg, i": {
                         height: "100%",
                         width: "100%",
@@ -149,16 +146,12 @@ const Toolkit = () => {
                   >
                     {tool?.Icon && tool?.Icon()}
                   </Box>
-                  <Typography
-                    sx={{
-                      width: "fit-content",
-                    }}
-                  >
+                  <Typography sx={{ width: "fit-content" }}>
                     {tool?.name}
                   </Typography>
-                </Box>
+                </Grid>
               ))}
-            </Box>
+            </Grid>
           </Box>
         </HoverCard>
       </motion.div>

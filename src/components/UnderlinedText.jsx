@@ -1,7 +1,7 @@
 import { Typography, useTheme } from "@mui/material";
 import { forwardRef } from "react";
 
-const UnderlinedText = ({ children, sx, ...rest }, ref) => {
+const UnderlinedText = ({ children, underlined, sx, ...rest }, ref) => {
   const theme = useTheme();
 
   return (
@@ -18,6 +18,11 @@ const UnderlinedText = ({ children, sx, ...rest }, ref) => {
           textDecorationColor: theme.palette.secondary.main,
           textUnderlineOffset: "0.25rem",
         },
+        ...(underlined && {
+          textDecoration: "underline",
+          textDecorationColor: theme.palette.secondary.main,
+          textUnderlineOffset: "0.25rem",
+        }),
         ...sx,
       }}
       {...rest}

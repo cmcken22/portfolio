@@ -3,7 +3,8 @@ import StickySectionHeader from "@components/StickySectionHeader";
 import UnderlinedText from "@components/UnderlinedText";
 import { Animation, Pages, Sections, SocialLinks } from "@constants";
 import usePageContext from "@contexts/PageContext";
-import { Box, Typography, useTheme } from "@mui/material";
+import useMobile from "@contexts/useMobile";
+import { Box, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
 import { useSectionContext } from "./Header";
@@ -23,7 +24,7 @@ const yearsSinceDate = (specificDate = carreerStateDate) => {
 };
 
 const AboutText = () => {
-  const theme = useTheme();
+  const { mobile } = useMobile();
 
   return (
     <Box
@@ -61,20 +62,11 @@ const AboutText = () => {
           title="Check out some of my artwork here!"
         >
           <UnderlinedText
+            underlined={mobile}
             onClick={() => window.open(SocialLinks.flickr, "_blank")}
             variant="body1"
             component="strong"
             color="primary.dark"
-            // sx={{
-            //   width: "fit-content !important",
-            //   cursor: "pointer",
-            //   transition: "all ease-in-out 0.3s !important",
-            //   "&:hover": {
-            //     textDecoration: "underline",
-            //     textDecorationColor: theme.palette.secondary.main,
-            //     textUnderlineOffset: "0.25rem",
-            //   },
-            // }}
           >
             artwork
           </UnderlinedText>
