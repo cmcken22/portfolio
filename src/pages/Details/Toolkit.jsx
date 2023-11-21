@@ -1,6 +1,6 @@
 import HoverCard from "@components/HoverCard";
 import StickySectionHeader from "@components/StickySectionHeader";
-import { Animation, Pages } from "@constants";
+import { Animation, Pages, Sections } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import { faDocker } from "@fortawesome/free-brands-svg-icons";
@@ -13,6 +13,7 @@ import { DiMongodb } from "react-icons/di";
 import { FaNodeJs, FaReact, FaSass } from "react-icons/fa";
 import { IoLogoJavascript } from "react-icons/io5";
 import { SiRedux } from "react-icons/si";
+import { useSectionContext } from "./Header";
 
 const Tools = [
   {
@@ -59,6 +60,7 @@ const Toolkit = () => {
   const controls = useAnimation();
   const { small } = useMobile();
   const [hoverRef, setHoverRef] = useState(null);
+  const { setActiveSection } = useSectionContext();
 
   useEffect(() => {
     if (!inView && !small) {
@@ -87,6 +89,7 @@ const Toolkit = () => {
         onViewportEnter={() => {
           controls.start({ opacity: 1 });
         }}
+        onMouseEnter={() => setActiveSection(Sections.Toolkit)}
       >
         <HoverCard hoverRef={hoverRef}>
           <Box

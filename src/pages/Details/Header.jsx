@@ -1,4 +1,4 @@
-import { Animation, Pages } from "@constants";
+import { Animation, Pages, Sections } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import { Box, Grid, Typography } from "@mui/material";
@@ -8,13 +8,24 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md";
 import { TypeAnimation } from "react-type-animation";
+import { create } from "zustand";
+
+const sectionContext = create((set) => ({
+  activeSection: "about",
+  setActiveSection: (value) => set(() => ({ activeSection: value })),
+}));
+
+export const useSectionContext = () => {
+  const state = sectionContext((state) => state);
+  return state;
+};
 
 const typingDelay = 2000;
 
 const Header = () => {
   const inView = usePageContext()?.activePage === Pages.Details;
   const controls = useAnimation();
-  const [activeSection, setActiveSection] = useState("about");
+  const { activeSection, setActiveSection } = useSectionContext();
   const scrollElm = useRef(null);
   const { small } = useMobile();
   const [typingAnimationKey, setTypingAnimationKey] = useState(0);
@@ -31,9 +42,9 @@ const Header = () => {
 
   const handleScroll = useCallback(() => {
     if (small) return;
-    const elm1 = document.getElementById("about");
-    const elm2 = document.getElementById("experience");
-    const elm3 = document.getElementById("toolkit");
+    const elm1 = document.getElementById(Sections.About);
+    const elm2 = document.getElementById(Sections.Experience);
+    const elm3 = document.getElementById(Sections.Toolkit);
     const elms = [elm1, elm2, elm3];
 
     // detect closest element to top of the scroll container

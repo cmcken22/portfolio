@@ -1,6 +1,6 @@
 import useMobile from "@contexts/useMobile";
 import styled from "@emotion/styled";
-import { Box } from "@mui/material";
+import { Box, styled as muiStyled } from "@mui/material";
 import { animate, motion, useMotionValue, useTransform } from "framer-motion";
 import { memo, useCallback, useEffect, useRef } from "react";
 import HoverCard from "./HoverCard";
@@ -17,6 +17,23 @@ const CardWrapper = styled(motion.div)`
   border-radius: 20px;
   backdrop-filter: blur(4px) brightness(120%);
 `;
+
+const StyledBox = muiStyled(Box, {
+  shouldForwardProp: (prop) => prop !== "active",
+})(({ zoomDirection, mouseHold }) => ({
+  borderRadius: "0.375rem",
+  transitionProperty:
+    "background-color, border-color, color, fill, stroke, opacity, box-shadow, transform",
+  transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+  transitionDuration: "300ms",
+  zIndex: 0,
+  "&:hover": {
+    backdropFilter: "blur(10px)",
+    backgroundColor: "rgba(30, 41, 59, 0.5)",
+    boxShadow:
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(148, 163, 184, 0.1) 0px 1px 0px 0px inset",
+  },
+}));
 
 function getRelativeCoordinates(event, referenceElement) {
   const position = {
@@ -49,6 +66,14 @@ const ShinyCard = memo(({ active, children }) => {
   const mouseY = useMotionValue(0);
   const { small } = useMobile();
   const mouseIdleTimer = useRef(null);
+  const mouseIsInside = useRef(false);
+  const frame = useRef(0);
+  const mouseExitTimer = useRef(null);
+
+  const handleExit = useCallback(() => {
+    animate(mouseX, 0, { type: "spring", stiffness: 500 });
+    animate(mouseY, 0, { type: "spring", stiffness: 500 });
+  }, []);
 
   const rotateX = useTransform(mouseY, (newMouseY) => {
     if (!cardRef.current) return 0;
@@ -58,9 +83,11 @@ const ShinyCard = memo(({ active, children }) => {
 
     // Apply a non-linear transformation to adjust rotation speed
     const transformedY = Math.pow(percentY, 3);
+    // console.log("percentY:", percentY, transformedY);
 
     const maxX = 10;
-    const newRotateY = transformedY * maxX;
+    // const newRotateY = transformedY * maxX;
+    const newRotateY = percentY * maxX;
 
     return -newRotateY;
   });
@@ -75,7 +102,8 @@ const ShinyCard = memo(({ active, children }) => {
     const transformedX = Math.pow(percentX, 3);
 
     const maxX = 10;
-    const newRotateX = transformedX * maxX;
+    // const newRotateX = transformedX * maxX;
+    const newRotateX = percentX * maxX;
 
     return newRotateX;
   });
@@ -94,7 +122,19 @@ const ShinyCard = memo(({ active, children }) => {
       if (!handleMouseMove.debounced) {
         handleMouseMove.debounced = true;
 
-        requestAnimationFrame(() => {
+        if (!mouseIsInside?.current) {
+          cancelAnimationFrame(frame.current);
+          handleMouseMove.debounced = false;
+          return;
+        }
+
+        frame.current = requestAnimationFrame(() => {
+          if (!mouseIsInside?.current) {
+            handleExit();
+            cancelAnimationFrame(frame.current);
+            handleMouseMove.debounced = false;
+            return;
+          }
           // console.log("__mouseMouve:", blockMouseMovement.current);
           // if (blockMouseMovement.current) {
           //   handleMouseMove.debounced = false;
@@ -109,20 +149,24 @@ const ShinyCard = memo(({ active, children }) => {
 
           // mouseX.set(mouseXRelativeToCenter);
           // mouseY.set(mouseYRelativeToCenter);
-          animate(mouseX, mouseXRelativeToCenter);
-          animate(mouseY, mouseYRelativeToCenter);
+          // console.log("animating");
+          // animate(mouseX, mouseXRelativeToCenter, { type: "spring" });
+          // animate(mouseY, mouseYRelativeToCenter, { type: "spring" });
+          const options = { type: "easeOut", duration: 0.5 };
+          animate(mouseX, mouseXRelativeToCenter, options);
+          animate(mouseY, mouseYRelativeToCenter, options);
 
           handleMouseMove.debounced = false;
 
-          clearTimeout(mouseIdleTimer.current);
-          mouseIdleTimer.current = setTimeout(() => {
-            animate(mouseX, 0);
-            animate(mouseY, 0);
-          }, 1000);
+          // clearTimeout(mouseIdleTimer.current);
+          // mouseIdleTimer.current = setTimeout(() => {
+          //   animate(mouseX, 0);
+          //   animate(mouseY, 0);
+          // }, 1000);
         });
       }
     },
-    [small]
+    [small, handleExit]
   );
 
   useEffect(() => {
@@ -138,56 +182,40 @@ const ShinyCard = memo(({ active, children }) => {
   }, [handleMouseMove]);
 
   return (
-    <Box
-      className="shiny-card"
-      ref={cardRef}
-      sx={{
-        margin: {
-          xs: 0,
-          md: "-1.5rem",
-        },
-        padding: {
-          xs: 0,
-          md: "1.5rem",
-        },
-        perspective: "1000px",
-        // backgroundColor: "blue",
-        "& .card-wrapper": {
-          width: {
-            xs: "100%",
-            md: "fit-content",
-          },
-        },
-        position: "relative",
-        "&:hover": {
-          "& > .box-shadow": {
-            opacity: "1 !important",
-          },
-        },
-      }}
-      onMouseLeave={() => {
-        mouseX.set(0);
-        mouseY.set(0);
-      }}
-    >
+    <Box className="shiny-card" sx={{ perspective: "1000px" }}>
       <RotationWrapper
         style={{
-          rotateX: small ? 0 : rotateX,
-          rotateY: small ? 0 : rotateY,
+          rotateX,
+          rotateY,
         }}
       >
-        <Box
-          className="card-wrapper"
-          component={motion.div}
+        <StyledBox
+          ref={cardRef}
           sx={{
-            borderRadius: "20px",
-            backdropFilter: {
-              md: "blur(4px) brightness(120%)",
-            },
+            height: "100%",
+            width: "100%",
+            minHeight: "100px",
+            width: "calc(100% + 32px)",
+            margin: "-16px",
+            position: "relative",
+            left: 0,
+            padding: "16px",
+            opacity: 1,
+          }}
+          onMouseEnter={() => {
+            mouseIsInside.current = true;
+            clearTimeout(mouseExitTimer.current);
+          }}
+          onMouseLeave={() => {
+            clearTimeout(mouseExitTimer.current);
+            mouseExitTimer.current = setTimeout(() => {
+              mouseIsInside.current = false;
+              handleExit();
+            }, 100);
           }}
         >
-          <HoverCard disabled={!active}>{children}</HoverCard>
-        </Box>
+          {children}
+        </StyledBox>
       </RotationWrapper>
     </Box>
   );

@@ -1,9 +1,10 @@
 import StickySectionHeader from "@components/StickySectionHeader";
-import { Animation, Pages } from "@constants";
+import { Animation, Pages, Sections } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import { Box, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
+import { useSectionContext } from "./Header";
 
 const carreerStateDate = new Date("2017-07-01");
 
@@ -66,6 +67,7 @@ const AboutText = () => {
 const About = () => {
   const inView = usePageContext()?.activePage === Pages.Details;
   const controls = useAnimation();
+  const { setActiveSection } = useSectionContext();
 
   useEffect(() => {
     if (!inView) {
@@ -83,7 +85,7 @@ const About = () => {
       initial={{ opacity: 1 }}
       animate={controls}
       transition={{ duration: Animation.duration, delay: Animation.delay }}
-      onViewportEnter={() => {}}
+      onMouseEnter={() => setActiveSection(Sections.About)}
       sx={{
         paddingTop: {
           xs: 10,

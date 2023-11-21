@@ -2,7 +2,7 @@ import { Animation, Pages } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import { Box, Chip, Grid, Typography } from "@mui/material";
+import { Box, Chip, Grid, Typography, styled } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { memo, useCallback, useEffect, useMemo, useRef } from "react";
 import { create } from "zustand";
@@ -65,8 +65,10 @@ const ListItem = memo(({ item, index }) => {
   const renderContent = useCallback(() => {
     return (
       <Box
+        className="LIST_ITEM_TEST"
         onClick={() => handleOpenLink(item?.link)}
         sx={{
+          width: "100%",
           "&:hover": {
             cursor: "pointer",
             "& .company": {
@@ -80,96 +82,94 @@ const ListItem = memo(({ item, index }) => {
           },
         }}
       >
-        <ShinyCard active={cardHoverStatus?.[index] && !small}>
-          <li className="LIST_ITEM">
-            <Grid container>
-              <Grid item xs={12} sm={3} md={4}>
-                <Typography mb={1} textAlign="left" variant="subtitle1">
-                  {startDate} — {endDate}
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={9}
-                md={8}
+        <li className="LIST_ITEM">
+          <Grid container>
+            <Grid item xs={12} sm={3} md={4}>
+              <Typography mb={1} textAlign="left" variant="subtitle1">
+                {startDate} — {endDate}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={9}
+              md={8}
+              sx={{
+                paddingLeft: { sm: "1rem" },
+              }}
+            >
+              <Box
                 sx={{
-                  paddingLeft: { sm: "1rem" },
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
-                <Box
+                <Typography
+                  className="company"
+                  textAlign="left"
+                  width="fit-content"
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
+                    cursor: "pointer",
+                    transition: "all ease-in-out 0.3s !important",
+                    mr: 0.5,
                   }}
                 >
-                  <Typography
-                    className="company"
-                    textAlign="left"
-                    width="fit-content"
-                    sx={{
-                      cursor: "pointer",
+                  {positions?.[0]} · {company}
+                </Typography>
+                <Box
+                  sx={{
+                    position: "relative",
+                    display: "flex",
+                    // alignItems: "center",
+                    // backgroundColor: "red",
+                    height: "20px",
+                    width: "20px",
+                    "& svg": {
                       transition: "all ease-in-out 0.3s !important",
-                      mr: 0.5,
-                    }}
+                      // backgroundColor: "blue",
+                      height: "100%",
+                      width: "100%",
+                      transform: "scale(0.8)",
+                      position: "absolute",
+                      bottom: "-2px",
+                      left: "-2px",
+                    },
+                  }}
+                >
+                  <ArrowOutwardIcon className="out-icon" />
+                </Box>
+              </Box>
+              {positions?.map((position, i) =>
+                i === 0 ? null : (
+                  <Typography
+                    key={`position--${position}`}
+                    textAlign="left"
+                    width="100%"
+                    color="primary.darker"
                   >
-                    {positions?.[0]} · {company}
+                    {position}
                   </Typography>
-                  <Box
+                )
+              )}
+              <Box mt={2}>{description()}</Box>
+              <Box display="flex" flexDirection="row" flexWrap="wrap" mt={1}>
+                {tags?.map((tag) => (
+                  <Chip
+                    key={`tag--${tag}`}
+                    label={tag}
+                    variant="contained"
                     sx={{
-                      position: "relative",
-                      display: "flex",
-                      // alignItems: "center",
-                      // backgroundColor: "red",
-                      height: "20px",
-                      width: "20px",
-                      "& svg": {
-                        transition: "all ease-in-out 0.3s !important",
-                        // backgroundColor: "blue",
-                        height: "100%",
-                        width: "100%",
-                        transform: "scale(0.8)",
-                        position: "absolute",
-                        bottom: "-2px",
-                        left: "-2px",
-                      },
+                      marginRight: "8px",
+                      marginTop: "8px",
+                      background: "rgba(45, 212, 191, 0.1)",
+                      color: "rgb(94, 234, 212)",
                     }}
-                  >
-                    <ArrowOutwardIcon className="out-icon" />
-                  </Box>
-                </Box>
-                {positions?.map((position, i) =>
-                  i === 0 ? null : (
-                    <Typography
-                      key={`position--${position}`}
-                      textAlign="left"
-                      width="100%"
-                      color="primary.darker"
-                    >
-                      {position}
-                    </Typography>
-                  )
-                )}
-                <Box mt={2}>{description()}</Box>
-                <Box display="flex" flexDirection="row" flexWrap="wrap" mt={1}>
-                  {tags?.map((tag) => (
-                    <Chip
-                      key={`tag--${tag}`}
-                      label={tag}
-                      variant="contained"
-                      sx={{
-                        marginRight: "8px",
-                        marginTop: "8px",
-                        background: "rgba(45, 212, 191, 0.1)",
-                        color: "rgb(94, 234, 212)",
-                      }}
-                    />
-                  ))}
-                </Box>
-              </Grid>
+                  />
+                ))}
+              </Box>
             </Grid>
-          </li>
-        </ShinyCard>
+          </Grid>
+        </li>
       </Box>
     );
   }, [
@@ -225,7 +225,7 @@ const ListItem = memo(({ item, index }) => {
           setCardHoverStatus(index, true);
         }}
       >
-        {renderContent()}
+        <ShinyCard>{renderContent()}</ShinyCard>
       </motion.div>
     );
   }, [

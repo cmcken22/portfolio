@@ -1,11 +1,12 @@
 import ListItem from "@components/ListItem";
 import StickySectionHeader from "@components/StickySectionHeader";
-import { Animation, Pages } from "@constants";
+import { Animation, Pages, Sections } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import { Box, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
+import { useSectionContext } from "./Header";
 
 export const Items = [
   {
@@ -71,6 +72,7 @@ const Experience = () => {
   const inView = usePageContext()?.activePage === Pages.Details;
   const controls = useAnimation();
   const { small } = useMobile();
+  const { setActiveSection } = useSectionContext();
 
   useEffect(() => {
     if (!inView) {
@@ -88,6 +90,7 @@ const Experience = () => {
       onViewportEnter={() => {
         controls.start({ opacity: 1 });
       }}
+      onMouseEnter={() => setActiveSection(Sections.Experience)}
     >
       <StickySectionHeader>
         <Typography variant="h2">Experience</Typography>
@@ -99,6 +102,7 @@ const Experience = () => {
             xs: 2,
             md: 12,
           },
+          // backgroundColor: "rgba(255,0, 255, 0.1)",
         }}
       >
         <ul style={{ pointerEvents: inView ? "auto" : "none" }}>
