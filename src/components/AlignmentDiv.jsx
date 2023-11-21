@@ -1,7 +1,9 @@
 import { memo } from "react";
 import Div100vh from "react-div-100vh";
 
-const AlignmentDiv = memo(() => {
+const AlignmentDiv = memo(({ hidden }) => {
+  if (hidden) return null;
+
   return (
     <Div100vh
       style={{

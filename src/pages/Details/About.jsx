@@ -55,8 +55,9 @@ const AboutText = () => {
         <strong>3D Animations</strong>.
       </Typography>
       <Typography variant="body1" color="primary.dark">
-        During my free time, I enjoy learning new technologies, going for hikes
-        with my dog Miko, and expressing creativity through&nbsp;
+        During my free time, I enjoy learning new technologies, playing
+        pickleball, going for hikes with my dog Miko, and expressing creativity
+        through&nbsp;
         <CustomTooltip
           placement="top"
           title="Check out some of my artwork here!"

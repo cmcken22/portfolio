@@ -1,3 +1,4 @@
+import AlignmentDiv from "@components/AlignmentDiv";
 import MusicToggle from "@components/MusicToggle";
 import Mysection from "@components/Mysection";
 import typography from "@components/typography";
@@ -124,6 +125,9 @@ const App = memo(() => {
     useAppContext();
   const { mobile } = useMobile();
   const [delayedStart, setDelayedStart] = useState(false);
+  const urlParams = new URLSearchParams(window.location.search);
+  const displayAlignmentDiv = urlParams.get("alignment") === "true";
+  console.log("displayAlignmentDiv:", displayAlignmentDiv);
 
   useEffect(() => {
     if (activePage !== Pages.Details) {
@@ -196,7 +200,7 @@ const App = memo(() => {
 
   return (
     <>
-      {/* <AlignmentDiv /> */}
+      <AlignmentDiv hidden={!displayAlignmentDiv} />
       <MusicToggle />
       <Leva hidden />
       <AnimatePresence>
@@ -229,9 +233,6 @@ const App = memo(() => {
       <Sound
         url="/spotifydown.com - Never Loved.mp3"
         playStatus={musicPlayState}
-        // onLoading={this.handleSongLoading}
-        // onPlaying={this.handleSongPlaying}
-        // onFinishedPlaying={this.handleSongFinishedPlaying}
       />
       <Box
         className="__container"
