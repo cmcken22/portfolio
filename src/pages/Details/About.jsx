@@ -1,7 +1,8 @@
+import CustomTooltip from "@components/CustomTooltip";
 import StickySectionHeader from "@components/StickySectionHeader";
-import { Animation, Pages, Sections } from "@constants";
+import { Animation, Pages, Sections, SocialLinks } from "@constants";
 import usePageContext from "@contexts/PageContext";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
 import { useSectionContext } from "./Header";
@@ -21,6 +22,8 @@ const yearsSinceDate = (specificDate = carreerStateDate) => {
 };
 
 const AboutText = () => {
+  const theme = useTheme();
+
   return (
     <Box
       id="about"
@@ -28,10 +31,10 @@ const AboutText = () => {
       variant="body1"
       color="primary.dark"
       sx={{
-        paddingBottom: {
-          xs: 12,
-          md: 0,
-        },
+        // paddingBottom: {
+        //   xs: 12,
+        //   md: 0,
+        // },
         "& p": {
           width: "100%",
           mb: 2,
@@ -58,7 +61,31 @@ const AboutText = () => {
       </Typography>
       <Typography variant="body1" color="primary.dark">
         During my free time, I enjoy learning new technologies, going for hikes
-        with my dog Miko, and expressing creativity through artwork.
+        with my dog Miko, and expressing creativity through&nbsp;
+        <CustomTooltip
+          placement="top"
+          title="Check out some of my artwork here!"
+        >
+          <Typography
+            onClick={() => window.open(SocialLinks.flickr, "_blank")}
+            variant="body1"
+            component="strong"
+            color="primary.dark"
+            sx={{
+              width: "fit-content !important",
+              cursor: "pointer",
+              transition: "all ease-in-out 0.3s !important",
+              "&:hover": {
+                textDecoration: "underline",
+                textDecorationColor: theme.palette.secondary.main,
+                textUnderlineOffset: "0.25rem",
+              },
+            }}
+          >
+            artwork
+          </Typography>
+        </CustomTooltip>
+        .
       </Typography>
     </Box>
   );
@@ -79,7 +106,6 @@ const About = () => {
 
   return (
     <Box
-      id="about"
       className="GRID_ITEM_BOX"
       component={motion.div}
       initial={{ opacity: 1 }}

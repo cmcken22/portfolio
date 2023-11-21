@@ -2,7 +2,7 @@ import { Animation, Pages } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import { Box, Chip, Grid, Typography, styled } from "@mui/material";
+import { Box, Chip, Grid, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { memo, useCallback, useEffect, useMemo, useRef } from "react";
 import { create } from "zustand";
@@ -120,13 +120,10 @@ const ListItem = memo(({ item, index }) => {
                   sx={{
                     position: "relative",
                     display: "flex",
-                    // alignItems: "center",
-                    // backgroundColor: "red",
                     height: "20px",
                     width: "20px",
                     "& svg": {
                       transition: "all ease-in-out 0.3s !important",
-                      // backgroundColor: "blue",
                       height: "100%",
                       width: "100%",
                       transform: "scale(0.8)",
@@ -191,16 +188,22 @@ const ListItem = memo(({ item, index }) => {
         <Box
           key={`${item?.company}--${item?.positions?.[0]}--small`}
           className="LIST_ITEM_WRAPPER--small"
-          mb={6}
+          sx={{
+            marginBottom: "6rem",
+            "&:last-child": {
+              marginBottom: "0",
+            },
+          }}
         >
           {renderContent()}
         </Box>
       );
     }
     return (
-      <motion.div
+      <Box
         key={`${item?.company}--${item?.positions?.[0]}`}
         className="LIST_ITEM_WRAPPER"
+        component={motion.div}
         initial={small ? activeState : exitState}
         animate={controls}
         transition={{
@@ -214,9 +217,12 @@ const ListItem = memo(({ item, index }) => {
             controls.start(activeState);
           }, (500 / index) * 0.1);
         }}
-        style={{
+        sx={{
           willChange: "opacity, transform",
           marginBottom: "6rem",
+          "&:last-child": {
+            marginBottom: "0",
+          },
         }}
         onMouseEnter={() => {
           setCardHoverStatus(index, true);
@@ -226,7 +232,7 @@ const ListItem = memo(({ item, index }) => {
         }}
       >
         <ShinyCard>{renderContent()}</ShinyCard>
-      </motion.div>
+      </Box>
     );
   }, [
     renderContent,

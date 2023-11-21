@@ -20,20 +20,15 @@ const FONT_PRIMARY = "Inter"; // Google Font
 // const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
 
 const palette = {
-  // primary: "rgb(226, 232, 240)",
   primary: {
     main: "rgb(226, 232, 240)",
     light: "rgb(226, 232, 240)",
     dark: "rgb(148, 163, 184)",
     darker: "rgb(100, 116, 139)",
   },
-  tomato: "rgb(94, 234, 212)",
-  pink: {
-    deep: "#FF1493",
-    hot: "#FF69B4",
-    medium: "#C71585",
-    pale: "#DB7093",
-    light: "#FFB6C1",
+  secondary: {
+    main: "rgb(94, 234, 212)",
+    dark: "rgb(45, 212, 191)",
   },
 };
 
@@ -54,27 +49,21 @@ const typography = {
     h2: {
       fontWeight: 400,
       fontSize: pxToRem(32),
-      // color: "red !important",
       color: palette.primary.main,
-      // color: "rgb(226, 232, 240)",
     },
     body1: {
       fontWeight: 400,
       fontSize: pxToRem(16),
-      // color: "blue !important",
       color: palette.primary.main,
-      // color: "rgb(226, 232, 240)",
     },
     body2: {
       fontWeight: 400,
       fontSize: pxToRem(14),
-      // color: "green !important",
       color: palette.primary.dark,
     },
     subtitle1: {
       fontWeight: 400,
       fontSize: pxToRem(12),
-      // color: "green !important",
       color: palette.primary.darker,
     },
     // h2: {

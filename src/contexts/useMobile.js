@@ -44,7 +44,8 @@ const useMobile = () => {
 
   useEffect(() => {
     const mobileDevice = detectMobile();
-    state.setMobile(breakpoint === "xs" || breakpoint === "sm" || mobileDevice);
+    // state.setMobile(breakpoint === "xs" || breakpoint === "sm" || mobileDevice);
+    state.setMobile(mobileDevice);
     state.setSmall(
       breakpoint === "xs" ||
         breakpoint === "sm" ||

@@ -1,4 +1,5 @@
-import { Animation, Pages, Sections } from "@constants";
+import CustomTooltip from "@components/CustomTooltip";
+import { Animation, Pages, Sections, SocialLinks } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import useMobile from "@contexts/useMobile";
 import { Box, Grid, Typography } from "@mui/material";
@@ -6,6 +7,7 @@ import { motion, useAnimation } from "framer-motion";
 import debounce from "lodash.debounce";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaFlickr } from "react-icons/fa6";
 import { MdAlternateEmail } from "react-icons/md";
 import { TypeAnimation } from "react-type-animation";
 import { create } from "zustand";
@@ -185,25 +187,25 @@ const Header = () => {
         id: "github",
         label: "Github",
         icon: () => <FaGithub />,
-        link: "https://github.com/cmcken22",
+        link: SocialLinks.github,
       },
       {
         id: "linkedin",
         label: "LinkedIn",
         icon: () => <FaLinkedin />,
-        link: "https://www.linkedin.com/in/conner-mckenna",
+        link: SocialLinks.linkedin,
       },
-      // {
-      //   id: "instagram",
-      //   label: "Instagram",
-      //   icon: () => <BsInstagram />,
-      //   link: "https://www.linkedin.com/in/conner-mckenna",
-      // },
+      {
+        id: "flickr",
+        label: "Flickr",
+        icon: () => <FaFlickr />,
+        link: SocialLinks.flickr,
+      },
       {
         id: "email",
-        label: "Email",
+        label: "conner.mckenna94@gmail.com",
         icon: () => <MdAlternateEmail />,
-        link: "mailto:conner.mckenna94@gmail.com",
+        link: SocialLinks.email,
       },
     ];
 
@@ -224,26 +226,33 @@ const Header = () => {
         }}
       >
         {list?.map((item) => (
-          <Box
-            key={item?.id}
-            onClick={() => handleOpen(item?.link)}
-            sx={{
-              height: "24px",
-              width: "24px",
-              "& svg": {
-                height: "100%",
-                width: "100%",
-                cursor: "pointer",
-              },
-              "&:hover": {
-                "& svg": {
-                  color: "rgb(94, 234, 212)",
-                },
-              },
-            }}
+          <CustomTooltip
+            key={`tooltip--${item?.id}`}
+            placement="top"
+            title={item?.label}
+            enterDelay={1000}
           >
-            {item?.icon()}
-          </Box>
+            <Box
+              key={item?.id}
+              onClick={() => handleOpen(item?.link)}
+              sx={{
+                height: "24px",
+                width: "24px",
+                "& svg": {
+                  height: "100%",
+                  width: "100%",
+                  cursor: "pointer",
+                },
+                "&:hover": {
+                  "& svg": {
+                    color: "rgb(94, 234, 212)",
+                  },
+                },
+              }}
+            >
+              {item?.icon()}
+            </Box>
+          </CustomTooltip>
         ))}
       </Box>
     );

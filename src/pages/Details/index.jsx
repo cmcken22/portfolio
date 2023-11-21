@@ -1,3 +1,4 @@
+import Spacer from "@components/Spacer";
 import { Pages } from "@constants";
 import usePageContext from "@contexts/PageContext";
 import { Grid, styled } from "@mui/material";
@@ -63,10 +64,9 @@ const Details = memo(() => {
         }}
       >
         <About />
+        <Spacer />
         <Experience />
-        <br />
-        <br />
-        <br />
+        <Spacer />
         <Toolkit />
       </Grid>
     </StyledGrid>

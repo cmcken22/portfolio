@@ -81,37 +81,27 @@ const Experience = () => {
   }, [inView]);
 
   return (
-    <motion.div
+    <Box
       id="experience"
       className="GRID_ITEM_BOX"
+      component={motion.div}
       initial={small ? { opacity: 1 } : { opacity: 0 }}
       animate={controls}
       transition={{ duration: Animation.duration, delay: Animation.delay }}
-      onViewportEnter={() => {
-        controls.start({ opacity: 1 });
-      }}
+      onViewportEnter={() => controls.start({ opacity: 1 })}
       onMouseEnter={() => setActiveSection(Sections.Experience)}
     >
       <StickySectionHeader>
         <Typography variant="h2">Experience</Typography>
       </StickySectionHeader>
-      <Box
-        className="experience__list"
-        sx={{
-          paddingTop: {
-            xs: 2,
-            md: 12,
-          },
-          // backgroundColor: "rgba(255,0, 255, 0.1)",
-        }}
-      >
+      <Box className="experience__list">
         <ul style={{ pointerEvents: inView ? "auto" : "none" }}>
           {Items?.map((item, index) => (
             <ListItem key={`list-item--${index}`} item={item} index={index} />
           ))}
         </ul>
       </Box>
-    </motion.div>
+    </Box>
   );
 };
 

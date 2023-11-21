@@ -1,9 +1,14 @@
 import useMobile from "@contexts/useMobile";
 import styled from "@emotion/styled";
 import { Box, styled as muiStyled } from "@mui/material";
-import { animate, motion, useMotionValue, useTransform } from "framer-motion";
-import { memo, useCallback, useEffect, useRef } from "react";
-import HoverCard from "./HoverCard";
+import {
+  animate,
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 const RotationWrapper = styled(motion.div)`
   width: 100%;
@@ -16,9 +21,23 @@ const RotationWrapper = styled(motion.div)`
 const CardWrapper = styled(motion.div)`
   border-radius: 20px;
   backdrop-filter: blur(4px) brightness(120%);
+  borderRadius: "0.375rem",
+  transitionProperty:
+    "background-color, border-color, color, fill, stroke, opacity, box-shadow, transform",
+  transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+  transitionDuration: "300ms",
+  zIndex: 0,
+  "&:hover": {
+
+    backdropFilter: "blur(10px)",
+    // backgroundColor: "rgba(30, 41, 59, 0.5)",
+    backgroundColor: "red",
+    boxShadow:
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(148, 163, 184, 0.1) 0px 1px 0px 0px inset",
+  },
 `;
 
-const StyledBox = muiStyled(Box, {
+const StyledBox = muiStyled(motion.div, {
   shouldForwardProp: (prop) => prop !== "active",
 })(({ zoomDirection, mouseHold }) => ({
   borderRadius: "0.375rem",
@@ -69,6 +88,7 @@ const ShinyCard = memo(({ active, children }) => {
   const mouseIsInside = useRef(false);
   const frame = useRef(0);
   const mouseExitTimer = useRef(null);
+  const [hover, setHover] = useState(false);
 
   const handleExit = useCallback(() => {
     animate(mouseX, 0, { type: "spring", stiffness: 500 });
@@ -81,12 +101,7 @@ const ShinyCard = memo(({ active, children }) => {
     const rect = cardRef.current.getBoundingClientRect();
     const percentY = newMouseY / (rect.height / 2);
 
-    // Apply a non-linear transformation to adjust rotation speed
-    const transformedY = Math.pow(percentY, 3);
-    // console.log("percentY:", percentY, transformedY);
-
     const maxX = 10;
-    // const newRotateY = transformedY * maxX;
     const newRotateY = percentY * maxX;
 
     return -newRotateY;
@@ -98,15 +113,31 @@ const ShinyCard = memo(({ active, children }) => {
     const rect = cardRef.current.getBoundingClientRect();
     const percentX = newMouseX / (rect.width / 2);
 
-    // Apply a non-linear transformation to adjust rotation speed
-    const transformedX = Math.pow(percentX, 3);
-
     const maxX = 10;
-    // const newRotateX = transformedX * maxX;
     const newRotateX = percentX * maxX;
 
     return newRotateX;
   });
+
+  // sheen
+  const diagonalMovement = useTransform(
+    [rotateX, rotateY],
+    ([newRotateX, newRotateY]) => {
+      const position = newRotateX + newRotateY;
+      return position;
+    }
+  );
+  const sheenPosition = useTransform(diagonalMovement, [-5, 5], [-100, 200]);
+  const sheenOpacity = useTransform(
+    sheenPosition,
+    [-250, 50, 250],
+    [0, 0.05, 0]
+  );
+  const sheenGradient = useMotionTemplate`linear-gradient(
+  55deg,
+  transparent,
+  rgba(255 255 255 / ${sheenOpacity}) ${sheenPosition}%,
+  transparent)`;
 
   useEffect(() => {
     if (!active) {
@@ -191,7 +222,8 @@ const ShinyCard = memo(({ active, children }) => {
       >
         <StyledBox
           ref={cardRef}
-          sx={{
+          className="card-wrapper"
+          style={{
             height: "100%",
             width: "100%",
             minHeight: "100px",
@@ -201,16 +233,27 @@ const ShinyCard = memo(({ active, children }) => {
             left: 0,
             padding: "16px",
             opacity: 1,
+            backgroundImage: hover && sheenGradient,
+            // "&:hover": {
+            // },
+            // "&:hover": {
+            //   backdropFilter: "blur(10px)",
+            //   backgroundColor: "rgba(30, 41, 59, 0.5)",
+            //   boxShadow:
+            //     "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(148, 163, 184, 0.1) 0px 1px 0px 0px inset",
+            // },
           }}
           onMouseEnter={() => {
             mouseIsInside.current = true;
             clearTimeout(mouseExitTimer.current);
+            setHover(true);
           }}
           onMouseLeave={() => {
             clearTimeout(mouseExitTimer.current);
             mouseExitTimer.current = setTimeout(() => {
               mouseIsInside.current = false;
               handleExit();
+              setHover(false);
             }, 100);
           }}
         >
