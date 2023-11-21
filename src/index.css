@@ -107,13 +107,7 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
-  /* background: rgb(15, 23, 42); */
-  /* transition: 0.4s ease-in-out; */
-  /* background: radial-gradient(
-    600px at 1034px 352px,
-    rgba(29, 78, 216, 0.15),
-    transparent 80%
-  ); */
+  background: rgb(15, 23, 42);
 }
 
 .scrollArea {
@@ -202,6 +196,10 @@ body {
   /* text-align: center; */
 }
 
+#root {
+  transition: all 0.5s ease-in-out;
+}
+
 .HTML_WRAPPER {
   /* background: red; */
   height: 100%;
@@ -216,30 +214,17 @@ body {
   z-index: 2;
 }
 
-#canvas {
-  /* height: 90%;
-  width: 100%; */
-  /* background: red; */
-}
-
 .headline-container {
   display: flex;
-  /* align-items: center; */
-  /* justify-content: center; */
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   pointer-events: none;
-  /* position: relative;
-  top: -12px; */
   height: 100%;
   display: flex;
   align-items: center;
-  /* background: black; */
-  /* background: pink; */
-  /* height: calc(100% - 24px); */
 }
 
 @media screen and (max-width: 1023px) {

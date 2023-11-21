@@ -27,14 +27,16 @@ class SkullAnimation {
   startTime = null;
   allowRotation = false;
 
-  constructor(position = 0, scalar = 1.5, windowHeight = 0) {
+  constructor(position = 0, scalar = 1.5) {
     this.addComponents();
     this.initScene();
     this.state = "PLAYING";
     this.position = position;
     this.scalar = scalar;
-    this.windowHeight = windowHeight;
-    console.log("windowHeight:", windowHeight);
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+    // this.windowHeight = windowHeight;
+    // console.log("windowHeight:", windowHeight);
     // debugger;
     // alert("windowHeight:" + windowHeight);
   }
@@ -141,6 +143,13 @@ class SkullAnimation {
     if (!this.startTime) this.startTime = timestamp;
     const elapsed = timestamp - this.startTime;
 
+    if (
+      this.width !== window.innerWidth ||
+      this.height !== window.innerHeight
+    ) {
+      this.resize();
+    }
+
     this.counter++;
     // console.log("elapsed:", elapsed);
     this.update(elapsed / 1000); // Pass elapsed time in seconds
@@ -162,14 +171,12 @@ class SkullAnimation {
   };
 
   resize = () => {
-    const width = window.innerWidth;
-    const height = this.windowHeight;
-    console.log("width:", width);
-    console.log("height:", height);
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
     this.renderer.dispose();
-    this.camera.aspect = width / height;
+    this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(width, height);
+    this.renderer.setSize(this.width, this.height);
   };
 
   initScene = () => {
@@ -180,16 +187,15 @@ class SkullAnimation {
     });
 
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    // this.renderer.setPixelRatio(3);
 
-    const width = window.innerWidth;
-    const height = this.windowHeight;
-    this.renderer.setSize(width, height);
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+    this.renderer.setSize(this.width, this.height);
 
     // create the camera
     this.camera = new THREE.PerspectiveCamera(
       45,
-      window.innerWidth / height,
+      this.width / this.height,
       0.1,
       1000
     );

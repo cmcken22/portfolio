@@ -2,13 +2,15 @@ import useAppContext from "@contexts/AppContext";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import MusicOffIcon from "@mui/icons-material/MusicOff";
 import { Box } from "@mui/material";
-import { useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Sound from "react-sound";
 
 const MusicToggle = () => {
   const { music, musicPlayState, playMusic, pauseMusic } = useAppContext();
+  const [hovering, setHovering] = useState(false);
 
   const handleClick = useCallback(() => {
+    setHovering(false);
     if (musicPlayState === Sound.status.PLAYING) {
       pauseMusic();
     }
@@ -16,6 +18,14 @@ const MusicToggle = () => {
       playMusic();
     }
   }, [musicPlayState, playMusic, pauseMusic]);
+
+  const Icon = useMemo(() => {
+    if (musicPlayState === Sound.status.PLAYING) {
+      return hovering ? MusicOffIcon : MusicNoteIcon;
+    }
+
+    return hovering ? MusicNoteIcon : MusicOffIcon;
+  }, [musicPlayState, hovering]);
 
   if (!music) return null;
 
@@ -37,40 +47,11 @@ const MusicToggle = () => {
           height: "100%",
           width: "100%",
         },
-        "& .music-icon": {
-          position: "absolute",
-          top: 0,
-          opacity: 0,
-        },
-        "& .music-icon--active": {
-          opacity: 1,
-        },
-        "& .music-icon--in-active": {
-          opacity: 0,
-        },
-        "&:hover .music-icon--active": {
-          opacity: 0,
-        },
-        "&:hover .music-icon--in-active": {
-          opacity: 1,
-        },
       }}
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
     >
-      <MusicNoteIcon
-        top="0"
-        className={
-          musicPlayState === Sound.status.PLAYING
-            ? "music-icon music-icon--active"
-            : "music-icon music-icon--in-active"
-        }
-      />
-      <MusicOffIcon
-        className={
-          musicPlayState !== Sound.status.PLAYING
-            ? "music-icon music-icon--active"
-            : "music-icon music-icon--in-active"
-        }
-      />
+      <Icon top="0" />
     </Box>
   );
 };

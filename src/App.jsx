@@ -13,6 +13,7 @@ import Hero from "@pages/Hero";
 import { AnimatePresence, motion } from "framer-motion";
 import { Leva } from "leva";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Div100vh from "react-div-100vh";
 import { IoMusicalNotes } from "react-icons/io5";
 import Sound from "react-sound";
 
@@ -22,31 +23,31 @@ function Loader({ progress, onFinish }) {
   }
 
   return (
-    <motion.div
-      key="loader"
-      className="loading"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: Animation.duration }}
-      style={{ zIndex: 1001 }}
-    >
-      <div className="loading-bar-container" style={{ position: "relative" }}>
-        <div className="loading-bar" style={{ width: progress }}>
-          <Typography
-            variant="h6"
-            textAlign="center"
-            width="100%"
-            position="absolute"
-            top="0"
-            left="0"
-            sx={{ color: "white", fontWeight: "bold" }}
-          >
-            {Math.round(progress)}%
-          </Typography>
+    <Div100vh className="loading" style={{ zIndex: 1001 }}>
+      <motion.div
+        key="loader"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: Animation.duration }}
+      >
+        <div className="loading-bar-container" style={{ position: "relative" }}>
+          <div className="loading-bar" style={{ width: progress }}>
+            <Typography
+              variant="h6"
+              textAlign="center"
+              width="100%"
+              position="absolute"
+              top="0"
+              left="0"
+              sx={{ color: "white", fontWeight: "bold" }}
+            >
+              {Math.round(progress)}%
+            </Typography>
+          </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </Div100vh>
   );
 }
 
@@ -58,50 +59,60 @@ function GateKeeper({ onClick }) {
   }, []);
 
   return (
-    <motion.div
-      key="gatekeeper"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: Animation.duration }}
-      className="loading"
-      style={{
-        backgroundColor: "red !important",
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-      }}
-    >
-      <button
-        className={mobile ? "glow-on-hover-mobile" : "glow-on-hover"}
-        type="button"
-        onClick={() => handleClick(true)}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0.5rem",
-          }}
-        >
-          <IoMusicalNotes />
-          ENTER
-          <IoMusicalNotes />
-        </Box>
-      </button>
-      <Button
-        className="alt-enter"
-        type="button"
-        sx={{
-          color: "rgb(94, 234, 212)",
+    <Div100vh className="loading" style={{ zIndex: 1001 }}>
+      <motion.div
+        key="gatekeeper"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: Animation.duration }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
         }}
-        onClick={() => handleClick(false)}
       >
-        Enter
-      </Button>
-    </motion.div>
+        <button
+          className={mobile ? "glow-on-hover-mobile" : "glow-on-hover"}
+          type="button"
+          onClick={() => handleClick(true)}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.5rem",
+            }}
+          >
+            <IoMusicalNotes />
+            ENTER
+            <IoMusicalNotes />
+          </Box>
+        </button>
+        <Button
+          className="alt-enter"
+          type="button"
+          sx={{
+            color: "rgb(94, 234, 212)",
+          }}
+          onClick={() => handleClick(false)}
+        >
+          Enter
+        </Button>
+      </motion.div>
+    </Div100vh>
   );
+}
+
+function makeColorDarker(rgbColor, factor = 10) {
+  const [r, g, b] = rgbColor.match(/\d+/g).map(Number);
+
+  const darkerR = Math.max(0, Math.round(r - factor));
+  const darkerG = Math.max(0, Math.round(g - factor));
+  const darkerB = Math.max(0, Math.round(b - factor));
+
+  return `rgb(${darkerR}, ${darkerG}, ${darkerB})`;
 }
 
 const App = memo(() => {
@@ -117,22 +128,29 @@ const App = memo(() => {
   useEffect(() => {
     if (activePage !== Pages.Details) {
       const root = document.body;
-      root.style.backgroundColor = "#11151c";
+      root.style.backgroundColor = makeColorDarker(
+        "rgb(15, 23, 42)",
+        mobile ? 20 : 10
+      );
+      const opacity = mobile ? 40 : 80;
+      const size = mobile ? 600 : 1000;
+      const str =
+        "radial-gradient(" +
+        size +
+        "px at " +
+        50 +
+        "% " +
+        50 +
+        "%, rgba(29, 78, 216, 0.15), transparent " +
+        opacity +
+        "%)";
+      console.log("xxx str:", mobile, str);
+      $("#root").css("background", str);
     } else {
-      // const x = e.clientX;
-      // const y = e.clientY;
-      // $("#root").css(
-      //   "background",
-      //   "radial-gradient(600px at " +
-      //     0 +
-      //     "px " +
-      //     100 +
-      //     "px, rgba(29, 78, 216, 0.15), transparent 80%)"
-      // );
-      // const root = document.body;
-      // root.style.backgroundColor = "rgb(15, 23, 42)";
+      const root = document.body;
+      root.style.backgroundColor = "rgb(15, 23, 42)";
     }
-  }, [activePage]);
+  }, [activePage, mobile]);
 
   const timer = useRef(null);
 
@@ -166,12 +184,11 @@ const App = memo(() => {
   );
 
   useEffect(() => {
-    // if (activePage === Pages.Details) {
-    //   window.addEventListener("mousemove", handleMouseMove);
-    // } else {
-    //   window.removeEventListener("mousemove", handleMouseMove);
-    // }
-    window.addEventListener("mousemove", handleMouseMove);
+    if (activePage === Pages.Details) {
+      window.addEventListener("mousemove", handleMouseMove);
+    } else {
+      window.removeEventListener("mousemove", handleMouseMove);
+    }
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };

@@ -2,74 +2,25 @@ import { Pages } from "@constants";
 import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
 import usePageContext from "@contexts/PageContext";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Box, useMediaQuery } from "@mui/material";
-import { a, useTransition } from "@react-spring/web";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { Box } from "@mui/material";
+import { useCallback, useEffect, useRef } from "react";
 import Div100vh, { use100vh } from "react-div-100vh";
 import SkullAnimation from "../../SkullAnimation";
-import { loadingContext } from "@contexts/LoadingContext";
-
-const useCustomBreakPoints = () => {
-  const xs = useMediaQuery("(max-width: 480px)");
-  const sm = useMediaQuery("(min-width: 481px) and (max-width: 767px)");
-  const md = useMediaQuery("(min-width: 768px) and (max-width: 1023px)");
-  const lg = useMediaQuery("(min-width: 1024px) and (max-width: 1199px)");
-  const xl = useMediaQuery("(min-width: 1200px)");
-
-  if (xs) return "xs";
-  if (sm) return "sm";
-  if (md) return "md";
-  if (lg) return "lg";
-  if (xl) return "xl";
-  return "xl";
-};
-
-function ScrollIndicator({ active }) {
-  const h = use100vh();
-
-  const transition = useTransition(active, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-  });
-
-  return transition((style, active) => {
-    if (!active) return null;
-    return (
-      <a.div
-        style={{
-          position: "absolute",
-          top: `calc(${h}px - 40px - 1rem)`,
-          height: "40px",
-          width: "40px",
-          left: "0",
-          right: "0",
-          margin: "0 auto",
-          zIndex: 3,
-          cursor: "pointer",
-          ...style,
-        }}
-      >
-        <KeyboardArrowDownIcon
-          sx={{
-            height: "100%",
-            width: "100%",
-          }}
-        />
-      </a.div>
-    );
-  });
-}
 
 function calculateScaleFactor(inputWidth, baseWidth = 1024) {
-  if (inputWidth <= 0) {
-    throw new Error("Input width must be a positive integer.");
-  }
+  if (inputWidth <= 0) return 0;
 
   const scaleFactor = (2 * inputWidth) / baseWidth;
   if (scaleFactor >= 2.5) return 2.5;
   return scaleFactor;
+}
+
+function calculatePositionFactor(inputWidth, baseWidth = 1024) {
+  if (inputWidth <= 0) return 0;
+
+  const positionFactor = (0.25 * inputWidth) / baseWidth;
+  if (positionFactor >= 0.25) return 0.25;
+  return positionFactor;
 }
 
 const Content = () => {
@@ -78,28 +29,14 @@ const Content = () => {
   const inView = usePageContext()?.activePage === Pages.Hero;
   const skullAnimation = useRef(null);
   const windowHeight = use100vh();
-  // const windowHeight = useMemo(() => 740);
-
-  const bp = useCustomBreakPoints();
 
   const getScalar = useCallback(() => {
-    // if (bp === "xs") return 0.9;
-    // if (bp === "sm") return 1.15;
-    // if (bp === "md") return 1.5;
-    // if (bp === "lg") return 2;
-    // if (bp === "xl") return 2.5;
-    // return 1;
     return calculateScaleFactor(window.innerWidth);
-  }, [bp]);
+  }, []);
 
   const getPosition = useCallback(() => {
-    // if (bp === "xs") return 0.2;
-    // if (bp === "sm") return 0.2;
-    // if (bp === "md") return 0.25;
-    // if (bp === "lg") return 0.35;
-    // if (bp === "xl") return 0.5;
-    return 0;
-  }, [bp]);
+    return calculatePositionFactor(window.innerWidth);
+  }, []);
 
   const init = useCallback(() => {
     skullAnimation.current = new SkullAnimation(
@@ -112,9 +49,6 @@ const Content = () => {
   useEffect(() => {
     if (!skullAnimation.current && windowHeight) {
       init();
-      // skullAnimation.current = null;
-      console.log("skullAnimation:", skullAnimation.current);
-      // loadingContext.getState().incrementProgress(100);
     }
   }, [init, windowHeight]);
 
@@ -168,22 +102,27 @@ const Content = () => {
   );
 
   const resizeTimer = useRef(null);
-  const handleResize = useCallback(() => {
-    const scalar = getScalar();
-    skullAnimation.current?.setScalar(scalar);
-    skullAnimation.current?.resize();
+  const handleResize = useCallback(
+    (e, doubleCall = true) => {
+      const scalar = getScalar();
+      const position = getPosition();
+      skullAnimation.current?.setScalar(scalar);
+      skullAnimation.current?.setPosition(position);
+      skullAnimation.current?.resize();
 
-    clearTimeout(resizeTimer.current);
-    resizeTimer.current = setTimeout(() => {
-      handleResize();
-    }, 500);
-  }, [getScalar]);
+      if (doubleCall) {
+        clearTimeout(resizeTimer.current);
+        resizeTimer.current = setTimeout(() => {
+          handleResize(e, false);
+        }, 500);
+      }
+    },
+    [getScalar]
+  );
 
   useEffect(() => {
-    // window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("resize", handleResize);
     return () => {
-      // window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("resize", handleResize);
     };
   }, [handleKeyDown, handleResize]);
@@ -214,7 +153,6 @@ const Content = () => {
           <br />
           {text2}
         </div>
-        <ScrollIndicator active={inView && enter} />
       </Div100vh>
 
       <Div100vh

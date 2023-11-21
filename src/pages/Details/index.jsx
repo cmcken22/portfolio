@@ -44,6 +44,7 @@ const Details = memo(() => {
 
   return (
     <StyledGrid
+      id={Pages.Details}
       container
       className="GRID_CONTAINER"
       sx={{ minHeight: "100vh" }}
@@ -54,7 +55,7 @@ const Details = memo(() => {
         xs={12}
         md={6}
         className="GRID_ITEM"
-        mb={12}
+        mb={15}
         sx={{
           height: "100%",
           width: "100%",

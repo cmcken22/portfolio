@@ -70,6 +70,19 @@ const Header = () => {
     };
   }, [debouncedHandleScroll]);
 
+  const handleScrollToSection = useCallback((id) => {
+    const elm = document.getElementById(id);
+    console.clear();
+    console.log("elm:", elm);
+    if (elm) {
+      elm.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      });
+    }
+  }, []);
+
   const renderList = useCallback(() => {
     const list = [
       {
@@ -99,8 +112,10 @@ const Header = () => {
           {list.map((item) => (
             <li key={item?.id}>
               <Box
+                onClick={() => handleScrollToSection(item?.id)}
                 py="12px"
                 sx={{
+                  cursor: "pointer",
                   width: "fit-content",
                   display: "flex",
                   alignItems: "center",
@@ -128,7 +143,7 @@ const Header = () => {
                 />
 
                 <a
-                  href={`#${item?.id}`}
+                  // href={`#${item?.id}`}
                   style={{
                     fontWeight: activeSection === item?.id ? "bold" : "normal",
                     transition: "all 0.2s ease-in-out",
@@ -143,7 +158,7 @@ const Header = () => {
         </ul>
       </Box>
     );
-  }, [activeSection]);
+  }, [handleScrollToSection, activeSection]);
 
   const handleOpen = useCallback((link) => {
     if (link?.indexOf("mailto") !== -1) {
