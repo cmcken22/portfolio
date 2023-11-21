@@ -45,7 +45,7 @@ const Details = memo(() => {
         xs={12}
         md={6}
         className="GRID_ITEM"
-        mb={mobile ? "15rem" : "6rem"}
+        mb={mobile ? "9rem" : "6rem"}
         sx={{
           height: "100%",
           width: "100%",

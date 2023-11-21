@@ -196,6 +196,7 @@ const App = memo(() => {
 
   return (
     <>
+      {/* <AlignmentDiv /> */}
       <MusicToggle />
       <Leva hidden />
       <AnimatePresence>
@@ -211,7 +212,6 @@ const App = memo(() => {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {/* {progress === 100 && !enter && delayedStart && ( */}
         {!enter && delayedStart && (
           <GateKeeper
             onClick={(value) => {

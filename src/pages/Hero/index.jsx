@@ -1,10 +1,11 @@
+import AlignmentDiv from "@components/AlignmentDiv";
 import { Pages } from "@constants";
 import useAppContext from "@contexts/AppContext";
 import usePageContext from "@contexts/PageContext";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { motion, useAnimation } from "framer-motion";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import Div100vh, { use100vh } from "react-div-100vh";
+import { use100vh } from "react-div-100vh";
 import Content from "./Content";
 
 export const ScrollIndicator = ({ active, onClick }) => {
@@ -33,6 +34,7 @@ export const ScrollIndicator = ({ active, onClick }) => {
       animate={controls}
       transition={{ ease: "easeInOut" }}
       style={{
+        // background: "red",
         position: "absolute",
         top: `calc(${h}px - 40px - 1rem)`,
         height: "40px",
@@ -72,35 +74,9 @@ const Hero = memo(() => {
     }
   }, []);
 
-  const renderAlignmentDiv = useCallback(() => {
-    return (
-      <Div100vh
-        style={{
-          top: "0px",
-          position: "fixed",
-          background: "rgba(255, 0, 255, 0.4)",
-          width: "100vw",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 2,
-          // pointerEvents: "none",
-        }}
-      >
-        <div
-          style={{
-            background: "rgba(255, 0, 255, 0.4)",
-            height: "100px",
-            width: "100%",
-          }}
-        />
-      </Div100vh>
-    );
-  }, []);
-
   return (
     <>
-      {displayDivAlignment && renderAlignmentDiv()}
+      {displayDivAlignment && <AlignmentDiv />}
       <ScrollIndicator
         active={inView && enter}
         onClick={handleScrollToNextPage}
