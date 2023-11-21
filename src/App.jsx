@@ -141,7 +141,7 @@ const App = memo(() => {
       const root = document.body;
       root.style.backgroundColor = makeColorDarker(bgColor, mobile ? 20 : 10);
       const radialGradient = format(radialGradientTemplatePercent, {
-        size: mobile ? 600 : 1000,
+        size: mobile ? 1000 : 1000,
         opacity: mobile ? 40 : 80,
         x: 50,
         y: 50,

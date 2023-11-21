@@ -2,14 +2,23 @@ import { Pages } from "@constants";
 import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
 import usePageContext from "@contexts/PageContext";
+import useMobile from "@contexts/useMobile";
 import { Box } from "@mui/material";
 import { useCallback, useEffect, useRef } from "react";
 import Div100vh, { use100vh } from "react-div-100vh";
 import SkullAnimation from "../../SkullAnimation";
 
-function calculateScaleFactor(inputWidth, baseWidth = 1024) {
+function calculateScaleFactor(inputWidth, mobile) {
   if (inputWidth <= 0) return 0;
 
+  if (mobile) {
+    const baseWidth = 430;
+    const scaleFactor = (1.25 * inputWidth) / baseWidth;
+    if (scaleFactor >= 1.5) return 1.5;
+    return scaleFactor;
+  }
+
+  const baseWidth = 1024;
   const scaleFactor = (2 * inputWidth) / baseWidth;
   if (scaleFactor >= 2.5) return 2.5;
   return scaleFactor;
@@ -26,13 +35,14 @@ function calculatePositionFactor(inputWidth, baseWidth = 1024) {
 const Content = () => {
   const { loading } = useLoadingContext();
   const { enter } = useAppContext();
+  const { mobile } = useMobile();
   const inView = usePageContext()?.activePage === Pages.Hero;
   const skullAnimation = useRef(null);
   const windowHeight = use100vh();
 
   const getScalar = useCallback(() => {
-    return calculateScaleFactor(window.innerWidth);
-  }, []);
+    return calculateScaleFactor(window.innerWidth, mobile);
+  }, [mobile]);
 
   const getPosition = useCallback(() => {
     return calculatePositionFactor(window.innerWidth);
@@ -119,6 +129,10 @@ const Content = () => {
     },
     [getScalar]
   );
+
+  useEffect(() => {
+    handleResize();
+  }, [mobile]);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
