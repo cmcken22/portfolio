@@ -3,21 +3,12 @@ import useAppContext from "@contexts/AppContext";
 import useLoadingContext from "@contexts/LoadingContext";
 import usePageContext from "@contexts/PageContext";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import { a, useTransition } from "@react-spring/web";
-import { useCallback, useEffect, useRef } from "react";
-import { use100vh } from "react-div-100vh";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import Div100vh, { use100vh } from "react-div-100vh";
 import SkullAnimation from "../../SkullAnimation";
-
-// @media screen and (max-width: 480px)
-/* Mobile Landscape */
-// @media screen and (min-width: 481px) and (max-width: 767px)
-
-/* Tablet */
-// @media screen and (min-width: 768px) and (max-width: 1023px)
-
-/* Small Desktop */
-// @media screen and (min-width: 1024px) and (max-width: 1199px)
+import { loadingContext } from "@contexts/LoadingContext";
 
 const useCustomBreakPoints = () => {
   const xs = useMediaQuery("(max-width: 480px)");
@@ -49,10 +40,12 @@ function ScrollIndicator({ active }) {
       <a.div
         style={{
           position: "absolute",
-          // bottom: "0%",
           top: `calc(${h}px - 40px - 1rem)`,
           height: "40px",
           width: "40px",
+          left: "0",
+          right: "0",
+          margin: "0 auto",
           zIndex: 3,
           cursor: "pointer",
           ...style,
@@ -69,40 +62,61 @@ function ScrollIndicator({ active }) {
   });
 }
 
+function calculateScaleFactor(inputWidth, baseWidth = 1024) {
+  if (inputWidth <= 0) {
+    throw new Error("Input width must be a positive integer.");
+  }
+
+  const scaleFactor = (2 * inputWidth) / baseWidth;
+  if (scaleFactor >= 2.5) return 2.5;
+  return scaleFactor;
+}
+
 const Content = () => {
   const { loading } = useLoadingContext();
   const { enter } = useAppContext();
   const inView = usePageContext()?.activePage === Pages.Hero;
   const skullAnimation = useRef(null);
+  const windowHeight = use100vh();
+  // const windowHeight = useMemo(() => 740);
 
   const bp = useCustomBreakPoints();
 
   const getScalar = useCallback(() => {
-    if (bp === "xs") return 0.9;
-    if (bp === "sm") return 1.15;
-    if (bp === "md") return 1.5;
-    if (bp === "lg") return 2;
-    if (bp === "xl") return 2.5;
-    return 1;
+    // if (bp === "xs") return 0.9;
+    // if (bp === "sm") return 1.15;
+    // if (bp === "md") return 1.5;
+    // if (bp === "lg") return 2;
+    // if (bp === "xl") return 2.5;
+    // return 1;
+    return calculateScaleFactor(window.innerWidth);
   }, [bp]);
 
   const getPosition = useCallback(() => {
-    if (bp === "xs") return 0.2;
-    if (bp === "sm") return 0.2;
-    if (bp === "md") return 0.25;
-    if (bp === "lg") return 0.35;
-    if (bp === "xl") return 0.5;
-    return 0.25;
+    // if (bp === "xs") return 0.2;
+    // if (bp === "sm") return 0.2;
+    // if (bp === "md") return 0.25;
+    // if (bp === "lg") return 0.35;
+    // if (bp === "xl") return 0.5;
+    return 0;
   }, [bp]);
 
+  const init = useCallback(() => {
+    skullAnimation.current = new SkullAnimation(
+      getPosition(),
+      getScalar(),
+      windowHeight
+    );
+  }, [windowHeight, getPosition, getScalar]);
+
   useEffect(() => {
-    console.clear();
-    if (!skullAnimation.current) {
-      skullAnimation.current = new SkullAnimation(getPosition(), getScalar());
+    if (!skullAnimation.current && windowHeight) {
+      init();
       // skullAnimation.current = null;
       console.log("skullAnimation:", skullAnimation.current);
+      // loadingContext.getState().incrementProgress(100);
     }
-  }, [getPosition, getScalar]);
+  }, [init, windowHeight]);
 
   useEffect(() => {
     return () => {
@@ -111,17 +125,6 @@ const Content = () => {
       skullAnimation.current = null;
     };
   }, []);
-
-  useEffect(() => {
-    const scalar = getScalar();
-    const position = getPosition();
-    skullAnimation.current?.setScalar(scalar);
-    skullAnimation.current?.setPosition(position);
-
-    console.log("bp:", bp);
-    console.log("scalar:", scalar);
-    console.log("position:", position);
-  }, [bp]);
 
   const text1 = "Conner";
   const text2 = "McKenna";
@@ -155,41 +158,37 @@ const Content = () => {
     }
   }, [inView]);
 
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === "x") {
-      console.log(
-        "skullAnimation.current?.state:",
-        skullAnimation.current?.state
-      );
-      // skullAnimation.current?.destroy();
-      if (skullAnimation.current?.state === "PAUSED") {
-        skullAnimation.current?.resume();
-      } else {
-        skullAnimation.current?.pause();
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === "x") {
+        skullAnimation.current?.resize();
       }
-    }
-  }, []);
+    },
+    [windowHeight, init]
+  );
 
-  const handleScroll = useCallback((e) => {
-    // if (skullAnimation?.current) {
-    //   skullAnimation.current?.pause();
-    // }
-    // clearTimeout(timer.current);
-    // timer.current = setTimeout(() => {
-    //   if (skullAnimation?.current) {
-    //     skullAnimation.current?.resume();
-    //   }
-    // }, 1000);
-  }, []);
+  const resizeTimer = useRef(null);
+  const handleResize = useCallback(() => {
+    const scalar = getScalar();
+    skullAnimation.current?.setScalar(scalar);
+    skullAnimation.current?.resize();
+
+    clearTimeout(resizeTimer.current);
+    resizeTimer.current = setTimeout(() => {
+      handleResize();
+    }, 500);
+  }, [getScalar]);
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("scroll", handleScroll);
+    // window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("scroll", handleScroll);
+      // window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
     };
-  }, [handleKeyDown, handleScroll]);
+  }, [handleKeyDown, handleResize]);
+
+  const barrier = 0;
 
   return (
     <div
@@ -199,7 +198,7 @@ const Content = () => {
         position: "relative",
       }}
     >
-      <div className="headline-container">
+      <Div100vh className="headline-container">
         <div id="text-behind" className="hero-text">
           {text1}
           <br />
@@ -216,11 +215,36 @@ const Content = () => {
           {text2}
         </div>
         <ScrollIndicator active={inView && enter} />
-      </div>
+      </Div100vh>
 
-      <div className="canvas-container">
-        <canvas id="canvas"></canvas>
-      </div>
+      <Div100vh
+        className="canvas-container"
+        style={{
+          position: "relative",
+        }}
+      >
+        <Box
+          sx={{
+            height: `${barrier}px !important`,
+            width: "100%",
+          }}
+        />
+        <Box
+          sx={{
+            height: `calc(100% - ${barrier * 2}px) !important`,
+            width: "100%",
+          }}
+        >
+          <canvas id="canvas" height="100%" />
+        </Box>
+        <Box
+          sx={{
+            height: `${barrier}px !important`,
+            width: "100%",
+            background: "red",
+          }}
+        />
+      </Div100vh>
     </div>
   );
 };

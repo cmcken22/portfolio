@@ -150,14 +150,7 @@ const ListItem = memo(({ item, index }) => {
                     </Typography>
                   )
                 )}
-                <Typography
-                  textAlign="left"
-                  width="100%"
-                  variant="body2"
-                  mt={2}
-                >
-                  {description()}
-                </Typography>
+                <Box mt={2}>{description()}</Box>
                 <Box display="flex" flexDirection="row" flexWrap="wrap" mt={1}>
                   {tags?.map((tag) => (
                     <Chip

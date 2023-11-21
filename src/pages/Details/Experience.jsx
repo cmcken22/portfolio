@@ -17,7 +17,7 @@ export const Items = [
     tags: ["React", "Firebase", "NodeJS", "NestJS", "Docker"],
     description: () => (
       <>
-        <Typography variant="body2" color="primary.dark">
+        <Typography variant="body2" color="primary.dark" width="100%">
           As the lead developer, I played a pivotal role in re-architecting the
           frontend application, seamlessly integrating it with a more robust
           backend. Elevating performance and efficiency, I implemented an API
@@ -37,7 +37,7 @@ export const Items = [
     tags: ["React", "React Native", "NextJS", "NodeJS", "Express"],
     description: () => (
       <>
-        <Typography variant="body2" color="primary.dark">
+        <Typography variant="body2" color="primary.dark" width="100%">
           Developed the Opendoor mobile application with React Native, taking
           charge of the consolidation process to unify the IOS and Android apps
           into a single, cohesive platform
@@ -54,7 +54,7 @@ export const Items = [
     tags: ["React", "NodeJS", "Express", "Micro Services", "Redis", "GCP"],
     description: () => (
       <>
-        <Typography variant="body2" color="primary.dark">
+        <Typography variant="body2" color="primary.dark" width="100%">
           Produced high-quality and robust production code across an array of
           construction management projects. Instrumental in implementing
           critical user flows, including OAuth2 and Okta-based login

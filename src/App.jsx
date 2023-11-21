@@ -119,8 +119,18 @@ const App = memo(() => {
       const root = document.body;
       root.style.backgroundColor = "#11151c";
     } else {
-      const root = document.body;
-      root.style.backgroundColor = "rgb(15, 23, 42)";
+      // const x = e.clientX;
+      // const y = e.clientY;
+      // $("#root").css(
+      //   "background",
+      //   "radial-gradient(600px at " +
+      //     0 +
+      //     "px " +
+      //     100 +
+      //     "px, rgba(29, 78, 216, 0.15), transparent 80%)"
+      // );
+      // const root = document.body;
+      // root.style.backgroundColor = "rgb(15, 23, 42)";
     }
   }, [activePage]);
 
@@ -156,11 +166,12 @@ const App = memo(() => {
   );
 
   useEffect(() => {
-    if (activePage === Pages.Details) {
-      window.addEventListener("mousemove", handleMouseMove);
-    } else {
-      window.removeEventListener("mousemove", handleMouseMove);
-    }
+    // if (activePage === Pages.Details) {
+    //   window.addEventListener("mousemove", handleMouseMove);
+    // } else {
+    //   window.removeEventListener("mousemove", handleMouseMove);
+    // }
+    window.addEventListener("mousemove", handleMouseMove);
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };

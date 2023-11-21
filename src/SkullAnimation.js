@@ -23,15 +23,20 @@ class SkullAnimation {
   state = "PAUSED";
   position = 0;
   scalar = 1.5;
+  windowHeight = window.innerHeight;
   startTime = null;
   allowRotation = false;
 
-  constructor(position = 0, scalar = 1.5) {
+  constructor(position = 0, scalar = 1.5, windowHeight = 0) {
     this.addComponents();
     this.initScene();
     this.state = "PLAYING";
     this.position = position;
     this.scalar = scalar;
+    this.windowHeight = windowHeight;
+    console.log("windowHeight:", windowHeight);
+    // debugger;
+    // alert("windowHeight:" + windowHeight);
   }
 
   setScalar = (scalar) => {
@@ -45,6 +50,17 @@ class SkullAnimation {
     this.position = position;
     if (!this.object) return;
     this.object.position.set(0, this.position, 0);
+    this.render();
+  };
+
+  setWindowHeight = (windowHeight) => {
+    this.windowHeight = windowHeight;
+    console.log("camera:", this.camera);
+    if (!this.camera) return;
+    this.camera.aspect = window.innerWidth / this.windowHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, this.windowHeight);
+    console.log("done!");
     this.render();
   };
 
@@ -145,8 +161,18 @@ class SkullAnimation {
     }
   };
 
+  resize = () => {
+    const width = window.innerWidth;
+    const height = this.windowHeight;
+    console.log("width:", width);
+    console.log("height:", height);
+    this.renderer.dispose();
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(width, height);
+  };
+
   initScene = () => {
-    console.log("xxx initScene");
     this.renderer = new THREE.WebGLRenderer({
       canvas: document.getElementById("canvas"),
       antialias: true,
@@ -154,19 +180,16 @@ class SkullAnimation {
     });
 
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    console.log("___window.devicePixelRatio:", window.devicePixelRatio);
+    // this.renderer.setPixelRatio(3);
 
-    const ratio = window.innerWidth / window.innerHeight;
-    console.log("window.innerWidth:", window.innerWidth);
-    console.log("window.innerHeight:", window.innerHeight);
-    console.log("ratio:", ratio);
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    // this.renderer.setSize(200, 200 / ratio);
+    const width = window.innerWidth;
+    const height = this.windowHeight;
+    this.renderer.setSize(width, height);
 
     // create the camera
     this.camera = new THREE.PerspectiveCamera(
       45,
-      window.innerWidth / window.innerHeight,
+      window.innerWidth / height,
       0.1,
       1000
     );
@@ -199,10 +222,8 @@ class SkullAnimation {
   pause = () => {
     this.renderer.dispose();
     this.state = "PAUSED";
-    console.log("xxx pause");
     cancelAnimationFrame(this.animationFrame);
     clearTimeout(this.timer);
-    // this.destroy();
   };
 
   resume = () => {
@@ -210,22 +231,10 @@ class SkullAnimation {
     this.timer = setTimeout(() => {
       this.animationFrame = requestAnimationFrame(this.animate);
     }, 1000 / FPS);
-    // this.destroy();
-    // setTimeout(() => {
-    //   // console.log("xxx resume");
-    //   this.state = "PLAYING";
-    //   this.timer = setTimeout(() => {
-    //     this.animationFrame = requestAnimationFrame(this.animate);
-    //   }, 1000 / FPS);
-    //   this.addComponents();
-    //   this.initScene();
-    // });
   };
 
   destroy = () => {
-    console.log("xxx destroy");
     while (this.scene.children.length > 0) {
-      console.log("this.scene?.children:", this.scene?.children?.length);
       this.scene.remove(this.scene?.children[0]);
     }
     this.scene = null;
