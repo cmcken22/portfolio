@@ -35,6 +35,7 @@
     "react-intersection-observer": "^9.5.2",
     "react-sound": "^1.2.0",
     "react-type-animation": "^3.1.0",
+    "string-template": "^1.0.0",
     "three": "^0.146.0",
     "vite-plugin-remove-console": "^2.1.1",
     "zustand": "^4.4.6"

@@ -89,7 +89,6 @@ const Toolkit = () => {
         onViewportEnter={() => controls.start({ opacity: 1 })}
         onMouseEnter={() => setActiveSection(Sections.Toolkit)}
       >
-        {/* <HoverCard hoverRef={hoverRef} hover={mobile} px={32}> */}
         <HoverCard hover px={32}>
           <Box
             sx={{

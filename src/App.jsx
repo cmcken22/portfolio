@@ -17,6 +17,12 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Div100vh from "react-div-100vh";
 import { IoMusicalNotes } from "react-icons/io5";
 import Sound from "react-sound";
+import format from "string-template";
+
+const radialGradientTemplate =
+  "radial-gradient({size}px at {x}px {y}px, rgba(29, 78, 216, 0.15), transparent {opacity}%)";
+const radialGradientTemplatePercent =
+  "radial-gradient({size}px at {x}% {y}%, rgba(29, 78, 216, 0.15), transparent {opacity}%)";
 
 function Loader({ progress, onFinish }) {
   if (progress >= 100) {
@@ -125,63 +131,42 @@ const App = memo(() => {
     useAppContext();
   const { mobile } = useMobile();
   const [delayedStart, setDelayedStart] = useState(false);
+  const mouseMoveTimer = useRef(null);
   const urlParams = new URLSearchParams(window.location.search);
   const displayAlignmentDiv = urlParams.get("alignment") === "true";
-  console.log("displayAlignmentDiv:", displayAlignmentDiv);
 
   useEffect(() => {
+    const bgColor = "rgb(15, 23, 42)";
     if (activePage !== Pages.Details) {
       const root = document.body;
-      root.style.backgroundColor = makeColorDarker(
-        "rgb(15, 23, 42)",
-        mobile ? 20 : 10
-      );
-      const opacity = mobile ? 40 : 80;
-      const size = mobile ? 600 : 1000;
-      const str =
-        "radial-gradient(" +
-        size +
-        "px at " +
-        50 +
-        "% " +
-        50 +
-        "%, rgba(29, 78, 216, 0.15), transparent " +
-        opacity +
-        "%)";
-      console.log("xxx str:", mobile, str);
-      $("#root").css("background", str);
+      root.style.backgroundColor = makeColorDarker(bgColor, mobile ? 20 : 10);
+      const radialGradient = format(radialGradientTemplatePercent, {
+        size: mobile ? 600 : 1000,
+        opacity: mobile ? 40 : 80,
+        x: 50,
+        y: 50,
+      });
+      $("#root").css("background", radialGradient);
     } else {
       const root = document.body;
-      root.style.backgroundColor = "rgb(15, 23, 42)";
+      root.style.backgroundColor = bgColor;
     }
   }, [activePage, mobile]);
-
-  const timer = useRef(null);
 
   const handleMouseMove = useCallback(
     (e) => {
       const root = document.getElementById("root");
       if (!root) return;
 
-      // if (mobile) {
-      //   root.style.background = "none";
-      //   window.removeEventListener("mousemove", handleMouseMove);
-      //   return;
-      // }
-
-      cancelAnimationFrame(timer.current);
-
-      timer.current = requestAnimationFrame(() => {
-        const x = e.clientX;
-        const y = e.clientY;
-        $("#root").css(
-          "background",
-          "radial-gradient(600px at " +
-            x +
-            "px " +
-            y +
-            "px, rgba(29, 78, 216, 0.15), transparent 80%)"
-        );
+      cancelAnimationFrame(mouseMoveTimer.current);
+      mouseMoveTimer.current = requestAnimationFrame(() => {
+        const radialGradient = format(radialGradientTemplate, {
+          size: 600,
+          opacity: 80,
+          x: e.clientX,
+          y: e.clientY,
+        });
+        $("#root").css("background", radialGradient);
       });
     },
     [mobile]
