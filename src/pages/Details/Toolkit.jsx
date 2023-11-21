@@ -58,7 +58,7 @@ const Tools = [
 const Toolkit = () => {
   const inView = usePageContext()?.activePage === Pages.Details;
   const controls = useAnimation();
-  const { small } = useMobile();
+  const { small, mobile } = useMobile();
   const [hoverRef, setHoverRef] = useState(null);
   const { setActiveSection } = useSectionContext();
 
@@ -89,9 +89,9 @@ const Toolkit = () => {
         onViewportEnter={() => controls.start({ opacity: 1 })}
         onMouseEnter={() => setActiveSection(Sections.Toolkit)}
       >
-        <HoverCard hoverRef={hoverRef} hover>
+        {/* <HoverCard hoverRef={hoverRef} hover={mobile} px={32}> */}
+        <HoverCard hover px={32}>
           <Box
-            ref={(r) => setHoverRef(r)}
             sx={{
               width: "100%",
               "& svg, i, .MuiTypography-root": {
