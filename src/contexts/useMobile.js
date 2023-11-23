@@ -4,9 +4,11 @@ import { create } from "zustand";
 
 const mobileContext = create((set) => ({
   mobile: null,
+  mobileDevice: false,
   size: null,
   small: false,
   setMobile: (value) => set((state) => ({ mobile: value })),
+  setMobileDevice: (value) => set((state) => ({ mobileDevice: value })),
   setSize: (value) => set((state) => ({ size: value })),
   setSmall: (value) => set((state) => ({ small: value })),
 }));
@@ -44,6 +46,7 @@ const useMobile = () => {
 
   useEffect(() => {
     const mobileDevice = detectMobile();
+    state.setMobileDevice(mobileDevice);
     state.setMobile(mobileDevice || breakpoint === "xs" || breakpoint === "sm");
     state.setSmall(
       breakpoint === "xs" ||

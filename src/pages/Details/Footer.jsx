@@ -1,6 +1,8 @@
+import useMobile from "@contexts/useMobile";
 import { Box, Typography } from "@mui/material";
 
 const Footer = () => {
+  const { mobileDevice } = useMobile();
   return (
     <Box
       width="100%"
@@ -18,7 +20,9 @@ const Footer = () => {
         I built this website to learn more about 3D Animations. This site was
         built with <strong>React</strong>, <strong>ThreeJS</strong>,{" "}
         <strong>Framer Motion</strong> and <strong>Material UI</strong>.
-        Deployed using <strong>github pages</strong>.
+        Deployed using <strong>github pages</strong>.{" "}
+        {mobileDevice &&
+          "Make sure to check out my site on a desktop for more cool animations!"}
       </Typography>
     </Box>
   );
