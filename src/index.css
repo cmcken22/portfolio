@@ -2,6 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter/Inter-Black.ttf") format("truetype");
+  font-weight: 900; /* Black */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter/Inter-Bold.ttf") format("truetype");
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter/Inter-ExtraBold.ttf") format("truetype");
+  font-weight: 800; /* Extra Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter/Inter-ExtraLight.ttf") format("truetype");
+  font-weight: 200; /* Extra Light */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter/Inter-Light.ttf") format("truetype");
+  font-weight: 300; /* Light */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter/Inter-Medium.ttf") format("truetype");
+  font-weight: 500; /* Medium */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter/Inter-Regular.ttf") format("truetype");
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter/Inter-SemiBold.ttf") format("truetype");
+  font-weight: 600; /* Semi-Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter/Inter-Thin.ttf") format("truetype");
+  font-weight: 100; /* Thin */
+  font-style: normal;
+}
 /* #root {
   width: 100vw;
   height: 100vh;
@@ -13,7 +75,17 @@ body {
 
 * {
   box-sizing: border-box;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  /* scrollbar-gutter: stable; */
 }
+
+/* * ::-webkit-scrollbar {
+  width: 0 !important;
+} */
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -22,18 +94,20 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* background: #f15946; */
-  background: #11151c;
-  transition: 0.4s ease-in-out;
+  /* background: #11151c; */
+  /* background: rgb(15, 23, 42); */
+  /* transition: 0.4s ease-in-out; */
 }
 
 html,
 body,
 #root {
+  font-size: 16px;
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  background: rgb(15, 23, 42);
 }
 
 .scrollArea {
@@ -42,8 +116,6 @@ body,
   left: 0;
   width: 100vw;
   height: 100vh;
-  overflow: auto;
-  overflow-x: hidden;
 }
 
 .loading {
@@ -67,52 +139,39 @@ body,
 
 .loading-bar {
   height: 32px;
-  background: #f15946;
+  /* background: #f15946; */
+  background: rgb(94, 234, 212);
 }
 
 .container {
   margin: 0 auto;
   width: 100%;
   max-width: 100vw;
-  overflow: hidden;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
-  /* background: red; */
-  /* pointer-events: none; */
-  /* border: 1px solid red; */
+  /* padding: 24px; */
+  /* background: blue; */
 }
 
 .title {
-  /* font-size: 10rem; */
-  /* text-align: center; */
   font-size: 7rem;
   text-align: left;
   width: 100%;
   margin: 0 auto;
   color: #fff;
-  /* span {
-    display: block;
-  } */
-  /* @media (max-width: 1440px) {
-    font-size: 6rem;
-  } */
 }
 span {
   display: block;
-  /* height: 185px; */
 }
 
 h1 {
   font-weight: bold;
-  /* color: blue; */
   font-size: 10rem;
 }
 @media (max-width: 1440px) {
   h1 {
-    /* color: red; */
     font-size: 6rem;
   }
 }
@@ -131,45 +190,63 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
-  background-color: var(--background-color);
+  /* background-color: var(--background-color); */
   font-family: "Open Sans", sans-serif;
   color: var(--text-color);
-  text-align: center;
+  /* text-align: center; */
+}
+
+#root {
+  transition: all 0.5s ease-in-out;
+}
+
+.HTML_WRAPPER {
+  /* background: red; */
+  height: 100%;
+  width: 100%;
 }
 
 .canvas-container {
   position: absolute;
-  top: 50%;
+  /* top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
   z-index: 2;
 }
 
 .headline-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   pointer-events: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
-.typing-text {
-  font-family: "Roboto", sans-serif;
-  font-size: clamp(24px, 20vw, 200px);
-  /* color: red !important; */
-  font-weight: 800;
-  /* letter-spacing: 10px; */
-  /* line-height: 0.8; */
+@media screen and (max-width: 1023px) {
+  .headline-container {
+    /* background-color: pink; */
+    /* height: calc(100% - 24px); */
+  }
 }
+
+/* 
+.headline-container > div {
+  width: 165px;
+  height: fit-content;
+  white-space: wrap;
+  word-wrap: break-word;
+} */
 
 #text-behind,
 #text-front,
 #text-behind-blur {
+  width: 100%;
+  /* background: red; */
   font-family: "Roboto", sans-serif;
   position: absolute;
   text-align: center;
@@ -188,29 +265,50 @@ body {
   #text-behind-blur {
     font-size: clamp(17px, 14vw, 200px);
   }
-  .typing-text {
-    font-size: clamp(17px, 14vw, 200px);
-  }
 }
 
 /* Mobile Landscape */
 @media screen and (min-width: 481px) and (max-width: 767px) {
   /* Your CSS for mobile landscape devices here */
+  #text-behind,
+  #text-front,
+  #text-behind-blur {
+    /* color: red !important; */
+    font-size: clamp(17.5px, calc(17.5vw * 0.83334), 200px);
+  }
 }
 
 /* Tablet */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   /* Your CSS for tablet devices here */
+  #text-behind,
+  #text-front,
+  #text-behind-blur {
+    /* color: blue !important; */
+    font-size: clamp(20px, calc(20vw * 0.83334), 200px);
+  }
 }
 
 /* Small Desktop */
 @media screen and (min-width: 1024px) and (max-width: 1199px) {
   /* Your CSS for small desktop screens here */
+  #text-behind,
+  #text-front,
+  #text-behind-blur {
+    /* color: blue !important; */
+    font-size: clamp(21px, calc(21vw * 0.83334), 200px);
+  }
 }
 
 /* Desktop */
 @media screen and (min-width: 1200px) and (max-width: 1439px) {
   /* Your CSS for desktop screens here */
+  /* #text-behind,
+  #text-front,
+  #text-behind-blur {
+    color: green !important;
+    font-size: clamp(45px, calc(45vw * 0.83334), 200px);
+  } */
 }
 
 /* Large Desktop */
@@ -239,6 +337,12 @@ body {
 }
 
 /* Less relevant code */
+
+.typing-text {
+  font-family: "Roboto", sans-serif;
+  font-size: clamp(24px, 20vw, 200px);
+  font-weight: 800;
+}
 
 .more-content {
   height: 500vh;
@@ -292,5 +396,128 @@ a {
 }
 
 a:hover {
-  filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.9));
+  /* filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.9)); */
+}
+
+/* body {
+  background-image: url("https://41.media.tumblr.com/efd15be8d41b12a7b0ef17fba27c3e20/tumblr_mqqy59HMaf1qzattso1_1280.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
+
+/* .LIST_ITEM {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 5px;
+  color: #333;
+  font-family: sans-serif;
+  line-height: 1.5;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .LIST_ITEM {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(30, 41, 59, 0.5);
+  }
+} */
+
+.alt-enter {
+  /* background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 5px;
+  color: #333;
+  font-family: sans-serif;
+  line-height: 1.5; */
+  width: 220px;
+  height: 50px;
+  /* color: rgb(94, 234, 212); */
+  background: #111;
+}
+
+.glow-on-hover,
+.glow-on-hover-mobile {
+  width: 220px;
+  height: 50px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+}
+
+.glow-on-hover:before,
+.glow-on-hover-mobile:before {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  animation-delay: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+.glow-on-hover:active,
+.glow-on-hover-mobile:active {
+  color: #000;
+  border-radius: 10px;
+}
+
+.glow-on-hover:active:after,
+.glow-on-hover-mobile:active:after {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.glow-on-hover:hover:before,
+/* ignore hover for mobile so button is always displaying animation */
+.glow-on-hover-mobile:before {
+  opacity: 1;
+  border-radius: 10px;
+}
+
+.glow-on-hover:after,
+.glow-on-hover-mobile:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+@keyframes glowing {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }
