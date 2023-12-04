@@ -20,7 +20,7 @@ const Footer = () => {
         I built this website to learn more about 3D Animations. This site was
         built with <strong>React</strong>, <strong>ThreeJS</strong>,{" "}
         <strong>Framer Motion</strong> and <strong>Material UI</strong>.
-        Deployed using <strong>github pages</strong>.{" "}
+        Deployed using <strong>Vercel</strong>.{" "}
         {mobileDevice &&
           "Make sure to check out my site on a desktop for more cool animations!"}
       </Typography>
