@@ -124,7 +124,7 @@ const Projects = () => {
         onMouseEnter={() => setActiveSection(Sections.Projects)}
       >
         {ProjectList.map((project, i) => (
-          <ProjectItem key={`project--${i}`} project={project} />
+          <ProjectItem key={`project--${i}`} project={project} index={i} />
         ))}
       </motion.div>
     </>
