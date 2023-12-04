@@ -4,10 +4,13 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { memo, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import useMobile from "contexts/useMobile";
 gsap.registerPlugin(ScrollTrigger);
 
 const Mysection = memo(({ sectionName, children, threshold, sx }) => {
   const { setActivePage } = usePageContext();
+  const { mobile } = useMobile();
+  // console.log('mobile:', mobile);
 
   const [sectionRef, inView] = useInView({
     threshold,

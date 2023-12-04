@@ -18,6 +18,7 @@ import Div100vh from "react-div-100vh";
 import { IoMusicalNotes } from "react-icons/io5";
 import Sound from "react-sound";
 import format from "string-template";
+import Spacer from "components/Spacer";
 
 const radialGradientTemplate =
   "radial-gradient({size}px at {x}px {y}px, rgba(29, 78, 216, 0.15), transparent {opacity}%)";
@@ -125,6 +126,7 @@ function makeColorDarker(rgbColor, factor = 10) {
 const App = memo(() => {
   const section1 = useRef();
   const section2 = useRef();
+  const section3 = useRef();
   const { progress } = useLoadingContext();
   const { activePage } = usePageContext();
   const { enter, setEnter, musicPlayState, playMusic, allowMusic } =
@@ -247,6 +249,11 @@ const App = memo(() => {
             <Details />
           </Mysection>
         </div>
+        <Spacer />
+        {/* <div ref={section3}>
+          <Mysection sectionName={"TEST"} threshold={0.1}>
+          </Mysection>
+        </div> */}
       </Box>
     </>
   );
