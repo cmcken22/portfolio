@@ -63,8 +63,6 @@ const Hero = memo(() => {
 
   const handleScrollToNextPage = useCallback(() => {
     const elm = document.getElementById(Pages.Details);
-    console.clear();
-    console.log("elm:", elm);
     if (elm) {
       elm.scrollIntoView({
         behavior: "smooth",

@@ -18,7 +18,6 @@ import Div100vh from "react-div-100vh";
 import { IoMusicalNotes } from "react-icons/io5";
 import Sound from "react-sound";
 import format from "string-template";
-import Spacer from "components/Spacer";
 
 const radialGradientTemplate =
   "radial-gradient({size}px at {x}px {y}px, rgba(29, 78, 216, 0.15), transparent {opacity}%)";
@@ -124,9 +123,6 @@ function makeColorDarker(rgbColor, factor = 10) {
 }
 
 const App = memo(() => {
-  const section1 = useRef();
-  const section2 = useRef();
-  const section3 = useRef();
   const { progress } = useLoadingContext();
   const { activePage } = usePageContext();
   const { enter, setEnter, musicPlayState, playMusic, allowMusic } =
@@ -225,7 +221,6 @@ const App = memo(() => {
         className="__container"
         style={{
           position: "relative",
-          // overflow: "auto",
           overflowY: "auto",
           overscrollBehaviorY: "contain",
           scrollSnapType: "y mandatory",
@@ -234,39 +229,26 @@ const App = memo(() => {
           scrollbarWidth: "none",
           scrollSnapStop: "always",
           zIndex: 1,
-          // backgroundColor: "red",
         }}
       >
-        {/* <div ref={section1}> */}
-          <Mysection
-            sectionName={Pages.Hero}
-            threshold={0.8}
-            sx={{ height: "100vh", overflow: "hidden" }}
-          >
-            <Hero />
-          </Mysection>
-        {/* </div> */}
-        {/* <div ref={section2}> */}
-          <Mysection sectionName={Pages.Details} threshold={0.1}>
-            <Details />
-          </Mysection>
-        {/* </div> */}
-        {/* <div ref={section3}> */}
-          <Mysection sectionName={Pages.Details} threshold={1} minHeight={'0px'}>
-          </Mysection>
-        {/* </div> */}
-        {/* <Spacer />
-        <Spacer />
-        <Spacer />
-        <Spacer />
-        <Spacer />
-        <Spacer />
-        <Spacer />
-        <Spacer /> */}
-        {/* <div ref={section3}>
-          <Mysection sectionName={"TEST"} threshold={0.1}>
-          </Mysection>
-        </div> */}
+        <Mysection
+          sectionName={Pages.Hero}
+          threshold={0.8}
+          sx={{ height: "100vh", overflow: "hidden" }}
+        >
+          <Hero />
+        </Mysection>
+        <Mysection
+          sectionName={Pages.Details}
+          threshold={0.1}
+        >
+          <Details />
+        </Mysection>
+        <Mysection
+          sectionName={Pages.Details}
+          threshold={1}
+          minHeight={"0px"}
+        />
       </Box>
     </>
   );
@@ -285,7 +267,6 @@ export default () => {
 
   const breakpointValues = useMemo(
     () => ({
-      // xxs: 0, // 639
       xs: 0,
       sm: 640,
       md: 768,

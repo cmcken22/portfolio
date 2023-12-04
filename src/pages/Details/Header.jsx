@@ -235,7 +235,7 @@ const Header = () => {
             key={`tooltip--${item?.id}`}
             placement="top"
             title={item?.label}
-            enterDelay={1000}
+            enterDelay={500}
           >
             <Box
               key={item?.id}
