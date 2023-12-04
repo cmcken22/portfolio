@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.23.4",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
@@ -38,6 +39,7 @@
     "react-type-animation": "^3.1.0",
     "string-template": "^1.0.0",
     "three": "^0.146.0",
+    "vite-plugin-react-js-support": "^1.0.7",
     "vite-plugin-remove-console": "^2.1.1",
     "zustand": "^4.4.6"
   },
