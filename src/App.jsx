@@ -265,10 +265,11 @@ export default () => {
 
   const breakpointValues = useMemo(
     () => ({
-      xs: 0, // 639
-      sm: 768,
-      md: 1024,
-      lg: 1200,
+      // xxs: 0, // 639
+      xs: 0,
+      sm: 640,
+      md: 768,
+      lg: 1024,
       xl: 1400,
     }),
     []

@@ -94,21 +94,26 @@ const Header = () => {
         inline: "nearest",
       });
     }
-  }, []);
+    setActiveSection(id);
+  }, [setActiveSection]);
 
   const renderList = useCallback(() => {
     const list = [
       {
-        id: "about",
+        id: Sections.About,
         label: "About",
       },
       {
-        id: "experience",
+        id: Sections.Experience,
         label: "Experience",
       },
       {
-        id: "toolkit",
+        id: Sections.Toolkit,
         label: "Toolkit",
+      },
+      {
+        id: Sections.Projects,
+        label: "Projects",
       },
     ];
 

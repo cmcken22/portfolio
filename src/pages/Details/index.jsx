@@ -10,6 +10,7 @@ import Experience from "./Experience";
 import Footer from "./Footer";
 import Header from "./Header";
 import Toolkit from "./Toolkit";
+import Projects from "./Projects";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   maxWidth: "1280px",
@@ -56,6 +57,8 @@ const Details = memo(() => {
         <Experience />
         <Spacer />
         <Toolkit />
+        <Spacer />
+        <Projects />
         <Spacer />
         <Footer />
       </Grid>

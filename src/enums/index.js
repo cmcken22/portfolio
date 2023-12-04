@@ -7,6 +7,7 @@ export const Sections = {
   About: "about",
   Experience: "experience",
   Toolkit: "toolkit",
+  Projects: "projects",
 };
 
 export const Animation = {
