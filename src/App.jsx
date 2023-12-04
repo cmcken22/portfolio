@@ -225,6 +225,7 @@ const App = memo(() => {
         className="__container"
         style={{
           position: "relative",
+          // overflow: "auto",
           overflowY: "auto",
           overscrollBehaviorY: "contain",
           scrollSnapType: "y mandatory",
@@ -233,9 +234,10 @@ const App = memo(() => {
           scrollbarWidth: "none",
           scrollSnapStop: "always",
           zIndex: 1,
+          // backgroundColor: "red",
         }}
       >
-        <div ref={section1}>
+        {/* <div ref={section1}> */}
           <Mysection
             sectionName={Pages.Hero}
             threshold={0.8}
@@ -243,13 +245,24 @@ const App = memo(() => {
           >
             <Hero />
           </Mysection>
-        </div>
-        <div ref={section2}>
+        {/* </div> */}
+        {/* <div ref={section2}> */}
           <Mysection sectionName={Pages.Details} threshold={0.1}>
             <Details />
           </Mysection>
-        </div>
+        {/* </div> */}
+        {/* <div ref={section3}> */}
+          <Mysection sectionName={Pages.Details} threshold={1} minHeight={'0px'}>
+          </Mysection>
+        {/* </div> */}
+        {/* <Spacer />
         <Spacer />
+        <Spacer />
+        <Spacer />
+        <Spacer />
+        <Spacer />
+        <Spacer />
+        <Spacer /> */}
         {/* <div ref={section3}>
           <Mysection sectionName={"TEST"} threshold={0.1}>
           </Mysection>
