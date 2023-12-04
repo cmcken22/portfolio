@@ -1,6 +1,6 @@
-import { Animation, Pages } from "@constants";
-import usePageContext from "@contexts/PageContext";
-import useMobile from "@contexts/useMobile";
+import { Animation, Pages } from "enums";
+import usePageContext from "contexts/PageContext";
+import useMobile from "contexts/useMobile";
 import { Box, Chip, Grid, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { memo, useCallback, useEffect, useMemo, useRef } from "react";

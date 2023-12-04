@@ -1,10 +1,10 @@
-import LinkIndicator from "@components/LinkIndicator";
-import ListItem from "@components/ListItem";
-import StickySectionHeader from "@components/StickySectionHeader";
-import UnderlinedText from "@components/UnderlinedText";
-import { Animation, Pages, Sections } from "@constants";
-import usePageContext from "@contexts/PageContext";
-import useMobile from "@contexts/useMobile";
+import LinkIndicator from "components/LinkIndicator";
+import ListItem from "components/ListItem";
+import StickySectionHeader from "components/StickySectionHeader";
+import UnderlinedText from "components/UnderlinedText";
+import { Animation, Pages, Sections } from "enums";
+import usePageContext from "contexts/PageContext";
+import useMobile from "contexts/useMobile";
 import { Box, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef } from "react";

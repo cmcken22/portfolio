@@ -1,8 +1,8 @@
-import HoverCard from "@components/HoverCard";
-import StickySectionHeader from "@components/StickySectionHeader";
-import { Animation, Pages, Sections } from "@constants";
-import usePageContext from "@contexts/PageContext";
-import useMobile from "@contexts/useMobile";
+import HoverCard from "components/HoverCard";
+import StickySectionHeader from "components/StickySectionHeader";
+import { Animation, Pages, Sections } from "enums";
+import usePageContext from "contexts/PageContext";
+import useMobile from "contexts/useMobile";
 import { faDocker } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Grid, Typography } from "@mui/material";

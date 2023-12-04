@@ -1,5 +1,5 @@
-import useAppContext from "@contexts/AppContext";
-import useLoadingContext from "@contexts/LoadingContext";
+import useAppContext from "contexts/AppContext";
+import useLoadingContext from "contexts/LoadingContext";
 import { useMediaQuery } from "@mui/material";
 import * as THREE from "https://cdn.skypack.dev/three@0.124.0";
 import { RGBELoader } from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/loaders/RGBELoader.js";

@@ -1,4 +1,4 @@
-import { useBreakPoint } from "@contexts/useMobile";
+import { useBreakPoint } from "contexts/useMobile";
 import { Box } from "@mui/material";
 import { useMemo } from "react";
 

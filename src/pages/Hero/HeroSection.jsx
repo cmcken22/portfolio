@@ -1,4 +1,4 @@
-import { CanvasSection } from "@components/CanvasSection";
+import { CanvasSection } from "components/CanvasSection";
 import { Html } from "@react-three/drei";
 import { button, useControls } from "leva";
 import { useMemo } from "react";

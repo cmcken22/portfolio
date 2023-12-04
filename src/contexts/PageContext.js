@@ -1,4 +1,4 @@
-import { Pages } from "@constants";
+import { Pages } from "enums";
 import { create } from "zustand";
 
 const pageContext = create((set) => ({

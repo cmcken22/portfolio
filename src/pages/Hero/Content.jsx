@@ -1,8 +1,8 @@
-import { Pages } from "@constants";
-import useAppContext from "@contexts/AppContext";
-import useLoadingContext from "@contexts/LoadingContext";
-import usePageContext from "@contexts/PageContext";
-import useMobile from "@contexts/useMobile";
+import { Pages } from "enums";
+import useAppContext from "contexts/AppContext";
+import useLoadingContext from "contexts/LoadingContext";
+import usePageContext from "contexts/PageContext";
+import useMobile from "contexts/useMobile";
 import { Box } from "@mui/material";
 import { useCallback, useEffect, useRef } from "react";
 import Div100vh, { use100vh } from "react-div-100vh";

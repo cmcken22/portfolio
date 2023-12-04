@@ -1,7 +1,7 @@
-import AlignmentDiv from "@components/AlignmentDiv";
-import { Pages } from "@constants";
-import useAppContext from "@contexts/AppContext";
-import usePageContext from "@contexts/PageContext";
+import AlignmentDiv from "components/AlignmentDiv";
+import { Pages } from "enums";
+import useAppContext from "contexts/AppContext";
+import usePageContext from "contexts/PageContext";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { motion, useAnimation } from "framer-motion";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";

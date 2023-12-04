@@ -1,4 +1,4 @@
-import usePageContext from "@contexts/PageContext";
+import usePageContext from "contexts/PageContext";
 import { Box } from "@mui/material";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";

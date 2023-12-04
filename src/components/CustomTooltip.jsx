@@ -1,4 +1,4 @@
-import useMobile from "@contexts/useMobile";
+import useMobile from "contexts/useMobile";
 import { Tooltip, Typography } from "@mui/material";
 import { tooltipClasses } from "@mui/material/Tooltip";
 

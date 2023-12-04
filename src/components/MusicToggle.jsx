@@ -1,4 +1,4 @@
-import useAppContext from "@contexts/AppContext";
+import useAppContext from "contexts/AppContext";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import MusicOffIcon from "@mui/icons-material/MusicOff";
 import { Box } from "@mui/material";

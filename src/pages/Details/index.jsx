@@ -1,7 +1,7 @@
-import Spacer from "@components/Spacer";
-import { Pages } from "@constants";
-import usePageContext from "@contexts/PageContext";
-import useMobile from "@contexts/useMobile";
+import Spacer from "components/Spacer";
+import { Pages } from "enums";
+import usePageContext from "contexts/PageContext";
+import useMobile from "contexts/useMobile";
 import { Grid, styled } from "@mui/material";
 import { useAnimation } from "framer-motion";
 import { memo, useEffect } from "react";

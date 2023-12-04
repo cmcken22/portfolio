@@ -1,9 +1,9 @@
-import CustomTooltip from "@components/CustomTooltip";
-import StickySectionHeader from "@components/StickySectionHeader";
-import UnderlinedText from "@components/UnderlinedText";
-import { Animation, Pages, Sections, SocialLinks } from "@constants";
-import usePageContext from "@contexts/PageContext";
-import useMobile from "@contexts/useMobile";
+import CustomTooltip from "components/CustomTooltip";
+import StickySectionHeader from "components/StickySectionHeader";
+import UnderlinedText from "components/UnderlinedText";
+import { Animation, Pages, Sections, SocialLinks } from "enums";
+import usePageContext from "contexts/PageContext";
+import useMobile from "contexts/useMobile";
 import { Box, Typography } from "@mui/material";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";

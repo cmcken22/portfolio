@@ -1,4 +1,4 @@
-import useMobile from "@contexts/useMobile";
+import useMobile from "contexts/useMobile";
 import { Box, Typography } from "@mui/material";
 
 const Footer = () => {

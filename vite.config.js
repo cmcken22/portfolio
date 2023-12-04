@@ -20,13 +20,12 @@ export default defineConfig(({ mode }) => {
     //     }
     //   ),
     // },
-
     resolve: {
       alias: {
-        "@pages": path.resolve(__dirname, "./src/pages"),
-        "@components": path.resolve(__dirname, "./src/components"),
-        "@contexts": path.resolve(__dirname, "./src/contexts"),
-        "@constants": path.resolve(__dirname, "./src/constants"),
+        "pages": path.resolve(__dirname, "./src/pages"),
+        "components": path.resolve(__dirname, "./src/components"),
+        "contexts": path.resolve(__dirname, "./src/contexts"),
+        "enums": path.resolve(__dirname, "./src/enums"),
       },
     },
     esbuild: {
