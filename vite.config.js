@@ -5,7 +5,6 @@ import vitePlugin from "vite-plugin-react-js-support";
 import removeConsole from "vite-plugin-remove-console";
 
 // https://vitejs.dev/config/
-// export default defineConfig({
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
