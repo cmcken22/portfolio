@@ -97,7 +97,8 @@ const ResumeLink = ({ index }) => {
   }, [activePage, small]);
 
   const handleOpenResume = useCallback(() => {
-    window.open("/resume_2023.pdf", "_blank");
+    // window.open("/resume_2023.pdf", "_blank");
+    window.open("/Conner_McKenna_-_Software_Engineer.pdf", "_blank");
   }, []);
 
   const renderContent = useCallback(() => {
