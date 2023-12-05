@@ -19,7 +19,7 @@ const RotationWrapper = styled(motion.div)`
   align-items: center;
 `;
 
-const ShinyCard = memo(({ active, children }) => {
+const ShinyCard = memo(({ active, px, children }) => {
   const cardRef = useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -136,7 +136,14 @@ const ShinyCard = memo(({ active, children }) => {
   }, [handleMouseMove]);
 
   return (
-    <Box className="shiny-card" sx={{ perspective: "1000px" }}>
+    <Box
+      className="shiny-card"
+      sx={{
+        perspective: "1000px",
+        position: "relative",
+        left: "1rem",
+      }}
+    >
       <RotationWrapper
         style={{
           rotateX,
@@ -144,8 +151,9 @@ const ShinyCard = memo(({ active, children }) => {
         }}
       >
         <HoverCard
-          ref={cardRef}
           className="card-wrapper"
+          ref={cardRef}
+          px={px}
           style={{
             backgroundImage: hover && sheenGradient,
           }}

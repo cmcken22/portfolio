@@ -11,7 +11,7 @@ export const Sections = {
 };
 
 export const Animation = {
-  durtaion: 0.5,
+  duration: 0.5,
   ease: "linear",
   delay: 0.5,
 };

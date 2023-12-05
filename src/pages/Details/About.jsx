@@ -1,12 +1,12 @@
+import { Box, Typography } from "@mui/material";
 import CustomTooltip from "components/CustomTooltip";
+import FadeInDiv from "components/FadeInDiv";
 import StickySectionHeader from "components/StickySectionHeader";
 import UnderlinedText from "components/UnderlinedText";
-import { Animation, Pages, Sections, SocialLinks } from "enums";
 import usePageContext from "contexts/PageContext";
 import useMobile from "contexts/useMobile";
-import { Box, Typography } from "@mui/material";
-import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
+import { Pages, Sections, SocialLinks } from "enums";
+import { forwardRef } from "react";
 import { useSectionContext } from "./Header";
 
 const carreerStateDate = new Date("2017-07-01");
@@ -23,11 +23,12 @@ const yearsSinceDate = (specificDate = carreerStateDate) => {
   return roundedYears;
 };
 
-const AboutText = () => {
+const AboutText = forwardRef((props, ref) => {
   const { mobile } = useMobile();
 
   return (
     <Box
+      ref={ref}
       width="100%"
       sx={{
         "& p": {
@@ -76,29 +77,19 @@ const AboutText = () => {
       </Typography>
     </Box>
   );
-};
+});
 
 const About = () => {
   const inView = usePageContext()?.activePage === Pages.Details;
-  const controls = useAnimation();
   const { setActiveSection } = useSectionContext();
 
-  useEffect(() => {
-    if (!inView) {
-      controls.start({ opacity: 0 }, { duration: 0 });
-    } else {
-      controls.start({ opacity: 1 });
-    }
-  }, [inView]);
-
   return (
-    <Box
+    <FadeInDiv
+      name="About"
       id={Sections.About}
       className="GRID_ITEM_BOX"
-      component={motion.div}
-      initial={{ opacity: 1 }}
-      animate={controls}
-      transition={{ duration: Animation.duration, delay: Animation.delay }}
+      active={inView}
+      // theshold={0.5}
       onMouseEnter={() => setActiveSection(Sections.About)}
       sx={{
         paddingTop: {
@@ -116,7 +107,7 @@ const About = () => {
         <Typography variant="h2">About</Typography>
       </StickySectionHeader>
       <AboutText />
-    </Box>
+    </FadeInDiv>
   );
 };
 

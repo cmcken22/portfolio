@@ -1,9 +1,10 @@
+import { Box, Grid, Typography } from "@mui/material";
 import CustomTooltip from "components/CustomTooltip";
-import { Animation, Pages, Sections, SocialLinks } from "enums";
+import FadeInDiv from "components/FadeInDiv";
 import usePageContext from "contexts/PageContext";
 import useMobile from "contexts/useMobile";
-import { Box, Grid, Typography } from "@mui/material";
-import { motion, useAnimation } from "framer-motion";
+import { Pages, Sections, SocialLinks } from "enums";
+import { useAnimation } from "framer-motion";
 import debounce from "lodash.debounce";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
@@ -83,19 +84,22 @@ const Header = () => {
     };
   }, [debouncedHandleScroll]);
 
-  const handleScrollToSection = useCallback((id) => {
-    const elm = document.getElementById(id);
-    console.clear();
-    console.log("elm:", elm);
-    if (elm) {
-      elm.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-      });
-    }
-    setActiveSection(id);
-  }, [setActiveSection]);
+  const handleScrollToSection = useCallback(
+    (id) => {
+      const elm = document.getElementById(id);
+      console.clear();
+      console.log("elm:", elm);
+      if (elm) {
+        elm.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "nearest",
+        });
+      }
+      setActiveSection(id);
+    },
+    [setActiveSection]
+  );
 
   const renderList = useCallback(() => {
     const list = [
@@ -284,14 +288,15 @@ const Header = () => {
         },
       }}
     >
-      <motion.div
+      <FadeInDiv active={inView}>
+        {/* <motion.div
         initial={small ? { opacity: 1 } : { opacity: 0 }}
         animate={controls}
         transition={{ duration: Animation.duration, delay: Animation.delay }}
         onViewportEnter={() => {
           controls.start({ opacity: 1 });
         }}
-      >
+      > */}
         <Box>
           <Typography variant="h1">Conner McKenna</Typography>
           <TypeAnimation
@@ -331,7 +336,8 @@ const Header = () => {
           {renderList()}
           {renderSocials()}
         </Box>
-      </motion.div>
+      </FadeInDiv>
+      {/* </motion.div> */}
     </Grid>
   );
 };

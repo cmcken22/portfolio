@@ -1,13 +1,15 @@
+import { Box, Typography } from "@mui/material";
+import FadeInDiv from "components/FadeInDiv";
 import LinkIndicator from "components/LinkIndicator";
 import ListItem from "components/ListItem";
+import SlideInDiv from "components/SlideInDiv";
 import StickySectionHeader from "components/StickySectionHeader";
 import UnderlinedText from "components/UnderlinedText";
-import { Animation, Pages, Sections } from "enums";
 import usePageContext from "contexts/PageContext";
-import useMobile from "contexts/useMobile";
-import { Box, Typography } from "@mui/material";
-import { motion, useAnimation } from "framer-motion";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { Pages, Sections } from "enums";
+import { useAnimation } from "framer-motion";
+import { useCallback, useRef } from "react";
+import { getScrollOrder } from "utils";
 import { useSectionContext } from "./Header";
 
 export const Items = [
@@ -70,34 +72,10 @@ export const Items = [
   },
 ];
 
-const ResumeLink = ({ index }) => {
+const ResumeLink = () => {
   const controls = useAnimation();
-  const { activePage } = usePageContext();
-  const { small } = useMobile();
-  const timer = useRef(null);
-
-  const activeState = useMemo(() => {
-    return { opacity: 1, x: 0 };
-  }, []);
-
-  const exitState = useMemo(() => {
-    return { opacity: 0, x: -500 };
-  }, []);
-
-  useEffect(() => {
-    if (activePage !== Pages.Details && !small) {
-      controls.start(exitState, { duration: 0 });
-    }
-  }, [activePage, exitState, small]);
-
-  useEffect(() => {
-    if (activePage === Pages.Details && small) {
-      controls.start(activeState, { duration: 0 });
-    }
-  }, [activePage, small]);
 
   const handleOpenResume = useCallback(() => {
-    // window.open("/resume_2023.pdf", "_blank");
     window.open("/Conner_McKenna_-_Software_Engineer.pdf", "_blank");
   }, []);
 
@@ -114,68 +92,62 @@ const ResumeLink = ({ index }) => {
   }, [handleOpenResume]);
 
   const renderWrapper = useCallback(() => {
-    if (small) {
-      return (
-        <Box key="resume-wrapper--small" className="resume-wrapper--small">
-          {renderContent()}
-        </Box>
-      );
-    }
     return (
-      <Box
+      <SlideInDiv
         key="resume-wrapper"
         className="resume-wrapper"
-        component={motion.div}
-        initial={small ? activeState : exitState}
-        animate={controls}
-        transition={{
-          ease: "linear",
-          duration: Animation.duration,
-          delay: Animation.delay + index * 0.1,
-        }}
-        onViewportEnter={() => {
-          clearTimeout(timer.current);
-          timer.current = setTimeout(() => {
-            controls.start(activeState);
-          }, (500 / index) * 0.1);
-        }}
-        sx={{
-          willChange: "opacity, transform",
-          marginBottom: "6rem",
-          "&:last-child": {
-            marginBottom: "0",
-          },
-        }}
+        index={getScrollOrder("ResumeLink")}
+        sx={{ width: "fit-content" }}
       >
         {renderContent()}
-      </Box>
+      </SlideInDiv>
     );
-  }, [renderContent, controls, activeState, index, small]);
+  }, [renderContent]);
 
   return renderWrapper();
 };
 
-const Experience = () => {
-  const inView = usePageContext()?.activePage === Pages.Details;
-  const controls = useAnimation();
-  const { small } = useMobile();
-  const { setActiveSection } = useSectionContext();
-
-  useEffect(() => {
-    if (!inView) {
-      controls.start({ opacity: 0 });
-    }
-  }, [inView]);
+const ExperienceItem = ({ item, index }) => {
+  const contentRef = useRef(null);
+  const { startDate, endDate, positions, company, description, tags, link } =
+    item;
 
   return (
-    <Box
+    <ListItem index={getScrollOrder(`ListItem--${index}`)}>
+      <ListItem.Content ref={contentRef} link={link}>
+        <ListItem.LeftSide>
+          <Typography mb={1} textAlign="left" variant="subtitle1">
+            {startDate} — {endDate}
+          </Typography>
+        </ListItem.LeftSide>
+        <ListItem.RightSide>
+          <ListItem.Title componentRef={contentRef?.current}>
+            {positions?.[0]} · {company}
+          </ListItem.Title>
+          {positions?.map((position, i) =>
+            i === 0 ? null : (
+              <ListItem.Subtitle key={`position--${position}`}>
+                {position}
+              </ListItem.Subtitle>
+            )
+          )}
+          <ListItem.Description>{description()}</ListItem.Description>
+          <ListItem.Tags tags={tags} />
+        </ListItem.RightSide>
+      </ListItem.Content>
+    </ListItem>
+  );
+};
+
+const Experience = () => {
+  const inView = usePageContext()?.activePage === Pages.Details;
+  const { setActiveSection } = useSectionContext();
+
+  return (
+    <FadeInDiv
       id={Sections.Experience}
       className="GRID_ITEM_BOX"
-      component={motion.div}
-      initial={small ? { opacity: 1 } : { opacity: 0 }}
-      animate={controls}
-      transition={{ duration: Animation.duration, delay: Animation.delay }}
-      onViewportEnter={() => controls.start({ opacity: 1 })}
+      active={inView}
       onMouseEnter={() => setActiveSection(Sections.Experience)}
       sx={{
         paddingTop: {
@@ -190,12 +162,16 @@ const Experience = () => {
       <Box className="experience__list">
         <ul style={{ pointerEvents: inView ? "auto" : "none" }}>
           {Items?.map((item, index) => (
-            <ListItem key={`list-item--${index}`} item={item} index={index} />
+            <ExperienceItem
+              key={`list-item--${index}`}
+              item={item}
+              index={index}
+            />
           ))}
         </ul>
       </Box>
       <ResumeLink index={Items.length} />
-    </Box>
+    </FadeInDiv>
   );
 };
 

@@ -1,23 +1,15 @@
-import HoverCard from "components/HoverCard";
-import StickySectionHeader from "components/StickySectionHeader";
+import { Box, Typography } from "@mui/material";
 import ListItem from "components/ListItem";
-import { Animation, Pages, Sections } from "enums";
+import StickySectionHeader from "components/StickySectionHeader";
 import usePageContext from "contexts/PageContext";
-import useMobile, { useBreakPoint } from "contexts/useMobile";
-import { faDocker } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Grid, List, Typography } from "@mui/material";
+import useMobile from "contexts/useMobile";
+import { Animation, Pages, Sections } from "enums";
 import { motion, useAnimation } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
-import { BiLogoTypescript } from "react-icons/bi";
-import { DiMongodb } from "react-icons/di";
-import { FaNodeJs, FaReact, FaSass } from "react-icons/fa";
-import { IoLogoJavascript } from "react-icons/io5";
-import { SiRedux } from "react-icons/si";
+import { useEffect, useRef } from "react";
+import { getScrollOrder } from "utils";
 import { useSectionContext } from "./Header";
-import { Items } from "./Experience";
 
-const ProjectList = [
+export const ProjectList = [
   {
     title: "Hokela",
     src: "/images/hokela.png",
@@ -33,7 +25,10 @@ const ProjectItem = ({ project, index }) => {
   const contentRef = useRef(null);
 
   return (
-    <ListItem.Wrapper active={inView} index={Items.length + 1 + index}>
+    <ListItem
+      active={inView}
+      index={getScrollOrder(`ProjectListItem--${index}`)}
+    >
       <ListItem.Content ref={contentRef} link="https://demo.hokela.ca">
         {!small && (
           <ListItem.LeftSide>
@@ -85,7 +80,7 @@ const ProjectItem = ({ project, index }) => {
           </ListItem.LeftSide>
         )}
       </ListItem.Content>
-    </ListItem.Wrapper>
+    </ListItem>
   );
 };
 
@@ -94,7 +89,6 @@ const Projects = () => {
   const controls = useAnimation();
   const { small } = useMobile();
   const { setActiveSection } = useSectionContext();
-  const contentRef = useRef(null);
 
   useEffect(() => {
     if (!inView && !small) {

@@ -1,31 +1,21 @@
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
-import removeConsole from "vite-plugin-remove-console";
-import jsonPathConfig from "./jsconfig.paths.json";
-import vitePlugin from "vite-plugin-react-js-support";
 import path from "path";
+import { defineConfig } from "vite";
+import vitePlugin from "vite-plugin-react-js-support";
+import removeConsole from "vite-plugin-remove-console";
 
 // https://vitejs.dev/config/
 // export default defineConfig({
 export default defineConfig(({ mode }) => {
   return {
     base: "/",
-    // resolve: {
-    //   alias: Object.entries(jsonPathConfig.compilerOptions.paths).map(
-    //     ([k, v]) => {
-    //       return {
-    //         find: k,
-    //         replacement: v[0].replace(/^\./, ""),
-    //       };
-    //     }
-    //   ),
-    // },
     resolve: {
       alias: {
-        "pages": path.resolve(__dirname, "./src/pages"),
-        "components": path.resolve(__dirname, "./src/components"),
-        "contexts": path.resolve(__dirname, "./src/contexts"),
-        "enums": path.resolve(__dirname, "./src/enums"),
+        pages: path.resolve(__dirname, "./src/pages"),
+        components: path.resolve(__dirname, "./src/components"),
+        contexts: path.resolve(__dirname, "./src/contexts"),
+        enums: path.resolve(__dirname, "./src/enums"),
+        utils: path.resolve(__dirname, "./src/utils"),
       },
     },
     esbuild: {

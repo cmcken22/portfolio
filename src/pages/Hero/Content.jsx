@@ -1,9 +1,9 @@
-import { Pages } from "enums";
+import { Box } from "@mui/material";
 import useAppContext from "contexts/AppContext";
 import useLoadingContext from "contexts/LoadingContext";
 import usePageContext from "contexts/PageContext";
 import useMobile from "contexts/useMobile";
-import { Box } from "@mui/material";
+import { Pages } from "enums";
 import { useCallback, useEffect, useRef } from "react";
 import Div100vh, { use100vh } from "react-div-100vh";
 import SkullAnimation from "../../SkullAnimation";
@@ -89,7 +89,7 @@ const useParallaxScroll = (inView) => {
     // This creates a smoother, easing effect rather than directly jumping to the target value.
     currentScroll.current +=
       (targetScroll.current - currentScroll.current) * ease.current;
-    console.log("currentScroll:", currentScroll);
+    // console.log("currentScroll:", currentScroll);
 
     let scaleValue1 = 1 + currentScroll.current * parallaxScaling1.current;
     let scaleValue2 = 1 + currentScroll.current * parallaxScaling2.current;
@@ -112,7 +112,7 @@ const useParallaxScroll = (inView) => {
 
   const handleScroll = useCallback(
     (e) => {
-      console.log("e.target.scrollTop:", e.target.scrollTop);
+      // console.log("e.target.scrollTop:", e.target.scrollTop);
       targetScroll.current = e.target.scrollTop;
       updateScale();
     },
