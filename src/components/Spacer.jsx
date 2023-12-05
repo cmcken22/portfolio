@@ -1,8 +1,8 @@
-import { useBreakPoint } from "contexts/useMobile";
 import { Box } from "@mui/material";
+import { useBreakPoint } from "contexts/useMobile";
 import { useMemo } from "react";
 
-const Spacer = ({ size }) => {
+const Spacer = ({ size, sx }) => {
   const bp = useBreakPoint();
 
   const formattedBreakPoints = useMemo(() => {
@@ -67,6 +67,7 @@ const Spacer = ({ size }) => {
       sx={{
         height: height,
         width: "100%",
+        ...sx,
       }}
     />
   );

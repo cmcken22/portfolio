@@ -1,16 +1,16 @@
+import { Grid, styled } from "@mui/material";
 import Spacer from "components/Spacer";
-import { Pages } from "enums";
 import usePageContext from "contexts/PageContext";
 import useMobile from "contexts/useMobile";
-import { Grid, styled } from "@mui/material";
+import { Pages } from "enums";
 import { useAnimation } from "framer-motion";
 import { memo, useEffect } from "react";
 import About from "./About";
 import Experience from "./Experience";
 import Footer from "./Footer";
 import Header from "./Header";
-import Toolkit from "./Toolkit";
 import Projects from "./Projects";
+import Toolkit from "./Toolkit";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   maxWidth: "1280px",
@@ -50,7 +50,7 @@ const Details = memo(() => {
         sx={{
           height: "100%",
           width: "100%",
-          position: "relative"
+          position: "relative",
         }}
       >
         <About />
@@ -60,6 +60,7 @@ const Details = memo(() => {
         <Spacer />
         <Projects />
         <Spacer />
+        {mobile && <Spacer />}
         <Footer />
       </Grid>
     </StyledGrid>

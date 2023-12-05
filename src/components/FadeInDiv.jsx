@@ -22,10 +22,8 @@ const FadeInDiv = ({ children, active, index = 0, ...rest }) => {
   const handleViewportEnter = useCallback(
     (x) => {
       if (!inView) return;
-      console.log("ENTER:", rest?.name, x);
       clearTimeout(timer.current);
       timer.current = setTimeout(() => {
-        console.log("START>>:", rest?.name, x);
         controls.start(activeState);
       }, (500 / index) * 0.1);
     },

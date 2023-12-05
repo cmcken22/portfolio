@@ -1,6 +1,6 @@
-import useMobile from "contexts/useMobile";
 import styled from "@emotion/styled";
 import { Box } from "@mui/material";
+import useMobile from "contexts/useMobile";
 import {
   animate,
   motion,
@@ -141,7 +141,7 @@ const ShinyCard = memo(({ active, px, children }) => {
       sx={{
         perspective: "1000px",
         position: "relative",
-        left: "1rem",
+        width: "calc(100% + 32px)",
       }}
     >
       <RotationWrapper

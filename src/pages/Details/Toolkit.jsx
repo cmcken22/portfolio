@@ -4,10 +4,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import HoverCard from "components/HoverCard";
 import SlideInDiv from "components/SlideInDiv";
 import StickySectionHeader from "components/StickySectionHeader";
-import usePageContext from "contexts/PageContext";
-import useMobile from "contexts/useMobile";
-import { Pages, Sections } from "enums";
-import { useAnimation } from "framer-motion";
+import { Sections } from "enums";
 import { BiLogoTypescript } from "react-icons/bi";
 import { DiMongodb } from "react-icons/di";
 import { FaNodeJs, FaReact, FaSass } from "react-icons/fa";
@@ -57,23 +54,7 @@ const Tools = [
 ];
 
 const Toolkit = () => {
-  const inView = usePageContext()?.activePage === Pages.Details;
-  const controls = useAnimation();
-  const { small, mobile } = useMobile();
-  // const [hoverRef, setHoverRef] = useState(null);
   const { setActiveSection } = useSectionContext();
-
-  // useEffect(() => {
-  //   if (!inView && !small) {
-  //     controls.start({ opacity: 0 }, { duration: 0 });
-  //   }
-  // }, [inView, small]);
-
-  // useEffect(() => {
-  //   if (small) {
-  //     controls.start({ opacity: 1 }, { duration: 0 });
-  //   }
-  // }, [small, inView]);
 
   return (
     <>
@@ -84,11 +65,6 @@ const Toolkit = () => {
         id="toolkit"
         className="GRID_ITEM_BOX"
         index={getScrollOrder("Toolkit")}
-        // initial={{ opacity: 0 }}
-        // animate={controls}
-        // transition={{ duration: Animation.duration, delay: Animation.delay }}
-        // threshold={1}
-        // onViewportEnter={() => controls.start({ opacity: 1 })}
         onMouseEnter={() => setActiveSection(Sections.Toolkit)}
       >
         <HoverCard hover px={32}>

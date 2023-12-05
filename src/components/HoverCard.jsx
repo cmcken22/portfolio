@@ -1,13 +1,5 @@
-import { Box } from "@mui/material";
 import { motion } from "framer-motion";
-import {
-  forwardRef,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { forwardRef } from "react";
 
 import { styled as muiStyled } from "@mui/material";
 
@@ -51,7 +43,7 @@ const HoverCard = (
       sx={{
         height: `calc(100% + ${py * 2}px)`,
         width: `calc(100% + ${px * 2}px)`,
-        top: `-${py}px`,
+        top: 0,
         left: `-${px}px`,
         px: `${px}px`,
         py: `${py}px`,

@@ -15,14 +15,24 @@ const LinkIndicator = ({ children, sx, arrowType, componentRef, ...rest }) => {
   }, [setActive]);
 
   useEffect(() => {
+    const enterEvents = ["mouseleave", "touchleave", "touchend"];
+    const leaveEvents = ["mouseleave", "touchleave", "touchend"];
     if (componentRef) {
-      componentRef.addEventListener("mouseenter", handleMouseEnter);
-      componentRef.addEventListener("mouseleave", handleMouseLeave);
+      for (let event of enterEvents) {
+        componentRef.addEventListener(event, handleMouseEnter);
+      }
+      for (let event of leaveEvents) {
+        componentRef.addEventListener(event, handleMouseEnter);
+      }
     }
     return () => {
       if (componentRef) {
-        componentRef.removeEventListener("mouseenter", handleMouseEnter);
-        componentRef.removeEventListener("mouseleave", handleMouseLeave);
+        for (let event of enterEvents) {
+          componentRef.removeEventListener(event, handleMouseEnter);
+        }
+        for (let event of leaveEvents) {
+          componentRef.removeEventListener(event, handleMouseEnter);
+        }
       }
     };
   }, [handleMouseEnter, handleMouseLeave, componentRef]);

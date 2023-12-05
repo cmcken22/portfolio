@@ -7,7 +7,6 @@ import StickySectionHeader from "components/StickySectionHeader";
 import UnderlinedText from "components/UnderlinedText";
 import usePageContext from "contexts/PageContext";
 import { Pages, Sections } from "enums";
-import { useAnimation } from "framer-motion";
 import { useCallback, useRef } from "react";
 import { getScrollOrder } from "utils";
 import { useSectionContext } from "./Header";
@@ -73,8 +72,6 @@ export const Items = [
 ];
 
 const ResumeLink = () => {
-  const controls = useAnimation();
-
   const handleOpenResume = useCallback(() => {
     window.open("/Conner_McKenna_-_Software_Engineer.pdf", "_blank");
   }, []);
