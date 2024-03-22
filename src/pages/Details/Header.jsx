@@ -5,6 +5,9 @@ import usePageContext from "contexts/PageContext";
 import useMobile from "contexts/useMobile";
 import { Pages, Sections, SocialLinks } from "enums";
 import { useAnimation } from "framer-motion";
+import gsap from "gsap";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import debounce from "lodash.debounce";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
@@ -12,6 +15,8 @@ import { FaFlickr } from "react-icons/fa6";
 import { MdAlternateEmail } from "react-icons/md";
 import { TypeAnimation } from "react-type-animation";
 import { create } from "zustand";
+
+gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 
 const sectionContext = create((set) => ({
   activeSection: "about",
@@ -32,6 +37,7 @@ const Header = () => {
   const scrollElm = useRef(null);
   const { small } = useMobile();
   const [typingAnimationKey, setTypingAnimationKey] = useState(0);
+  const [fixed, setFixed] = useState(false);
 
   useEffect(() => {
     if (!inView && !small) {
@@ -87,8 +93,6 @@ const Header = () => {
   const handleScrollToSection = useCallback(
     (id) => {
       const elm = document.getElementById(id);
-      console.clear();
-      console.log("elm:", elm);
       if (elm) {
         elm.scrollIntoView({
           behavior: "smooth",
@@ -220,6 +224,7 @@ const Header = () => {
 
     return (
       <Box
+        className="socials"
         display="flex"
         flexDirection="row"
         gap={2}
@@ -267,6 +272,25 @@ const Header = () => {
     );
   }, [handleOpen]);
 
+  useEffect(() => {
+    gsap.to(`#${Pages.Details}`, {
+      scrollTrigger: {
+        trigger: `#${Pages.Details}`,
+        scroller: ".__container",
+        start: "top top",
+        end: "bottom bottom",
+        markers: true,
+        scrub: true,
+        onEnter: () => {
+          setFixed(true);
+        },
+        onEnterBack: () => {
+          setFixed(false);
+        },
+      },
+    });
+  }, []);
+
   return (
     <Grid
       item
@@ -279,12 +303,19 @@ const Header = () => {
           md: "100vh",
         },
         position: {
-          md: "sticky",
+          md: fixed ? "fixed" : "sticky",
         },
         top: "0",
         paddingTop: {
           xs: 10,
           md: 12,
+        },
+        pointerEvents: "none",
+        "li > .MuiBox-root": {
+          pointerEvents: "all",
+        },
+        ".socials": {
+          pointerEvents: "all",
         },
       }}
     >

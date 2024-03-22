@@ -1,18 +1,18 @@
+import { Box, Button, Typography } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import AlignmentDiv from "components/AlignmentDiv";
 import MusicToggle from "components/MusicToggle";
 import Mysection from "components/Mysection";
 import typography from "components/Typography";
-import { Animation, Pages } from "enums";
 import useAppContext from "contexts/AppContext";
 import useLoadingContext from "contexts/LoadingContext";
 import usePageContext from "contexts/PageContext";
 import useMobile from "contexts/useMobile";
-import { Box, Button, Typography } from "@mui/material";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import Details from "pages/Details";
-import Hero from "pages/Hero";
+import { Animation, Pages } from "enums";
 import { AnimatePresence, motion } from "framer-motion";
 import { Leva } from "leva";
+import Details from "pages/Details";
+import Hero from "pages/Hero";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Div100vh from "react-div-100vh";
 import { IoMusicalNotes } from "react-icons/io5";
@@ -222,26 +222,22 @@ const App = memo(() => {
         style={{
           position: "relative",
           overflowY: "auto",
-          overscrollBehaviorY: "contain",
-          scrollSnapType: "y mandatory",
           height: "100vh",
           width: "100%",
           scrollbarWidth: "none",
-          scrollSnapStop: "always",
           zIndex: 1,
+          overscrollBehaviorY: "contain",
+          scrollSnapType: "y mandatory",
         }}
       >
         <Mysection
           sectionName={Pages.Hero}
-          threshold={0.8}
+          threshold={0.4}
           sx={{ height: "100vh", overflow: "hidden" }}
         >
           <Hero />
         </Mysection>
-        <Mysection
-          sectionName={Pages.Details}
-          threshold={0.1}
-        >
+        <Mysection sectionName={Pages.Details} threshold={0.1}>
           <Details />
         </Mysection>
         <Mysection
