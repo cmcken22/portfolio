@@ -1,11 +1,13 @@
 import { Box } from "@mui/material";
 import usePageContext from "contexts/PageContext";
+import useMobile from "contexts/useMobile";
 import { memo, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
 const Mysection = memo(
   ({ sectionName, children, threshold, minHeight, sx }) => {
     const { setActivePage } = usePageContext();
+    const { mobile } = useMobile();
 
     const [sectionRef, inView] = useInView({
       threshold,
@@ -29,8 +31,10 @@ const Mysection = memo(
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          scrollSnapStop: "always",
-          scrollSnapAlign: "start",
+          ...(!mobile && {
+            scrollSnapStop: "always",
+            scrollSnapAlign: "start",
+          }),
           ...sx,
         }}
       >

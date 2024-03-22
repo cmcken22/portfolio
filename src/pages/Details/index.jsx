@@ -14,7 +14,17 @@ import Toolkit from "./Toolkit";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   height: "100vh",
-  overflow: "hidden",
+  // overflow: "hidden",
+  // paddingLeft: "48px",
+  // paddingRight: "48px",
+  // background: "red",
+  // paddingLeft: theme.spacing(12),
+  // paddingRight: theme.spacing(12),
+  // [theme.breakpoints.down("md")]: {
+  //   background: "blue",
+  //   paddingLeft: theme.spacing(6),
+  //   paddingRight: theme.spacing(6),
+  // },
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -50,6 +60,7 @@ const Details = memo(() => {
   const calcMargins = useCallback(() => {
     // console.clear();
     // console.log("containerRef:", containerRef);
+    if (!containerRef.current) return;
     const width = containerRef.current?.clientWidth;
     // console.log("width:", width);
     if (width && width > 1280) {

@@ -279,7 +279,7 @@ const Header = () => {
         scroller: ".__container",
         start: "top top",
         end: "bottom bottom",
-        markers: true,
+        markers: false,
         scrub: true,
         onEnter: () => {
           setFixed(true);
