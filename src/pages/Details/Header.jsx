@@ -308,7 +308,6 @@ const Header = () => {
         ...(fixed &&
           !small && {
             maxWidth: "calc((100% - 192px) / 2 - 16px) !important",
-            background: "red",
           }),
         top: "0",
         paddingTop: {
