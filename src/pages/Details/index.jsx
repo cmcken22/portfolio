@@ -48,17 +48,24 @@ const Details = memo(() => {
     }
   }, [inView]);
 
+  const timer = useRef(null);
   const calcMargins = useCallback(() => {
     if (!containerRef.current) return;
-    const width = containerRef.current?.clientWidth;
-    if (width && width > 1280) {
-      const margin = (width - 1280) / 2;
-      containerRef.current.style.marginLeft = `${margin}px`;
-      containerRef.current.style.marginRight = `${margin}px`;
-    } else {
-      containerRef.current.style.marginLeft = "0px";
-      containerRef.current.style.marginRight = "0px";
+    if (timer.current) {
+      clearTimeout(timer.current);
+      timer.current = null;
     }
+    timer.current = setTimeout(() => {
+      const width = containerRef.current?.clientWidth;
+      if (width && width > 1280) {
+        const margin = (width - 1280) / 2;
+        containerRef.current.style.marginLeft = `${margin}px`;
+        containerRef.current.style.marginRight = `${margin}px`;
+      } else {
+        containerRef.current.style.marginLeft = "0px";
+        containerRef.current.style.marginRight = "0px";
+      }
+    }, 100);
   }, []);
 
   useEffect(() => {
@@ -157,58 +164,6 @@ const Details = memo(() => {
       mobile={mobile}
     >
       {mobile ? renderContent() : renderContentWithWrapper()}
-      {/* <StyledBox
-        sx={{
-          height: "100%",
-          width: "100%",
-          position: "relative",
-          overflow: "auto",
-          display: "flex",
-        }}
-      >
-        <StyledBox2
-          ref={containerRef}
-          sx={{
-            display: "flex",
-            margin: "0 auto",
-            height: "fit-content",
-            flexDirection: {
-              sm: "column",
-              md: "row",
-            },
-            ...(small && {
-              width: "max-content",
-              overflowX: "hidden",
-            }),
-          }}
-        > */}
-      {/* <Header />
-      <Grid
-        item
-        xs={12}
-        md={6}
-        className="GRID_ITEM"
-        mb={mobile ? "9rem" : "6rem"}
-        sx={{
-          height: "100%",
-          width: "100%",
-          position: "relative",
-          marginLeft: "auto",
-          // paddingBottom: "96px",
-        }}
-      >
-        <About />
-        <Experience />
-        <Spacer />
-        <Toolkit />
-        <Spacer />
-        <Projects />
-        <Spacer />
-        {mobile && <Spacer />}
-        <Footer />
-      </Grid> */}
-      {/* </StyledBox2>
-      </StyledBox> */}
     </StyledGrid>
   );
 });

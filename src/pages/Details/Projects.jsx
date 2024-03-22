@@ -17,6 +17,13 @@ export const ProjectList = [
     description:
       "Built a volunteering application with a group of friends. Gained partnerships with over 50 organizations and connected over 100 users with volunteer opportunities.",
   },
+  {
+    title: "EllisDon Component Library",
+    src: "/images/storybook.png",
+    link: "https://cmcken22.github.io/ed-component-library",
+    description:
+      "Built a reusable component library for EllisDon with React, TypeScript, and MUI. Hosted on Storybook for documentation/testing and NPM for consumption.",
+  },
 ];
 
 const ProjectItem = ({ project, index }) => {
@@ -29,7 +36,7 @@ const ProjectItem = ({ project, index }) => {
       active={inView}
       index={getScrollOrder(`ProjectListItem--${index}`)}
     >
-      <ListItem.Content ref={contentRef} link="https://demo.hokela.ca">
+      <ListItem.Content ref={contentRef} link={project?.link}>
         {!small && (
           <ListItem.LeftSide>
             <Box

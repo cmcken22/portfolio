@@ -10,6 +10,7 @@ import { Pages, Sections } from "enums";
 import { useCallback, useRef } from "react";
 import { getScrollOrder } from "utils";
 import { useSectionContext } from "./Header";
+import useMobile from "contexts/useMobile";
 
 export const Items = [
   {
@@ -28,6 +29,49 @@ export const Items = [
           layer using RTK Query. Additionally, I undertook a redesign of
           critical components, significantly enhancing scalability and
           productivity.
+        </Typography>
+      </>
+    ),
+  },
+  {
+    company: "EllisDon",
+    link: "https://www.ellisdon.com",
+    positions: ["UX/UI Developer"],
+    startDate: "FEB 2024",
+    endDate: "MAR 2024",
+    tags: ["React", "TypeScript", "Mui", "Vite", "NPM"],
+    description: () => (
+      <>
+        <Typography variant="body2" color="primary.dark" width="100%">
+          Re-hired by EllisDon as a part-time contractor to build out thier
+          component library. My task was to build a reusable component library
+          tailored for integration across various EllisDon projects. Built with
+          React, TypeScript, and MUI, deployed to NPM for consumption. With a
+          robust 85% test coverage and comprehensive documentation, feel free to
+          explore the&nbsp;
+          <Typography
+            onClick={() =>
+              window.open(
+                "https://cmcken22.github.io/ed-component-library",
+                "_blank"
+              )
+            }
+            component="strong"
+            variant="body2"
+            color="primary.dark"
+            sx={{
+              wordWrap: "break-word",
+              // wordBreak: "break-word",
+              textDecoration: "underline",
+              textDecorationColor: "white",
+              textUnderlineOffset: "0.25rem",
+              "&:hover": {
+                textDecorationColor: "rgb(94, 234, 212)",
+              },
+            }}
+          >
+            Storybook documentation here!
+          </Typography>
         </Typography>
       </>
     ),
@@ -73,7 +117,8 @@ export const Items = [
 
 const ResumeLink = () => {
   const handleOpenResume = useCallback(() => {
-    window.open("/Conner_McKenna_-_Software_Engineer.pdf", "_blank");
+    // window.open("/Conner_McKenna_-_Software_Engineer.pdf", "_blank");
+    window.open("/Conner McKenna Resume 2024.pdf", "_blank");
   }, []);
 
   const renderContent = useCallback(() => {
@@ -106,6 +151,7 @@ const ResumeLink = () => {
 
 const ExperienceItem = ({ item, index }) => {
   const contentRef = useRef(null);
+  const { mobile } = useMobile();
   const { startDate, endDate, positions, company, description, tags, link } =
     item;
 
@@ -128,7 +174,7 @@ const ExperienceItem = ({ item, index }) => {
               </ListItem.Subtitle>
             )
           )}
-          <ListItem.Description>{description()}</ListItem.Description>
+          <ListItem.Description>{description({ mobile })}</ListItem.Description>
           <ListItem.Tags tags={tags} />
         </ListItem.RightSide>
       </ListItem.Content>
