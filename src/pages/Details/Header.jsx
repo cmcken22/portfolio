@@ -35,7 +35,7 @@ const Header = () => {
   const controls = useAnimation();
   const { activeSection, setActiveSection } = useSectionContext();
   const scrollElm = useRef(null);
-  const { small } = useMobile();
+  const { small, mobile } = useMobile();
   const [typingAnimationKey, setTypingAnimationKey] = useState(0);
   const [fixed, setFixed] = useState(false);
 
@@ -303,7 +303,7 @@ const Header = () => {
           md: "100vh",
         },
         position: {
-          md: fixed ? "fixed" : "sticky",
+          md: fixed && !mobile ? "fixed" : "sticky",
         },
         top: "0",
         paddingTop: {

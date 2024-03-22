@@ -1,7 +1,7 @@
 import { Box, Grid, styled, useTheme } from "@mui/material";
 import Spacer from "components/Spacer";
 import usePageContext from "contexts/PageContext";
-import useMobile from "contexts/useMobile";
+import useMobile, { useBreakPoint } from "contexts/useMobile";
 import { Pages } from "enums";
 import { useAnimation } from "framer-motion";
 import { memo, useCallback, useEffect, useRef } from "react";
@@ -45,10 +45,9 @@ const StyledBox2 = styled(Box)(({ theme }) => ({
 }));
 
 const Details = memo(() => {
-  const theme = useTheme();
   const inView = usePageContext().activePage === Pages.Details;
   const controls = useAnimation();
-  const { mobile } = useMobile();
+  const { mobile, small } = useMobile();
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -58,14 +57,10 @@ const Details = memo(() => {
   }, [inView]);
 
   const calcMargins = useCallback(() => {
-    // console.clear();
-    // console.log("containerRef:", containerRef);
     if (!containerRef.current) return;
     const width = containerRef.current?.clientWidth;
-    // console.log("width:", width);
     if (width && width > 1280) {
       const margin = (width - 1280) / 2;
-      // console.log("margin:", margin);
       containerRef.current.style.marginLeft = `${margin}px`;
       containerRef.current.style.marginRight = `${margin}px`;
     } else {
@@ -122,6 +117,10 @@ const Details = memo(() => {
               sm: "column",
               md: "row",
             },
+            ...(small && {
+              width: "max-content",
+              overflow: "hidden",
+            }),
           }}
         >
           <Header />
