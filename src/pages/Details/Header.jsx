@@ -303,8 +303,13 @@ const Header = () => {
           md: "100vh",
         },
         position: {
-          md: fixed && !mobile ? "fixed" : "sticky",
+          md: fixed && !small ? "fixed" : "sticky",
         },
+        ...(fixed &&
+          !small && {
+            maxWidth: "calc((100% - 192px) / 2 - 16px) !important",
+            background: "red",
+          }),
         top: "0",
         paddingTop: {
           xs: 10,

@@ -12,27 +12,19 @@ import Header from "./Header";
 import Projects from "./Projects";
 import Toolkit from "./Toolkit";
 
-const StyledGrid = styled(Grid)(({ theme }) => ({
-  height: "100vh",
-  // overflow: "hidden",
-  // paddingLeft: "48px",
-  // paddingRight: "48px",
-  // background: "red",
-  // paddingLeft: theme.spacing(12),
-  // paddingRight: theme.spacing(12),
-  // [theme.breakpoints.down("md")]: {
-  //   background: "blue",
-  //   paddingLeft: theme.spacing(6),
-  //   paddingRight: theme.spacing(6),
-  // },
+const StyledGrid = styled(Grid)(({ theme, mobile }) => ({
+  ...(!mobile && {
+    height: "100vh",
+  }),
+  ...(mobile && {
+    width: "max-content",
+    overflowX: "hidden",
+    paddingLeft: theme.spacing(6),
+    paddingRight: theme.spacing(6),
+  }),
 }));
 
-const StyledBox = styled(Box)(({ theme }) => ({
-  // background: "red",
-  // [theme.breakpoints.up("md")]: {
-  //   background: "blue",
-  // },
-}));
+const StyledBox = styled(Box)(({ theme }) => ({}));
 const StyledBox2 = styled(Box)(({ theme }) => ({
   paddingLeft: theme.spacing(6),
   paddingRight: theme.spacing(6),
@@ -91,13 +83,40 @@ const Details = memo(() => {
     };
   }, [handleResize]);
 
-  return (
-    <StyledGrid
-      id={Pages.Details}
-      container
-      className="GRID_CONTAINER"
-      sx={{ minHeight: "100vh" }}
-    >
+  const renderContent = useCallback(() => {
+    return (
+      <>
+        <Header />
+        <Grid
+          item
+          xs={12}
+          md={6}
+          className="GRID_ITEM"
+          mb={mobile ? "9rem" : "6rem"}
+          sx={{
+            height: "100%",
+            width: "100%",
+            position: "relative",
+            marginLeft: "auto",
+            // paddingBottom: "96px",
+          }}
+        >
+          <About />
+          <Experience />
+          <Spacer />
+          <Toolkit />
+          <Spacer />
+          <Projects />
+          <Spacer />
+          {mobile && <Spacer />}
+          <Footer />
+        </Grid>
+      </>
+    );
+  }, [mobile]);
+
+  const renderContentWithWrapper = useCallback(() => {
+    return (
       <StyledBox
         sx={{
           height: "100%",
@@ -119,37 +138,77 @@ const Details = memo(() => {
             },
             ...(small && {
               width: "max-content",
-              overflow: "hidden",
+              overflowX: "hidden",
             }),
           }}
         >
-          <Header />
-          <Grid
-            item
-            xs={12}
-            md={6}
-            className="GRID_ITEM"
-            mb={mobile ? "9rem" : "6rem"}
-            sx={{
-              height: "100%",
-              width: "100%",
-              position: "relative",
-              marginLeft: "auto",
-              // paddingBottom: "96px",
-            }}
-          >
-            <About />
-            <Experience />
-            <Spacer />
-            <Toolkit />
-            <Spacer />
-            <Projects />
-            <Spacer />
-            {mobile && <Spacer />}
-            <Footer />
-          </Grid>
+          {renderContent()}
         </StyledBox2>
       </StyledBox>
+    );
+  }, [small, renderContent]);
+
+  return (
+    <StyledGrid
+      id={Pages.Details}
+      container
+      className="GRID_CONTAINER"
+      sx={{ minHeight: "100vh" }}
+      mobile={mobile}
+    >
+      {mobile ? renderContent() : renderContentWithWrapper()}
+      {/* <StyledBox
+        sx={{
+          height: "100%",
+          width: "100%",
+          position: "relative",
+          overflow: "auto",
+          display: "flex",
+        }}
+      >
+        <StyledBox2
+          ref={containerRef}
+          sx={{
+            display: "flex",
+            margin: "0 auto",
+            height: "fit-content",
+            flexDirection: {
+              sm: "column",
+              md: "row",
+            },
+            ...(small && {
+              width: "max-content",
+              overflowX: "hidden",
+            }),
+          }}
+        > */}
+      {/* <Header />
+      <Grid
+        item
+        xs={12}
+        md={6}
+        className="GRID_ITEM"
+        mb={mobile ? "9rem" : "6rem"}
+        sx={{
+          height: "100%",
+          width: "100%",
+          position: "relative",
+          marginLeft: "auto",
+          // paddingBottom: "96px",
+        }}
+      >
+        <About />
+        <Experience />
+        <Spacer />
+        <Toolkit />
+        <Spacer />
+        <Projects />
+        <Spacer />
+        {mobile && <Spacer />}
+        <Footer />
+      </Grid> */}
+      {/* </StyledBox2>
+      </StyledBox> */}
     </StyledGrid>
   );
 });
