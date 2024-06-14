@@ -9,7 +9,8 @@ import { Pages, Sections, SocialLinks } from "enums";
 import { forwardRef } from "react";
 import { useSectionContext } from "./Header";
 
-const carreerStateDate = new Date("2017-07-01");
+// const carreerStateDate = new Date("2017-07-01");
+const carreerStateDate = new Date("2017-06-01");
 
 const yearsSinceDate = (specificDate = carreerStateDate) => {
   const currentDate = new Date();
