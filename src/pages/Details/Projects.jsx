@@ -75,8 +75,8 @@ const ProjectItem = ({ project, index }) => {
               }}
             >
               <img
-                src="/images/hokela.png"
-                alt="hokela"
+                src={project?.src}
+                alt={project?.title}
                 style={{
                   height: "100%",
                   width: "100%",
