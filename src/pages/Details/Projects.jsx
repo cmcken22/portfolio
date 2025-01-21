@@ -24,6 +24,13 @@ export const ProjectList = [
     description:
       "Built a reusable component library for EllisDon with React, TypeScript, and MUI. Hosted on Storybook for documentation/testing and NPM for consumption.",
   },
+  {
+    title: "WatchWorldWide",
+    src: "/images/watchworldwide.png",
+    link: "https://www.watchworldwide.io/",
+    description:
+      "A streaming search engine I built with Next.js, helping users find where to watch movies and TV shows legally across services and countries.",
+  },
 ];
 
 const ProjectItem = ({ project, index }) => {
