@@ -8,6 +8,7 @@ export const Sections = {
   Experience: "experience",
   Toolkit: "toolkit",
   Projects: "projects",
+  Airbnb: "airbnb",
 };
 
 export const Animation = {

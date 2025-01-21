@@ -123,6 +123,10 @@ const Header = () => {
         id: Sections.Projects,
         label: "Projects",
       },
+      {
+        id: Sections.Airbnb,
+        label: "Airbnb",
+      },
     ];
 
     return (

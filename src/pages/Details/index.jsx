@@ -11,6 +11,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Projects from "./Projects";
 import Toolkit from "./Toolkit";
+import Airbnb from "./Airbnb";
 
 const StyledGrid = styled(Grid)(({ theme, mobile }) => ({
   ...(!mobile && {
@@ -114,6 +115,8 @@ const Details = memo(() => {
           <Toolkit />
           <Spacer />
           <Projects />
+          <Spacer />
+          <Airbnb />
           <Spacer />
           {mobile && <Spacer />}
           <Footer />
