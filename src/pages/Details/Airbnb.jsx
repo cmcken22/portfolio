@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import HoverCard from "components/HoverCard";
 import SlideInDiv from "components/SlideInDiv";
@@ -9,6 +9,7 @@ import { useSectionContext } from "./Header";
 
 const Airbnb = () => {
   const { setActiveSection } = useSectionContext();
+  const iframeContainer = useRef(null);
 
   useEffect(() => {
     // Load the Airbnb SDK script when the component mounts
@@ -21,6 +22,32 @@ const Airbnb = () => {
       // Cleanup the script on unmount
       document.body.removeChild(script);
     };
+  }, []);
+
+  useEffect(() => {
+    const resize = () => {
+      let rooms = document.getElementsByClassName("airbnb-embed-frame");
+      console.clear();
+      console.log("rooms:", rooms);
+      console.log("iframeContainer:", iframeContainer?.current);
+      const containerWidth = iframeContainer?.current?.clientWidth;
+      for (let room of rooms) {
+        console.log("room:", room);
+        console.log("containerWidth:", containerWidth);
+        // room.style.width = containerWidth + "px";
+        if (containerWidth < 500) {
+          let scale = (containerWidth - 20) / room.offsetWidth;
+          // scale = 0.5;
+          console.log("scale:", scale);
+          room.style.transform = "scale(" + scale + ")";
+        } else {
+          console.log("scale>>:", 1);
+          room.style.transform = "scale(1)";
+        }
+      }
+    };
+    window.onload = () => resize();
+    window.onresize = () => resize();
   }, []);
 
   return (
@@ -58,12 +85,13 @@ const Airbnb = () => {
           <Typography variant="body1" color="primary.dark"></Typography>
 
           <Box
+            ref={iframeContainer}
             sx={{
               display: "flex",
               justifyContent: "center", // Center horizontally
               alignItems: "center", // Center vertically
               minHeight: "300px", // Set a minimum height for the container
-              backgroundColor: "red",
+              // backgroundColor: "red",
               width: "100%",
               overflow: "hidden", // Ensure content doesn't spill over
             }}
@@ -75,7 +103,7 @@ const Airbnb = () => {
               data-hide-price="true"
               style={{
                 // width: "450px", // Set fixed width for the iframe
-                width: "100%", // Set fixed width for the iframe
+                width: "100%",
                 height: "300px", // Set fixed height for the iframe
                 margin: "auto", // This ensures the element is centered
                 borderRadius: "12px", // Add slight border radius
@@ -84,84 +112,6 @@ const Airbnb = () => {
             />
           </Box>
         </Box>
-      </SlideInDiv>
-    </>
-  );
-
-  return (
-    <>
-      <StickySectionHeader>
-        <Typography variant="h2">Airbnb</Typography>
-      </StickySectionHeader>
-      <SlideInDiv
-        id={Sections.Airbnb}
-        className="GRID_ITEM_BOX"
-        index={getScrollOrder(Sections.Airbnb)}
-        onMouseEnter={() => setActiveSection(Sections.Airbnb)}
-      >
-        <HoverCard hover px={32}>
-          <Box
-            sx={{
-              width: "100%",
-              "& svg, i, .MuiTypography-root": {
-                transition: "all ease-in-out 0.3s !important",
-              },
-              "& svg, i": {
-                color: "rgba(255, 255, 255, 0.5) !important",
-              },
-              "&:hover": {
-                "& svg, i, .MuiTypography-root": {
-                  color: "rgb(94, 234, 212) !important",
-                  cursor: "default",
-                },
-              },
-            }}
-          >
-            <div className="my-8">
-              <h2 className="text-2xl font-bold mb-4 text-center text-white">
-                Check Out My Airbnb Listing ☀️🌴
-              </h2>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center", // Center horizontally
-                  alignItems: "center", // Center vertically
-                  minHeight: "300px", // Set a minimum height for the container
-                }}
-              >
-                <div
-                  className="airbnb-embed-frame"
-                  data-id="1308860065021844564"
-                  data-view="home"
-                  data-hide-price="true"
-                  style={{
-                    width: "450px", // Set fixed width for the iframe
-                    height: "300px", // Set fixed height for the iframe
-                    margin: "auto", // This ensures the element is centered
-                    borderRadius: "12px", // Add slight border radius
-                    overflow: "hidden", // Ensure content doesn't spill over
-                  }}
-                >
-                  <a
-                    href="https://www.airbnb.ca/rooms/1308860065021844564?guests=1&adults=1&s=66&source=embed_widget"
-                    target="_blank"
-                    rel="nofollow"
-                    className="text-blue-600"
-                  >
-                    View On Airbnb
-                  </a>
-                  <a
-                    href="https://www.airbnb.ca/rooms/1308860065021844564?guests=1&adults=1&s=66&source=embed_widget"
-                    rel="nofollow"
-                    className="text-gray-600"
-                  >
-                    Condo in Tulum · ★New · 1 bedroom · 2 beds · 1 bath
-                  </a>
-                </div>
-              </Box>
-            </div>
-          </Box>
-        </HoverCard>
       </SlideInDiv>
     </>
   );
