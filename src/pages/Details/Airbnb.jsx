@@ -1,15 +1,17 @@
-import React, { useEffect, useRef } from "react";
-import { Box, Grid, Typography } from "@mui/material";
-import HoverCard from "components/HoverCard";
+import React, { useEffect, useRef, useState } from "react";
+import { Box, Typography } from "@mui/material";
 import SlideInDiv from "components/SlideInDiv";
 import StickySectionHeader from "components/StickySectionHeader";
 import { Sections } from "enums";
 import { getScrollOrder } from "utils";
 import { useSectionContext } from "./Header";
+import useMobile from "contexts/useMobile";
+import HoverCard from "components/HoverCard";
 
 const Airbnb = () => {
   const { setActiveSection } = useSectionContext();
-  const iframeContainer = useRef(null);
+  const { mobile } = useMobile();
+  const [offset, setOffset] = useState(0);
 
   useEffect(() => {
     // Load the Airbnb SDK script when the component mounts
@@ -26,29 +28,20 @@ const Airbnb = () => {
 
   useEffect(() => {
     const resize = () => {
-      let rooms = document.getElementsByClassName("airbnb-embed-frame");
-      console.clear();
-      console.log("rooms:", rooms);
-      console.log("iframeContainer:", iframeContainer?.current);
-      const containerWidth = iframeContainer?.current?.clientWidth;
-      for (let room of rooms) {
-        console.log("room:", room);
-        console.log("containerWidth:", containerWidth);
-        // room.style.width = containerWidth + "px";
-        if (containerWidth < 500) {
-          let scale = (containerWidth - 20) / room.offsetWidth;
-          // scale = 0.5;
-          console.log("scale:", scale);
-          room.style.transform = "scale(" + scale + ")";
-        } else {
-          console.log("scale>>:", 1);
-          room.style.transform = "scale(1)";
-        }
+      const contentWrapper = document.querySelector(`.GRID_CONTAINER`);
+      if (!contentWrapper || !mobile) {
+        setOffset(0);
+        return;
       }
+      const computedStyle = window.getComputedStyle(contentWrapper);
+      const paddingLeft = parseFloat(computedStyle.paddingLeft);
+      console.log("paddingLeft:", paddingLeft);
+      setOffset(paddingLeft);
     };
     window.onload = () => resize();
     window.onresize = () => resize();
-  }, []);
+    resize();
+  }, [mobile, setOffset]);
 
   return (
     <>
@@ -60,7 +53,6 @@ const Airbnb = () => {
         className="GRID_ITEM_BOX"
         index={getScrollOrder(Sections.Airbnb)}
         onMouseEnter={() => {
-          console.log("MOUSE ENTERED AIRBNB");
           setActiveSection(Sections.Airbnb);
         }}
       >
@@ -82,39 +74,31 @@ const Airbnb = () => {
             <strong>Tulum, Mexico!</strong>&nbsp; If you're looking for the
             ultimate getaway, check it out here!
           </Typography>
-          <Typography variant="body1" color="primary.dark"></Typography>
 
-          <Box
-            ref={iframeContainer}
+          <HoverCard
+            px={offset}
+            disabled
             sx={{
-              display: "flex",
-              justifyContent: "center", // Center horizontally
-              alignItems: "center", // Center vertically
-              minHeight: "300px", // Set a minimum height for the container
-              // backgroundColor: "red",
-              width: "100%",
-              overflow: "hidden", // Ensure content doesn't spill over
+              padding: "0 !important",
             }}
           >
             <div
-              className="airbnb-embed-frame"
+              class="airbnb-embed-frame"
               data-id="1308860065021844564"
               data-view="home"
               data-hide-price="true"
-              style={{
-                // width: "450px", // Set fixed width for the iframe
-                width: "100%",
-                height: "300px", // Set fixed height for the iframe
-                margin: "auto", // This ensures the element is centered
-                borderRadius: "12px", // Add slight border radius
-                overflow: "hidden", // Ensure content doesn't spill over
-              }}
+              style={{ width: "450px", height: "300px", margin: "auto" }}
             />
-          </Box>
+          </HoverCard>
         </Box>
       </SlideInDiv>
     </>
   );
 };
 
-export default Airbnb;
+const AirbnbWrapper = () => {
+  const { mobile } = useMobile();
+  return <Airbnb key={`airbnb--${mobile}`} />;
+};
+
+export default AirbnbWrapper;
