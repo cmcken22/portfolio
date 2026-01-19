@@ -103,10 +103,9 @@ class SkullAnimation {
 
   update = (deltaTime) => {
     if (!this.allowRotation) return;
-    // Adjust the movement increment based on the elapsed time (deltaTime)
-    // const movementIncrement = 0.15 * deltaTime;
-    const movementIncrement = 0.0025;
-    // console.log("movementIncrement:", movementIncrement);
+    // Use delta time for frame-rate independent animation
+    // 0.15 per second gives same speed as 0.0025 at 60fps
+    const movementIncrement = 0.15 * deltaTime;
 
     // increment theta to rotate the lights
     this.theta1 += movementIncrement;
@@ -124,8 +123,8 @@ class SkullAnimation {
     this.pointlight2.position.z = -Math.cos(this.theta1 + 1) * 11;
     this.pointlight2.position.y = 2 * -Math.cos(this.theta1 - 3) - 6;
 
-    // rotate the group to simulate the rotation of the HDR
-    this.group.rotation.y += 0.05;
+    // rotate the group to simulate the rotation of the HDR (3.0 rad/sec = 0.05 at 60fps)
+    this.group.rotation.y += 3.0 * deltaTime;
 
     // keep the camera look at 0,0,0
     this.camera.lookAt(0, 0, 0);
