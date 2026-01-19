@@ -14,64 +14,39 @@ import useMobile from "contexts/useMobile";
 
 export const Items = [
   {
-    company: "LockDocs Inc.",
-    link: "https://lockdocs.com",
-    positions: ["Sr Software Engineer"],
-    startDate: "FEB 2023",
+    company: "EllisDon",
+    link: "https://www.ellisdon.com",
+    positions: ["Manager, UX Development"],
+    startDate: "AUG 2024",
     endDate: "PRESENT",
-    tags: ["React", "Firebase", "NodeJS", "NestJS", "Docker"],
+    tags: ["React", "TypeScript", "Figma", "Storybook", "Design Systems"],
     description: () => (
       <>
         <Typography variant="body2" color="primary.dark" width="100%">
-          As the lead developer, I played a pivotal role in re-architecting the
-          frontend application, seamlessly integrating it with a more robust
-          backend. Elevating performance and efficiency, I implemented an API
-          layer using RTK Query. Additionally, I undertook a redesign of
-          critical components, significantly enhancing scalability and
-          productivity.
+          Led the development of a scalable internal React and TypeScript
+          component library adopted across 30+ production products and teams.
+          Integrated Figma design tokens and implemented component-level
+          telemetry to drive consistency, accessibility, and data-informed
+          library evolution.
         </Typography>
       </>
     ),
   },
   {
-    company: "EllisDon",
-    link: "https://www.ellisdon.com",
-    positions: ["UX/UI Developer"],
-    startDate: "FEB 2024",
-    endDate: "MAR 2024",
-    tags: ["React", "TypeScript", "Mui", "Vite", "NPM"],
+    company: "LockDocs Inc.",
+    link: "https://lockdocs.com",
+    positions: ["Sr Software Engineer"],
+    startDate: "FEB 2023",
+    endDate: "JUL 2024",
+    tags: ["React", "Firebase", "NodeJS", "NestJS", "Docker"],
     description: () => (
       <>
         <Typography variant="body2" color="primary.dark" width="100%">
-          Re-hired by EllisDon as a part-time contractor to build out thier
-          component library. My task was to build a reusable component library
-          tailored for integration across various EllisDon projects. Built with
-          React, TypeScript, and MUI, deployed to NPM for consumption. With a
-          robust 85% test coverage and comprehensive documentation, feel free to
-          explore the&nbsp;
-          <Typography
-            onClick={() =>
-              window.open(
-                "https://cmcken22.github.io/ed-component-library",
-                "_blank"
-              )
-            }
-            component="strong"
-            variant="body2"
-            color="primary.dark"
-            sx={{
-              wordWrap: "break-word",
-              // wordBreak: "break-word",
-              textDecoration: "underline",
-              textDecorationColor: "white",
-              textUnderlineOffset: "0.25rem",
-              "&:hover": {
-                textDecorationColor: "rgb(94, 234, 212)",
-              },
-            }}
-          >
-            Storybook documentation here!
-          </Typography>
+          Identified critical cryptographic and data-handling flaws in a legacy
+          platform, driving the decision to terminate the third-party vendor.
+          Led the end-to-end redesign and rebuild of the system with secure
+          encryption practices and improved architectural boundaries. Acted as
+          interim technical owner while onboarding a new engineering team.
         </Typography>
       </>
     ),
@@ -118,7 +93,7 @@ export const Items = [
 const ResumeLink = () => {
   const handleOpenResume = useCallback(() => {
     // window.open("/Conner_McKenna_-_Software_Engineer.pdf", "_blank");
-    window.open("/Conner McKenna Resume 2024.pdf", "_blank");
+    window.open("/Conner_McKenna_2026.pdf", "_blank");
   }, []);
 
   const renderContent = useCallback(() => {

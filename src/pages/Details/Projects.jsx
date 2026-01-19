@@ -18,11 +18,11 @@ export const ProjectList = [
       "Built a volunteering application with a group of friends. Gained partnerships with over 50 organizations and connected over 100 users with volunteer opportunities.",
   },
   {
-    title: "EllisDon Component Library",
+    title: "EllisDon Component Library (V1)",
     src: "/images/storybook.png",
     link: "https://cmcken22.github.io/ed-component-library",
     description:
-      "Built a reusable component library for EllisDon with React, TypeScript, and MUI. Hosted on Storybook for documentation/testing and NPM for consumption.",
+      "Built a reusable component library for EllisDon with React, TypeScript, and MUI. Hosted on Storybook for documentation/testing and NPM for consumption. Demo showcases the initial version.",
   },
   {
     title: "WatchWorldWide",
